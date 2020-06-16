@@ -23,9 +23,10 @@ def installing_step(url):
     if serverconf['init']:
         return abort(403)
     if url == 'start':
-        return open('storage/templates/installing/start.html','rb').read()
+        return open('backup/templates/installing/start.html','rb').read()
     elif url == 'database':
-        return open('storage/templates/installing/database.html','rb').read()
+        return open('backup/templates/installing/database.html','rb').read()
+
 
 
 app.run(port=80, debug=True)
