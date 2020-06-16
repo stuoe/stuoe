@@ -5,8 +5,8 @@
 </template>
 <script>
 export default {
-  created(){
-    this.$router.push("/start")
+  created() {
+    this.$router.push("/start");
   }
 };
 </script>
@@ -17,7 +17,8 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
-html,body{
+html,
+body {
   width: 100%;
   height: 100vh;
   padding: 0px;
