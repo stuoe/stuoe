@@ -2,28 +2,73 @@
 <html lang="zh-cn">
 
 <head>
+
     <meta charset="UTF-8" />
     <title>安装Installing | 填写论坛名称</title>
-    <meta name="description" content="Notiflix | Test the last version" />
+    <meta name="description" content="安装Installing | 填写论坛名称" />
     <meta name="content-language" content="zh-cn" />
     <meta name="language" content="Chinese" />
     <meta name="robots" content="noindex, nofollow, noodp, noydir" />
     <meta name="googlebot" content="noindex, nofollow, noodp, noydir" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-
-    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-    <link id="NotiflixBarlow"
-        href="https://fonts.googleapis.com/css?family=Barlow:100,200,300,400,500,600,700,800,900&amp;subset=latin-ext"
-        rel="stylesheet" />
-
-
-
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 
 </head>
 
 <body>
+    <section class="section">
+        <div class="container">
 
+            <h1 class="title">
+                开始安装
+            </h1>
+            <p class="subtitle">
+                安装你的 <strong>Stuoe</strong>!
+            </p>
+            <hr>
+            <form>
+                <div class="field">
+                    <label class="label">论坛名称</label>
+                    <div class="control">
+                        <input name="fourm_name" class="input" type="text" placeholder="好听的名称往往被记住">
+                    </div>
+                    <p class="help">不如起个好名字吧，例如“shyfcka fourm"</p>
+                </div>
+
+                <div class="field">
+                    <label class="label">管理员邮箱</label>
+                    <p class="control has-icons-left has-icons-right">
+                        <input class="input" type="email" placeholder="可不要乱填写哦">
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                        <span class="icon is-small is-right">
+                            <i class="fas fa-check"></i>
+                        </span>
+                    </p>
+                    <p class="help">通知论坛重要事务和绑定管理员账号</p>
+                </div>
+
+
+                <div class="field">
+                    <label class="label">论坛描述</label>
+                    <div class="control">
+                        <textarea class="textarea" placeholder="数羊数鸡数星星，啦啦啦！"></textarea>
+                    </div>
+                    <p class="help">这将被填写在SEO中</p>
+                </div>
+
+
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button class="button is-link">保存并进行下一步</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </section>
 </body>
 
 </html>
