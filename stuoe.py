@@ -11,9 +11,8 @@ serverconf = dict(eval(open('server.conf', 'rb').read()))
 # Init Flask
 app = Flask(__name__)
 
-
 @app.route('/install')
-def installing_p():
+def send_redict():
     return redirect('/install/start')
 
 @app.route('/install/<url>',methods=['GET','POST'])
@@ -33,12 +32,18 @@ def installing_step(url):
         serverconf['info']['fourm_des'] = request.form['fourm_des']
         open('serverconf','wb+').write(str(serverconf).encode('utf-8'))
         return redirect('/install/installing')
+    elif url == 'database' and request.method=="POST":
+        serverconf['info']['stuoe_name'] = request.form['fourm_name']
+        serverconf['info']['des'] = request.form['fourm_admin_email']
+        serverconf['info']['fourm_des'] = request.form['fourm_des']
+        open('serverconf','wb+').write(str(serverconf).encode('utf-8'))
+        return redirect('/install/smtp')
     elif url == "start" and request.method=="GET":
-        return open('/storage/dist/installing/start.html','rb').read()
+        return open('backUp/templates/installing/start.html','rb').read()
     elif url == "database" and request.method=="GET":
-        return open('/storage/dist/installing/database.html','rb').read()
+        return open('backUp/templates/installing/database.html','rb').read()
     elif url == "smtp" and request.method=="GET":
-        return open('/storage/dist/installing/smtp.html','rb').read()
+        return open('backUp/templates/installing/smtp.html','rb').read()
 
 @app.route('/js/<path:path>')
 def send_jsfile(path):
@@ -54,9 +59,9 @@ def send_cssfile(path):
     else:
         return abort(404)
 
-@app.route('/')
+#@app.route('/install')
 def send_vuejsindex():
-    return open("storage/dist/index.html",'rb').read()
+    return open("storage/dist/installing.html",'rb').read()
     
 
 app.run(port=80, debug=True)

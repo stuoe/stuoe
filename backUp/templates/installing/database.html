@@ -2,28 +2,81 @@
 <html lang="zh-cn">
 
 <head>
+
     <meta charset="UTF-8" />
-    <title>安装Installing | 填写数据库设置</title>
-    <meta name="description" content="Notiflix | Test the last version" />
+    <title>安装Installing | 填写数据库信息</title>
+    <meta name="description" content="安装Installing | 填写数据库信息" />
     <meta name="content-language" content="zh-cn" />
     <meta name="language" content="Chinese" />
     <meta name="robots" content="noindex, nofollow, noodp, noydir" />
     <meta name="googlebot" content="noindex, nofollow, noodp, noydir" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-
-    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-    <link id="NotiflixBarlow"
-        href="https://fonts.googleapis.com/css?family=Barlow:100,200,300,400,500,600,700,800,900&amp;subset=latin-ext"
-        rel="stylesheet" />
-
-
-
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 
 </head>
 
 <body>
+    <section class="section">
+        <div class="container">
 
+            <h1 class="title">
+                开始安装
+            </h1>
+            <p class="subtitle">
+                安装你的 <strong>Stuoe</strong>!
+            </p>
+            <hr>
+            <form>
+                <div class="field">
+                    <label class="label">数据库地址</label>
+                    <div class="control">
+                        <input name="host" class="input" type="text" placeholder="如127.0.0.1">
+                    </div>
+                    <p class="help">请确保当前计算机能连接到数据库</p>
+                </div>
+                <div class="field">
+                    <label class="label">数据库端口</label>
+                    <div class="control">
+                        <input name="port" class="input" type="number" placeholder="可别写错了">
+                    </div>
+                    <p class="help">数据库端口一般为3306</p>
+                </div>
+                <div class="field">
+                    <lable class="label">填写数据库账号信息</lable>
+                </div>
+                <div class="field">
+                    <p class="help">填写数据库名称，请确保数据库存在</p>
+                    <div class="control">
+                        <input name="db_name" class="input" type="text" placeholder="数据库名称">
+                    </div>
+                </div>
+                <div class="field">
+                    <p class="help">填写数据库用户名，一般与数据库名称相同</p>
+                    <div class="control">
+                        <input name="db_user" class="input" type="textr" placeholder="数据库名称">
+                    </div>
+                </div>
+                <div class="field">
+                    <p class="help">填写数据库密码，在验证后会用标准加密方式保存</p>
+                    <div class="control">
+                        <input name="db_password" class="input" type="password" placeholder="数据库名称">
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button class="button is-link">保存并进行下一步</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </section>
 </body>
 
 </html>
