@@ -17,7 +17,7 @@
 </head>
 
 <body>
-    <section class="section">
+    <section class="section" aria-setsize="30">
         <div class="container">
 
             <h1 class="title">
@@ -27,45 +27,14 @@
                 安装你的 <strong>Stuoe</strong>!
             </p>
             <hr>
-            <form>
+            <form action="/install/start" method="POST">
                 <div class="field">
-                    <label class="label">论坛名称</label>
-                    <div class="control">
-                        <input name="fourm_name" class="input" type="text" placeholder="好听的名称往往被记住">
+                    <label class="label">Label</label>
+                    <div class="control" aria-setsize="30">
+                      <input class="input" type="text" placeholder="Text input">
                     </div>
-                    <p class="help">不如起个好名字吧，例如“shyfcka fourm"</p>
-                </div>
-
-                <div class="field">
-                    <label class="label">管理员邮箱</label>
-                    <p class="control has-icons-left has-icons-right">
-                        <input class="input" type="email" placeholder="可不要乱填写哦">
-                        <span class="icon is-small is-left">
-                            <i class="fas fa-envelope"></i>
-                        </span>
-                        <span class="icon is-small is-right">
-                            <i class="fas fa-check"></i>
-                        </span>
-                    </p>
-                    <p class="help">通知论坛重要事务和绑定管理员账号</p>
-                </div>
-
-
-                <div class="field">
-                    <label class="label">论坛描述</label>
-                    <div class="control">
-                        <textarea class="textarea" placeholder="数羊数鸡数星星，啦啦啦！"></textarea>
-                    </div>
-                    <p class="help">这将被填写在SEO中</p>
-                </div>
-
-
-                <div class="field is-grouped">
-                    <div class="control">
-                        <button class="button is-link">保存并进行下一步</button>
-                    </div>
-
-                </div>
+                    <p class="help">This is a help text</p>
+                  </div>
             </form>
         </div>
     </section>
