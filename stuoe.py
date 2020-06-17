@@ -1,6 +1,7 @@
 # Stuoe Start or Installing
 
 from flask import *
+from flask_sqlalchemy import SQLAlchemy
 import flask_mail
 import os
 import time
@@ -11,46 +12,64 @@ serverconf = dict(eval(open('server.conf', 'rb').read()))
 
 # Init Flask
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///stuoe.db'
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
+db = SQLAlchemy(app)
+
+# Init DatabaseTable
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    email = db.Column(db.String(50))
+    pass_hash = db.Column(db.String(50))
+    user_des = db.Column(db.String(50))
+    topic_list = db.Column(db.String(50))
+    point = db.Column(db.Integer)
+    url = db.Column(db.Integer)
+
+class Group(db.Model):
+    # Waiting....
+    pass
+
 
 @app.route('/install')
 def send_redict():
-    return redirect('/install/start')
+    return open('storage\stuoe\public\index.html','rb').read()
 
-@app.route('/install/<url>',methods=['GET','POST'])
+@app.route('/install',methods=['GET','POST'])
 def installing_step(url):
     if serverconf['init']:
         return abort(403)
-    if url == 'start' and request.method=="POST":
-        serverconf['info']['stuoe_name'] = request.form['fourm_name']
-        serverconf['info']['des'] = request.form['fourm_admin_email']
-        serverconf['info']['fourm_des'] = request.form['fourm_des']
+    if request.method=="POST":
+        stuoe_name = request.form['stuoe_name']
+        stuoe_des = request.form['stuoe_des']
+        stuoe_smtp_host = request.form['stuoe_smtp_host']
+        stuoe_smtp_host = request.form['stuoe_smtp_port']
+        stuoe_smtp_email = request.form['stuoe_smtp_port']
+        stuoe_smtp_password = request.form['stuoe_smtp_email']
+        stuoe_admin_mail = request.form['stuoe_admin_mail']
+        stuoe_admin_password = request.form['stuoe_admin_password']
+        if stuoe_name == '':
+            return open('storage\stuoe\public\install_error.html','rb').read()
+        if stuoe_des == '':
+            return open('storage\stuoe\public\install_error.html','rb').read()
+        serverconf['stuoe_name'] = stuoe_name
+        serverconf['stuoe_des'] = stuoe_des
+        serevrconf['stuoe_smtp_host'] = stuoe_smtp_host
+        serverconf['stuoe_smtp_port'] = stuoe_smtp_port
+        serverconf['stuoe_smtp_email'] = stuoe_smtp_email
+        serverconf['stuoe_smtp_password'] = stuoe_admin_password
+        sevrerconf['stuoe_admin_mail'] = stuoe_admin_mail
+        serverconf['stuoe_admin_password'] = stuoe_admin_password
+        serverconf['init'] = True
+
+
+
         open('serverconf','wb+').write(str(serverconf).encode('utf-8'))
         return redirect('/install/database')
-    elif url == 'database' and request.method=="POST":
-        serverconf['database']['host'] = request.form['host']
-        serverconf['database']['port'] = request.form['port']
-        serverconf['database']['db_name'] = request.form['db_name']
-        serverconf['database']['db_user'] = request.form['db_name']
-        serverconf['database']['db_password'] = request.form['db_password']
-        open('serverconf','wb+').write(str(serverconf).encode('utf-8'))
-        return redirect('/install/smtp')
-    elif url == 'smtp' and request.method=="POST":
-        serverconf['database']['host'] = request.form['host']
-        serverconf['database']['port'] = request.form['port']
-        serverconf['database']['db_name'] = request.form['db_name']
-        serverconf['database']['db_user'] = request.form['db_name']
-        serverconf['database']['db_password'] = request.form['db_password']
-        open('serverconf','wb+').write(str(serverconf).encode('utf-8'))
-        return redirect('/install/smtp')
-    
-    elif url == "start" and request.method=="GET":
-        return open('backUp/templates/installing/start.html','rb').read()
-    elif url == "database" and request.method=="GET":
-        return open('backUp/templates/installing/database.html','rb').read()
-    elif url == "smtp" and request.method=="GET":
-        return open('backUp/templates/installing/smtp.html','rb').read()
-    elif url == "installing" and request.method=="GET":
-        pass
+    else:
+        return open('storage\stuoe\public\start.html','rb').read()
+
+
         
 
 @app.route('/js/<path:path>')
