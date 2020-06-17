@@ -24,12 +24,18 @@ class User(db.Model):
     user_des = db.Column(db.String(50))
     topic_list = db.Column(db.String(50))
     point = db.Column(db.Integer)
-    url = db.Column(db.Integer)
-
+    url = db.Column(db.String(50))
+    user_group = db.Column(db.Integer,db.ForeignKey("Group.Group_name"))
+    user_ban = db.Column(db.Boolean)
+    def __repr__(self):
+           return {'id':self.id,'email':self.email,'user_des':self.user_des}
+    
 class Group(db.Model):
     # Waiting....
-    pass
-
+    Group_name = db.Column(db.String(30),primary_key=True)
+    Group_des = db.Column(db.String(30))
+    Highest_authority_group = db.Column(db.Boolean)
+    group_user_info = db.relationship('User', back_populates='Group')
 
 @app.route('/install')
 def send_redict():
