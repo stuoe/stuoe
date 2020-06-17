@@ -1,6 +1,5 @@
 const handler = require("serve-handler");
 const http = require("http");
-// process.chdir("./storage/dist/");
 const server = http.createServer((request, response) => {
   console.log(request.url);
   if (request.url == "/install") {

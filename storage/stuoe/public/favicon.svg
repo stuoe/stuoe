@@ -1,0 +1,8 @@
+<svg width="1200" height="634" xmlns="http://www.w3.org/2000/svg">
+	<rect fill="#fff" height="100%" width="100%">
+	</rect>
+	<rect fill="#1e9fff" height="50" width="50" y="300" x="800" />
+	<text stroke="#000" xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="200" id="svg_3" y="375" x="0" fill="#000">
+		Stoue
+	</text>
+</svg>

@@ -3,6 +3,10 @@
     <h1>开始安装</h1>
     <h3 class="subtitle">安装你的 <strong>Stuoe</strong>!</h3>
     <el-divider></el-divider>
+    <br />
+    <InstallStep :n='0'></InstallStep>
+    <br />
+    <el-divider>基本信息</el-divider>
     <el-form
       label-width="100px"
       :model="formData"
@@ -30,6 +34,33 @@
         >
         </el-input>
       </el-form-item>
+      <!-- smtp的host,port,user,password
+地址
+端口
+邮箱
+密码/授权码 -->
+      <br />
+      <el-divider>SMTP设置</el-divider>
+      <el-form-item prop="smtp_host" label="地址:">
+        <el-input placeholder="SMTP主机地址" v-model="formData.smtp.host">
+        </el-input>
+      </el-form-item>
+      <el-form-item prop="smtp_port" label="端口:">
+        <el-input placeholder="SMTP端口号" v-model="formData.smtp.port">
+        </el-input>
+      </el-form-item>
+
+      <el-form-item prop="smtp_email" label="邮箱:">
+        <el-input placeholder="SMTP邮箱" v-model="formData.smtp.email">
+        </el-input>
+      </el-form-item>
+      <el-form-item prop="smtp_password" label="密码/授权码:">
+        <el-input
+          placeholder="SMTP密码/授权码"
+          v-model="formData.smtp.password"
+        >
+        </el-input>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submit()">下一步</el-button>
       </el-form-item>
@@ -39,14 +70,22 @@
 
 <script>
 import $ from "jquery";
+import InstallStep from "../components/InstallStep";
 export default {
-  name: "Start",
+  name: "Install1",
+  components: {
+    InstallStep,
+  },
   data() {
     return {
       formData: {
         name: "",
         email: "",
         desc: "",
+        smtp: {
+          host: "",
+          port: "",
+        },
       },
       formRules: {
         email: [
@@ -70,6 +109,12 @@ export default {
         desc: [
           { required: true, message: "随便写点什么吧~", trigger: "blur" },
           { max: 1000, message: "这有些太长了,语言再精炼一些吧~" },
+        ],
+        smtp_host: [{ required: true, message: "此项必填", trigger: "blur" }],
+        smtp_email: [{ required: true, message: "此项必填", trigger: "blur" }],
+        smtp_port: [{ required: true, message: "此项必填", trigger: "blur" }],
+        smtp_password: [
+          { required: true, message: "此项必填", trigger: "blur" },
         ],
       },
     };
@@ -99,6 +144,6 @@ export default {
 </script>
 <style>
 .page-start {
-  padding: 48px 100px;
+  padding: 50px 400px;
 }
 </style>
