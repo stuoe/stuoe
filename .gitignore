@@ -7,3 +7,5 @@ __pycache__
 .vscode
 # node包(自行npm install)
 node_modules
+# server.conf(包括重要信息）
+server.conf
