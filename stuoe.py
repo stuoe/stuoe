@@ -3,10 +3,12 @@
 from flask import *
 from flask_sqlalchemy import SQLAlchemy
 import flask_mail
+import flask_oauthlib
 import os
 import time
 import jinja2
 import hashlib
+import re
 
 # Get Configs File
 serverconf = dict(eval(open('server.conf', 'rb').read()))
@@ -40,6 +42,8 @@ class Group(db.Model):
         return self.Group_name
 
 db.create_all()
+
+# Install 
 
 @app.route('/install')
 def send_redict():
@@ -80,8 +84,7 @@ def installing_step(url):
     else:
         return open('storage\stuoe\public\start.html','rb').read()
 
-
-        
+# Staticfile
 
 @app.route('/js/<path:path>')
 def send_jsfile(path):
@@ -100,6 +103,10 @@ def send_cssfile(path):
     else:
         return abort(404)
 
+@app.route('/favicon.ico')
+def send_ico():
+    return open("storage/dist/图标.ico",'rb').read()
+
 # API interface area
 
 @app.route('/api/configs',methods=['GET'])
@@ -111,13 +118,21 @@ def send_api_configs():
         'stuoe_themo_color':serverconf['stuoe_themo_color']
     })
 
-@app.route('/api/regsiter',methods=['POST'])
+@app.route('/api/register',methods=['POST'])
 def send_api_register():
-    pass
+    request.form['register_email']
+    request.form['register_password']
+    if not re.match("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$", request.form['register_email']) != None:
+        return 'error'
+    if request.form['register_password'] == '':
+        return 'error'
+    if User.query.filter_by(email=request.form['register_email']).first() == None:
+        return '12'
+    else:
+        return '1'
+    
 
-@app.route('/favicon.ico')
-def send_ico():
-    return open("storage/dist/图标.ico",'rb').read()
+
 
 
 

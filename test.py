@@ -1,22 +1,4 @@
-from flask import *
-import os
-app = Flask(__name__)
+import requests
 
-@app.route('/static/<path:path>')
-def send_staticfile(path):
-    if os.path.exists('staicfile/' + path):
-        return open('staticfile/' + path,'rb').read()
-    else:
-        return abort(404)
-
-
-@app.route('/userbyid/<userid:int>')
-def send_user_by_id(userid):
-    return 'defalt user'
-
-@app.route('/userbyusername/<username:str>')
-def send_user_by_id(username):
-    return 'defalt user'
-
-
-app.run()
+a = requests.post('http://127.0.0.1:31/api/register',data={'register_email':'snbckcode@gmail.com','register_password':'123d1'})
+print(a.text)
