@@ -6,13 +6,17 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "Index",
-    component: ()=>import('../views/index')
+    name: "home",
+    component: ()=>import('../views/home')
   },
   {
     path: "/start",
     name: "Start",
     component: ()=>import('../views/Install1')
+  },{
+    path: "*",
+    name: "404",
+    component: ()=>import('../views/404')
   }
 ];
 
