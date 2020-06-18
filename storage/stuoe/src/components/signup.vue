@@ -36,7 +36,7 @@
           <el-checkbox v-model="signUp.UA">我已阅读并同意</el-checkbox>
           <a style="cursor:pointer" @click="user_agr = true">《用户协议》</a>
         </el-form-item>
-        <button class="sign-to" @click="signUpform('signUp')">注册账号</button>
+        <el-button type="primary" round style="width:50%" @click="signUpform('signUp')">注册账号</el-button>
         <el-dialog title="源码星球用户协议" :visible.sync="user_agr" width="50%" append-to-body>
           <userAgr class="user_agr"></userAgr>
           <div slot="footer" class="dialog-footer">
@@ -77,21 +77,6 @@
   border-radius: 5px;
 }
 
-.sign-to {
-  width: 50%;
-  height: 40px;
-  line-height: 40px;
-  text-align: center;
-  border-radius: 20px;
-  background: #1280ff;
-  border: none;
-  outline: none;
-  color: #fff;
-  display: block;
-  margin: 20px auto;
-  cursor: pointer;
-  font-size: 15px;
-}
 .other {
   cursor: pointer;
   color: #888;
@@ -163,23 +148,19 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           $.ajax({
-          url: "/install/start",
-          method: "POST",
-          data: {
-            //name
-            password: signUp.password,
-            email: signUp.email
-          }
-        });
+            url: "/signup",
+            method: "POST",
+            data: {
+              //name
+              password: signUp.password,
+              email: signUp.email
+            }
+          });
         } else {
           return;
         }
       });
     },
-    Forget() {
-      this.$router.push("/");
-    },
-    signUpto() {},
     getEmail_v() {
       var e = /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/;
       if (e.test(this.signUp.email)) {
