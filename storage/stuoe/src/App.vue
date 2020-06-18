@@ -17,6 +17,16 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
+*::-webkit-scrollbar {
+  width: 10px;
+}
+*::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: #ccc;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #bbb;
+}
 html,
 body {
   width: 100%;
