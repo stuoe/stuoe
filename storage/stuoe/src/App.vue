@@ -5,9 +5,9 @@
 </template>
 <script>
 export default {
-  created() {
-    this.$router.push("/start");
-  }
+  // created() {
+  //   this.$router.push("/start");
+  // }
 };
 </script>
 <style>
@@ -16,6 +16,16 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+}
+*::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: #ddd;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #ccc;
 }
 html,
 body {
