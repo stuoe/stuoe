@@ -115,6 +115,11 @@ def send_api_configs():
 def send_api_register():
     pass
 
+@app.route('/favicon.ico')
+def send_ico():
+    return open("storage/dist/图标.ico",'rb').read()
+
+
 
     
 
