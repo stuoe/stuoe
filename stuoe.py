@@ -25,7 +25,7 @@ class User(db.Model):
     topic_list = db.Column(db.String(50))
     point = db.Column(db.Integer)
     url = db.Column(db.String(50))
-    user_group = db.Column(db.Integer,db.ForeignKey("Group.Group_name"))
+    user_group = db.relationship('Group',backref='User')
     user_ban = db.Column(db.Boolean)
     def __repr__(self):
            return {'id':self.id,'email':self.email,'user_des':self.user_des}
@@ -35,7 +35,11 @@ class Group(db.Model):
     Group_name = db.Column(db.String(30),primary_key=True)
     Group_des = db.Column(db.String(30))
     Highest_authority_group = db.Column(db.Boolean)
-    group_user_info = db.relationship('User', back_populates='Group')
+    group_user_info = db.relationship("User", back_populates="Group")
+    def __repr__(self):
+        return self.Group_name
+
+db.create_all()
 
 @app.route('/install')
 def send_redict():
@@ -67,7 +71,7 @@ def installing_step(url):
         sevrerconf['stuoe_admin_mail'] = stuoe_admin_mail
         serverconf['stuoe_admin_password'] = stuoe_admin_password
         serverconf['init'] = True
-
+        
 
 
         open('serverconf','wb+').write(str(serverconf).encode('utf-8'))
