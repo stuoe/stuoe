@@ -43,7 +43,7 @@ db.create_all()
 
 @app.route('/install')
 def send_redict():
-    return open('storage\stuoe\public\index.html','rb').read()
+    return open('storage\dist\installing.html','rb').read()
 
 @app.route('/install',methods=['GET','POST'])
 def installing_step(url):
@@ -92,8 +92,11 @@ def send_jsfile(path):
 
 @app.route('/css/<path:path>')
 def send_cssfile(path):
+    
     if os.path.exists("storage/dist/css/" + path):
-        return open("storage/dist/css/" + path,'rb').read()
+        resp = make_response(open("storage/dist/css/" + path,'rb').read())
+        resp.headers["Content-Type"] = 'text/css'
+        return resp
     else:
         return abort(404)
 
@@ -115,6 +118,6 @@ def send_api_register():
 
     
 
-app.run(port=80, debug=True)
+app.run(port=31, debug=True)
 
 
