@@ -162,9 +162,17 @@ export default {
     signUpform(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          alert("可以注册");
+          $.ajax({
+          url: "/install/start",
+          method: "POST",
+          data: {
+            //name
+            password: signUp.password,
+            email: signUp.email
+          }
+        });
         } else {
-          return false;
+          return;
         }
       });
     },
