@@ -172,9 +172,9 @@ export default {
   background: #1280ff;
   padding: 30px 0;
 }
-/* .page-start::-webkit-scrollbar{
+body::-webkit-scrollbar{
   background: #1280ff !important;
-} */
+} 
 .page-box {
   width: 60%;
   margin: 0 auto;

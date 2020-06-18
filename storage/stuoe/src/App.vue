@@ -5,9 +5,9 @@
 </template>
 <script>
 export default {
-  created() {
-    this.$router.push("/start");
-  }
+  // created() {
+  //   this.$router.push("/start");
+  // }
 };
 </script>
 <style>
@@ -22,10 +22,10 @@ export default {
 }
 *::-webkit-scrollbar-thumb {
     border-radius: 5px;
-    background: #ccc;
+    background: #ddd;
 }
 *::-webkit-scrollbar-thumb:hover {
-  background: #bbb;
+  background: #ccc;
 }
 html,
 body {
