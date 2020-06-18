@@ -7,9 +7,10 @@ const server = http.createServer((request, response) => {
     response.end();
     return 0;
   } else if (request.url == "/install/start") {
-    request.url = request.url.replace("/install/start", "/storage/dist");
-    return handler(request, response);
+    request.url = request.url.replace("/install/start", "/");
   }
+  request.url = "/storage/dist" + request.url;
+  return handler(request, response);
 });
 
 server.listen(80, () => {
