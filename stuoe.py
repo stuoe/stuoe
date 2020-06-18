@@ -76,7 +76,7 @@ def installing_step(url):
         db.session.add(admin)
         db.session.commit()
         open('serverconf','wb+').write(str(serverconf).encode('utf-8'))
-        return redirect('/install/database')
+        return redirect('/')
     else:
         return open('storage\stuoe\public\start.html','rb').read()
 
