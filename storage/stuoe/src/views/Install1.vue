@@ -157,9 +157,14 @@ export default {
           url: "/install/start",
           method: "POST",
           data: {
-            form_name: fd.name,
-            admin_mail: fd.email,
-            forum_des: fd.desc
+            stuoe_name: fd.name,
+            stuoe_des: fd.desc,
+            stuoe_smtp_host: fd.smtp.host,
+            stuoe_smtp_port: fd.smtp.port,
+            stuoe_smtp_email: fd.smtp.email,
+            stuoe_smtp_password: fd.smtp.password,
+            stuoe_admin_mail: fd.email,
+            stuoe_admin_password: fd.password
           }
         });
       });
@@ -172,9 +177,9 @@ export default {
   background: #1280ff;
   padding: 30px 0;
 }
-body::-webkit-scrollbar{
+body::-webkit-scrollbar {
   background: #1280ff !important;
-} 
+}
 .page-box {
   width: 60%;
   margin: 0 auto;

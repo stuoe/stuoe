@@ -147,15 +147,15 @@ export default {
     signUpform(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          $.ajax({
-            url: "/signup",
-            method: "POST",
-            data: {
-              //name
-              password: signUp.password,
-              email: signUp.email
-            }
-          });
+          // $.ajax({
+          //   url: "/signup",
+          //   method: "POST",
+          //   data: {
+          //     //name
+          //     password: signUp.password,
+          //     email: signUp.email
+          //   }
+          // });
         } else {
           return;
         }
