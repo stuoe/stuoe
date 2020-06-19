@@ -104,13 +104,14 @@ def installing_step():
     if serverconf['init']:
         return abort(403)
     if request.method == "POST":
-        stuoe_name = request.form['stuoe_name']
+        print(request.form)
+        stuoe_name = request.form['form_name']
         stuoe_des = request.form['stuoe_des']
         stuoe_smtp_host = request.form['stuoe_smtp_host']
         stuoe_smtp_host = request.form['stuoe_smtp_port']
         stuoe_smtp_email = request.form['stuoe_smtp_port']
         stuoe_smtp_password = request.form['stuoe_smtp_email']
-        stuoe_admin_mail = request.form['stuoe_admin_mail']
+        stuoe_admin_mail = request.form['admin_mail']
         stuoe_admin_password = request.form['stuoe_admin_password']
         if stuoe_name == '':
             return open('storage\stuoe\public\install_error.html', 'rb').read()
@@ -226,5 +227,6 @@ def send_api_check_emailcode():
 
 def send_mail(msg):
     threading._start_new_thread(mail.send,(msg,))
+
 
 app.run(port=31, debug=True)
