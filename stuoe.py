@@ -41,12 +41,12 @@ class User(db.Model):
     email = db.Column(db.String(50))
     pass_hash = db.Column(db.String(50))
     user_des = db.Column(db.String(50), server_default='该用户还什么都没写呢')
+    user_session = db.Column(db.String(50), server_default='None')
     point = db.Column(db.Integer, server_default='1')
     url = db.Column(db.String(50), server_default='not url')
     user_group = db.Column(db.Integer, db.ForeignKey("Group.Group_name"))
     user_ban = db.Column(db.Boolean, server_default='False')
     user_dirty = db.Column(db.Boolean, server_default='False')
-
     def __repr__(self):
         return {'id': self.id, 'email': self.email, 'user_des': self.user_des}
 
@@ -61,14 +61,41 @@ class Group(db.Model):
     def __repr__(self):
         return self.Group_name
 
-db.drop_all()
+class Discussion(db.Model):
+    # Waiting...
+    __tablename__ = 'Discussion'
+    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
+    Discussion_title = db.Column(db.String(30))
+    Discussion_body_text = db.Column(db.String(60000))
+    Discussion_Publisher = db.Column(db.Integer, db.ForeignKey("User.id"))
+    Discussion_watch_user = db.Column(db.Integer, db.ForeignKey("User.id"))
+    Discussion_star_user = db.Column(db.Integer, db.ForeignKey("User.id"))
+    Discussion_Private_in_Publisher = db.Column(db.Boolean, server_default='False')
+    Discussion_Private_in_group = db.Column(db.Boolean, server_default='False')
+    Discussion_Private_in_bbs = db.Column(db.Boolean, server_default='False')
+    Discussion_No_discussion = db.Column(db.Boolean, server_default='False')
+    Discussion_lock_up = db.Column(db.Boolean, server_default='False')
+    Discussion_high_quality = db.Column(db.Boolean, server_default='False')
+    Discussion_some_son = db.Column(db.Boolean, server_default='False')
+
+class Discussion_son(db.Model):
+    # Waiting...
+    __tablename__ = 'Discussion_son'
+    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
+    Discussion_son_Publisher = db.Column(db.Integer, db.ForeignKey("User.id"))
+    Discussion_son_body_text = db.Column(db.String(60000))
+    
+
+
+
 db.create_all()
 
 # Install
 
-
 @app.route('/install')
 def send_redict():
+    if serverconf['init']:
+        return abort(403)
     return open('storage\dist\index.html', 'rb').read()
 
 
@@ -102,7 +129,9 @@ def installing_step():
             stuoe_admin_password.encode('utf-8'))
         admin = User(email=serverconf['stuoe_admin_mail'],
                      passhash=admin_passhash_byhash256)
+        Register_user_group = Group(Group_name='注册用户组',Group_des='注册用户组，享有普通权限，例如发帖，回复等')
         db.session.add(admin)
+        db.session.add(Register_user_group)
         db.session.commit()
         open('serverconf', 'wb+').write(str(serverconf).encode('utf-8'))
         return redirect('/')
@@ -112,7 +141,7 @@ def installing_step():
 # Router
 @app.route('/')
 def send_index():
-    return open('storage\dist\index.html', 'rb').read()
+    return open('storage\dist\home.html', 'rb').read()
 
 # Staticfile
 
@@ -171,12 +200,29 @@ def send_api_register():
         'email': request.form['register_email'],
         'password': request.form['register_email']})
 
-    msg = flask_mail.Message('[' + serverconf['stuoe_name'] + ']', sender='bcmjike@foxmail.com',
+    msg = flask_mail.Message('[' + serverconf['stuoe_name'] + ']', sender=serverconf['stuoe_smtp_email'],
             recipients=[request.form['register_email']])
     msg.body = '邮件验证码'
     msg.html = '<b>你正在注册{{name}}</b><br><h4>验证码:{p}</h4>'.format(name=serverconf['stuoe_name'],p=p)
     send_mail(msg)
     return key.hexdigest()
+
+@app.route('/api/check_code_for_register',methods=['POST'])
+def send_api_check_emailcode():
+    request.form['key']
+    request.form['code']
+    register_email = ''
+    for i in verify_registered_email:
+        if request.form['code'] == i['key']:
+            if i['hash_url'] == request.form['code']:
+                request_email = i['email']
+                break
+    if register_email == '':
+        return '502'
+    
+    return 'register_ok'
+
+
 
 def send_mail(msg):
     threading._start_new_thread(mail.send,(msg,))
