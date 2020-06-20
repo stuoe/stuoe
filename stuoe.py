@@ -96,7 +96,7 @@ db.create_all()
 def send_redict():
     if serverconf['init']:
         return abort(403)
-    return open('storage\dist\index.html', 'rb').read()
+    return open('storage/templates/install/index.html', 'rb').read()
 
 
 @app.route('/install/start', methods=['GET', 'POST'])
@@ -146,29 +146,11 @@ def send_index():
 
 # Staticfile
 
+# None  Other StaticFile
 
-@app.route('/js/<path:path>')
-def send_jsfile(path):
-    if os.path.exists("storage/dist/js/" + path):
-        return open("storage/dist/js/" + path, 'rb').read()
-    else:
-        return abort(404)
-
-
-@app.route('/css/<path:path>')
-def send_cssfile(path):
-
-    if os.path.exists("storage/dist/css/" + path):
-        resp = make_response(open("storage/dist/css/" + path, 'rb').read())
-        resp.headers["Content-Type"] = 'text/css'
-        return resp
-    else:
-        return abort(404)
-
-
-@app.route('/favicon.ico')
-def send_ico():
-    return open("storage/dist/图标.ico", 'rb').read()
+@app.route('/stuoe.css')
+def send_css():
+    return open('storage/static/stuoe/stuoe.css','rb').read()
 
 # API interface area
 
@@ -227,6 +209,7 @@ def send_api_check_emailcode():
 
 def send_mail(msg):
     threading._start_new_thread(mail.send,(msg,))
+
 
 
 app.run(port=31, debug=True)
