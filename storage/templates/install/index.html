@@ -5,51 +5,19 @@
   <meta charset="utf-8">
   <title>ViewUI example</title>
   <link rel="stylesheet" type="text/css" href="http://unpkg.com/view-design/dist/styles/iview.css">
-  <script type="text/javascript" src="http://vuejs.org/js/vue.min.js"></script>
-  <script type="text/javascript" src="http://unpkg.com/view-design/dist/iview.min.js"></script>
+  <link rel="stylesheet" href="//cdnjs.loli.net/ajax/libs/mdui/0.4.3/css/mdui.min.css">
+  <script src="//cdnjs.loli.net/ajax/libs/mdui/0.4.3/js/mdui.min.js"></script>
 </head>
 
 <body>
-  <div id="app">
-    <header>
-      <h2 align="center">安装他！Stuoe安装程序</h2><br>
-    </header>
-    <Divider>论坛基本信息</Divider>
-    <form align="center">
-      
-      <lable>论坛标题</lable>
-      <i-input placeholder="Enter something..." style="width: 200px" />
-      <Divider>管理员设置</Divider>
-      <i-input placeholder="Enter something..." style="width: 200px" />
-      <script>
-        export default {
-            data () {
-                return {
-                    value: ''
-                }
-            }
-        }
-    </script>
+  <div class="mdui-container">
+    <form>
+      <div class="mdui-textfield">
+        <input class="mdui-textfield-input" type="text" placeholder="User Name"/>
+      </div>
     </form>
-
-
-
-
-
   </div>
-  <script>
-    new Vue({
-      el: '#app',
-      data: {
-        visible: false
-      },
-      methods: {
-        show: function () {
-          this.visible = true;
-        }
-      }
-    })
-  </script>
+
 </body>
 
 </html>
