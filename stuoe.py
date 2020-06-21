@@ -152,7 +152,7 @@ def installing_step():
 # Router
 @app.route('/')
 def send_index():
-    return open('storage\dist\home.html', 'rb').read()
+    return jinja2.Template(open('storage\templates\home.html', 'r',encoding="utf-8").read()).render(title=serverconf['stuoe_name'])
 
 # Staticfile
 
