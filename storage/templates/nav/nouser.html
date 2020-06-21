@@ -1,0 +1,57 @@
+<div class="mdui-toolbar" aria-setsize="20">
+  <a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a>
+  <span class="mdui-typo-title">{{ title }}</span>
+  <div class="mdui-toolbar-spacer"></div>
+  <a href="/search" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>
+  <button class="mdui-btn mdui-color-theme-accent" mdui-menu="{target: '#account-op'}">注册/登入</button>
+  <i class="mdui-icon material-icons">announcement</i>
+  <ul class="mdui-menu" id="account-op">
+    <li class="mdui-menu-item">
+      <a class="mdui-ripple" mdui-dialog="{target: '#register-op'}">注册</a>
+    </li>
+    <li class="mdui-menu-item">
+      <a href="javascript:;" class="mdui-ripple">登入</a>
+    </li>
+    <li class="mdui-divider"></li>
+    <li class="mdui-menu-item">
+      <a href="javascript:;" class="mdui-ripple">帮助/反馈</a>
+    </li>
+  </ul>
+  <div class="mdui-dialog" id="register-op">
+    <div class="mdui-dialog-title">进行注册</div>
+    <form>
+      <div class="mdui-container">
+        <div class="mdui-textfield mdui-textfield-floating-label">
+          <label class="mdui-textfield-label">User name</label>
+          <input class="mdui-textfield-input" type="text" required />
+          <div class="mdui-textfield-error">用户名不能为空</div>
+        </div>
+
+        <div class="mdui-textfield mdui-textfield-floating-label">
+          <label class="mdui-textfield-label">Email</label>
+          <input class="mdui-textfield-input" type="email" required />
+          <div class="mdui-textfield-error">邮箱格式错误</div>
+        </div>
+
+        <div class="mdui-textfield mdui-textfield-floating-label">
+          <label class="mdui-textfield-label">Password</label>
+          <input class="mdui-textfield-input" type="text" pattern="^.*(?=.{6,})(?=.*[a-z])(?=.*[A-Z]).*$" required />
+          <div class="mdui-textfield-error">密码至少 6 位，且包含大小写字母</div>
+          <div class="mdui-textfield-helper">请输入至少 6 位，且包含大小写字母的密码</div>
+        </div>
+
+      <div class="mdui-dialog-actions">
+        <button class="mdui-btn mdui-ripple">no thanks</button>
+        <button class="mdui-btn mdui-ripple">turn on speeboost</button>
+      </div></div>
+  </div>
+  </form>
+</div>
+
+
+
+
+</div>
+</div>
+
+</div>
