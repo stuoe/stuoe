@@ -18,7 +18,7 @@ online_user = list()
 
 # Get Configs File
 serverconf = dict(eval(open('server.conf', 'rb').read()))
-serverurl = open('url.conf', 'rb').read()
+serverurl = serverconf['url']
 
 # Init Flask
 app = Flask(__name__)
@@ -144,7 +144,7 @@ def installing_step():
         onlyAdmin = User(email=stuoe_admin_mail,passhash=admin_passhash_byhash256.hexdigest(),user_des='这是一个管理员账号',user_session='',point=0,url='',user_group='管理员',user_ban=False,user_dirty=False)
         db.session.add(onlyAdmin)
         db.session.commit()
-        open('serverconf', 'wb+').write(str(serverconf).encode('utf-8'))
+        open('server.conf', 'wb+').write(str(serverconf).encode('utf-8'))
         return redirect('/')
     else:
         return redirect('/install')
