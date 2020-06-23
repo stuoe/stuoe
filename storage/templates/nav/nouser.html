@@ -8,7 +8,6 @@
     mdui-menu="{target: '#account-op'}">注册/登入</a>
   <a mdui-tooltip="{content: '公告'}" class="mdui-btn mdui-color-theme-accent" mdui-menu="{target: '#account-op'}"><i
       class="mdui-icon material-icons">announcement</i></a>
-
   <ul class="mdui-menu" id="account-op">
     <li class="mdui-menu-item">
       <a class="mdui-ripple" mdui-dialog="{target: '#register-op'}">注册</a>
@@ -24,7 +23,7 @@
   <div class="mdui-dialog" id="register-op">
     <div class="mdui-dialog-title">进行注册</div>
     <div class="mdui-dialog-content">
-      <form action="/register" method="POST">
+      <form action="/api/register" method="POST">
         <div class="mdui-container">
           <div class="mdui-textfield">
             <label class="mdui-textfield-label">昵称</label>
@@ -40,12 +39,7 @@
           </div><br>
           <button type="submit" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">注册</button>
         </div>
-      </div>
-
-    </form>
+      </form>
+    </div>
   </div>
-  </form>
-</div>
-</div>
-
 </div>

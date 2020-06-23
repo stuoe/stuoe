@@ -2,6 +2,7 @@
 
 from flask import *
 from flask_sqlalchemy import SQLAlchemy
+import view
 import flask_mail
 import flask_oauthlib
 import os
@@ -30,10 +31,15 @@ app.config['MAIL_USERNAME'] = serverconf['stuoe_smtp_email']
 app.config['MAIL_PASSWORD'] = serverconf['stuoe_smtp_password']
 app.config['MAIL_USE_SSL'] = True
 
+# Init View
+Viewrender= view
+
+
+
+
+# Init DatabaseTable and Email
 db = SQLAlchemy(app)
 mail = flask_mail.Mail(app)
-
-# Init DatabaseTable
 
 
 class User(db.Model):
@@ -41,6 +47,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(50))
     passhash = db.Column(db.String(50))
+    nickname = db.Column(db.String(50))
     user_des = db.Column(db.String(50), server_default='该用户还什么都没写呢')
     user_session = db.Column(db.String(50), server_default='None')
     point = db.Column(db.Integer, server_default='1')
@@ -48,6 +55,7 @@ class User(db.Model):
     user_group = db.Column(db.Integer, db.ForeignKey("Group.Group_name"))
     user_ban = db.Column(db.Boolean, server_default='False')
     user_dirty = db.Column(db.Boolean, server_default='False')
+    registertime = db.Column(db.String(50))
 
     def __repr__(self):
         return {'id': self.id, 'email': self.email, 'user_des': self.user_des}
@@ -141,7 +149,7 @@ def installing_step():
         
         admin_passhash_byhash256 = hashlib.sha256(
         stuoe_admin_password.encode('utf-8'))
-        onlyAdmin = User(email=stuoe_admin_mail,passhash=admin_passhash_byhash256.hexdigest(),user_des='这是一个管理员账号',user_session='',point=0,url='',user_group='管理员',user_ban=False,user_dirty=False)
+        onlyAdmin = User(email=stuoe_admin_mail,passhash=admin_passhash_byhash256.hexdigest(),user_des='这是一个管理员账号',user_session='',point=0,url='',user_group='管理员',user_ban=False,user_dirty=False,registertime=time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
         db.session.add(onlyAdmin)
         db.session.commit()
         open('server.conf', 'wb+').write(str(serverconf).encode('utf-8'))
@@ -152,8 +160,7 @@ def installing_step():
 # Router
 @app.route('/')
 def send_index():
-    nav = jinja2.Template(open('storage/templates/nav/nouser.html','r',encoding="utf-8").read()).render(title=serverconf['stuoe_name'])
-    return jinja2.Template(open('storage/templates/home.html', 'r',encoding="utf-8").read()).render(title=serverconf['stuoe_name'],nav=nav)
+    return Viewrender.gethome()
 
 # Staticfile
 
@@ -179,24 +186,28 @@ def send_api_configs():
 
 @app.route('/api/register', methods=['POST'])
 def send_api_register():
-    request.form['register_email']
-    request.form['register_password']
-    if not re.match("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$", request.form['register_email']) != None:
+    request.form['nickname']
+    request.form['email']
+    request.form['password']
+    if not re.match("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$", request.form['email']) != None:
         return '502'
-    if request.form['register_password'] == '':
+    if request.form['email'] == '':
         return '502'
-    if not User.query.filter_by(email=request.form['register_email']).first() == None:
+    if request.form['password'] == '':
+        return '502'
+    if not User.query.filter_by(email=request.form['email']).first() == None:
         return 'Email_repeat'
     key = hashlib.sha3_256(str(os.urandom(3600)).encode('utf-8'))
     p = random.randint(10000, 999999)
     verify_registered_email.append({
         'key': key.hexdigest(),
         'hash_url': p,
-        'email': request.form['register_email'],
-        'password': request.form['register_email']})
+        'email': request.form['email'],
+        'password': request.form['password'],
+        'nickname': request.form['nickname']})
 
     msg = flask_mail.Message('[' + serverconf['stuoe_name'] + ']', sender=serverconf['stuoe_smtp_email'],
-                             recipients=[request.form['register_email']])
+                             recipients=[request.form['email']])
     msg.body = '邮件验证码'
     msg.html = '<b>你正在注册{{name}}</b><br><h4>验证码:{p}</h4>'.format(
         name=serverconf['stuoe_name'], p=p)
@@ -221,7 +232,8 @@ def send_api_check_emailcode():
 
 
 def send_mail(msg):
-    threading._start_new_thread(mail.send, (msg,))
+    with app.app_context():
+        threading._start_new_thread(mail.send, (msg,))
 
 
 app.run(host='0.0.0.0',port=31, debug=True)
