@@ -224,4 +224,4 @@ def send_mail(msg):
     threading._start_new_thread(mail.send, (msg,))
 
 
-app.run(port=31, debug=True)
+app.run(host='0.0.0.0',port=31, debug=True)

@@ -9,3 +9,5 @@ Flask-OAuthlib==0.9.5
 Flask-SQLAlchemy==2.4.1
 flask-whooshee==0.7.0
 Flask-WTF==0.14.3
+gunicorn==20.0.4
+gevent==20.6.2
