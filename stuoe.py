@@ -32,12 +32,10 @@ app.config['MAIL_PASSWORD'] = serverconf['stuoe_smtp_password']
 app.config['MAIL_USE_SSL'] = True
 
 # Init View
-Viewrender= view
+Viewrender = view
 
 
-
-
-# Init DatabaseTable and Email
+# Init DatabaseTable , Email , function
 db = SQLAlchemy(app)
 mail = flask_mail.Mail(app)
 
@@ -46,6 +44,7 @@ class User(db.Model):
     __tablename__ = 'User'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(50))
+    verify_email = db.Column(db.Boolean, server_default='False')
     passhash = db.Column(db.String(50))
     nickname = db.Column(db.String(50))
     user_des = db.Column(db.String(50), server_default='该用户还什么都没写呢')
@@ -101,6 +100,58 @@ class Discussion_son(db.Model):
 
 db.create_all()
 
+# Check whether two groups are created
+
+if Group.query.filter_by(Group_name='注册用户').first() == None:
+    RegisterGourp = Group(
+        Group_name='注册用户', Group_des="普通的注册用户", Highest_authority_group=False)
+    db.session.add(RegisterGourp)
+    db.session.commit()
+if Group.query.filter_by(Group_name='管理员').first() == None:
+    AdminGourp = Group(
+        Group_name='管理员', Group_des="维持论坛秩序，论坛所有者或者所有者的协助者", Highest_authority_group=True)
+    db.session.add(AdminGourp)
+    db.session.commit()
+
+# function
+
+def db_getuserByemail(email):
+    return User.query.filter_by(email=email).first()
+
+def db_getuserByid(id):
+    return User.query.filter_by(id=id).first()
+
+
+def db_check_repeat_email(email):
+    if User.query.filter_by(email=email).first() == None:
+        return True
+    else:
+        return False
+
+def db_create_user(email, password, nickname,user_group):
+    if not db_check_repeat_email(email):
+        return False
+    new_user = User(email=email, verify_email=False, passhash=hashlib.sha256(password.encode('utf-8')).hexdigest(), nickname=nickname, user_des='该用户还什么都没写呢',user_session='', point='1', url='', user_group=user_group, user_ban=False, user_dirty=False, registertime=str(time.time()))
+    db.session.add(new_user)
+    db.session.flush()
+    db.session.commit()
+
+def db_set_user_session(id):
+    obj = db_getuserByid(id)
+    if not obj == None:
+        p = hashlib.sha256(str(random.randint(0,300000))).hexdigest()
+        
+        obj.user_session = p
+        return p
+    return False
+
+
+
+
+    
+
+
+
 # Install
 
 
@@ -123,8 +174,8 @@ def installing_step():
         stuoe_name = request.form['stuoe_name']
         stuoe_smtp_host = request.form['stuoe_smtp_host']
         stuoe_smtp_port = request.form['stuoe_smtp_port']
-        stuoe_smtp_email = request.form['stuoe_smtp_port']
-        stuoe_smtp_password = request.form['stuoe_smtp_email']
+        stuoe_smtp_email = request.form['stuoe_smtp_email']
+        stuoe_smtp_password = request.form['stuoe_smtp_password']
         stuoe_admin_mail = request.form['stuoe_admin_mail']
         stuoe_admin_password = request.form['stuoe_admin_password']
         if stuoe_name == '':
@@ -138,20 +189,8 @@ def installing_step():
         serverconf['stuoe_admin_mail'] = stuoe_admin_mail
         serverconf['stuoe_admin_password'] = stuoe_admin_password
         serverconf['init'] = True
-        if Group.query.filter_by(Group_name='注册用户').first() == None:
-            RegisterGourp = Group(Group_name='注册用户',Group_des="普通的注册用户",Highest_authority_group=False)
-            db.session.add(RegisterGourp)
-            db.session.commit()
-        if Group.query.filter_by(Group_name='管理员').first() == None:
-            RegisterGourp = Group(Group_name='管理员',Group_des="维持论坛秩序，论坛所有者或者所有者的协助者",Highest_authority_group=True)
-            db.session.add(RegisterGourp)
-            db.session.commit()
-        
-        admin_passhash_byhash256 = hashlib.sha256(
-        stuoe_admin_password.encode('utf-8'))
-        onlyAdmin = User(email=stuoe_admin_mail,passhash=admin_passhash_byhash256.hexdigest(),user_des='这是一个管理员账号',user_session='',point=0,url='',user_group='管理员',user_ban=False,user_dirty=False,registertime=time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
-        db.session.add(onlyAdmin)
-        db.session.commit()
+
+        db_create_user(stuoe_admin_mail,stuoe_admin_password,'Admin','管理员')
         open('server.conf', 'wb+').write(str(serverconf).encode('utf-8'))
         return redirect('/')
     else:
@@ -190,29 +229,15 @@ def send_api_register():
     request.form['email']
     request.form['password']
     if not re.match("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$", request.form['email']) != None:
-        return '502'
+        return abort(504)
     if request.form['email'] == '':
-        return '502'
+        return abort(504)
     if request.form['password'] == '':
-        return '502'
-    if not User.query.filter_by(email=request.form['email']).first() == None:
+        return abort(504)
+    if not User.query.filter_by(email=request.form['email'],verify_email="True").first() == None:
         return 'Email_repeat'
-    key = hashlib.sha3_256(str(os.urandom(3600)).encode('utf-8'))
-    p = random.randint(10000, 999999)
-    verify_registered_email.append({
-        'key': key.hexdigest(),
-        'hash_url': p,
-        'email': request.form['email'],
-        'password': request.form['password'],
-        'nickname': request.form['nickname']})
-
-    msg = flask_mail.Message('[' + serverconf['stuoe_name'] + ']', sender=serverconf['stuoe_smtp_email'],
-                             recipients=[request.form['email']])
-    msg.body = '邮件验证码'
-    msg.html = '<b>你正在注册{{name}}</b><br><h4>验证码:{p}</h4>'.format(
-        name=serverconf['stuoe_name'], p=p)
-    send_mail(msg)
-    return key.hexdigest()
+    print('New User')
+    return ''
 
 
 @app.route('/api/check_code_for_register', methods=['POST'])
@@ -236,7 +261,8 @@ def send_mail(msg):
         threading._start_new_thread(mail.send, (msg,))
 
 
-app.run(host='0.0.0.0',port=31, debug=True)
+app.run(host='0.0.0.0', port=31, debug=True)
+
 
 '''
                                  Apache License
