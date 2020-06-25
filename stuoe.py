@@ -230,16 +230,15 @@ def send_api_register():
     request.form['email']
     request.form['password']
     if not re.match("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$", request.form['email']) != None:
-        return abort(504)
+        return Viewrender.getMSG('请填写完整的信息')
     if request.form['email'] == '':
-        return abort(504)
+        return Viewrender.getMSG('请填写完整的信息')
     if request.form['password'] == '':
-        return abort(504)
+        return Viewrender.getMSG('请填写完整的信息')
     if not User.query.filter_by(email=request.form['email'],verify_email="True").first() == None:
-        return 'Email_repeat'
-    print('New User')
-    return ''
-
+        return Viewrender.getMSG('此邮箱已被注册且验证')
+    db_create_user(email=request.form['email'],password=request.form['password'],nickname=request.form['nickname'],user_group='普通用户')
+    return redirect('/')
 
 @app.route('/api/check_code_for_register', methods=['POST'])
 def send_api_check_emailcode():
