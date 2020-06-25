@@ -54,4 +54,5 @@ Stuoe Framework由一群热爱技术的学生开发（11-16岁）
 
 ## License
 
-apache © StuoeTeam
+开源项目遵循[Apache License Version 2.0](http://www.apache.org/licenses/)，使用和修改请参照说明，尊重代码作者的著作权
+
