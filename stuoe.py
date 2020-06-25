@@ -16,6 +16,7 @@ import threading
 # Global Var
 verify_registered_email = list()
 online_user = list()
+avater = open
 
 # Get Configs File
 serverconf = dict(eval(open('server.conf', 'rb').read()))
