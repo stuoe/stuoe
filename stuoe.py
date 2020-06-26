@@ -31,6 +31,7 @@ app.config['MAIL_PORT'] = int(serverconf['stuoe_smtp_port'])
 app.config['MAIL_USERNAME'] = serverconf['stuoe_smtp_email']
 app.config['MAIL_PASSWORD'] = serverconf['stuoe_smtp_password']
 app.config['MAIL_USE_SSL'] = True
+app.config['SECRET_KEY'] = os.urandom(20)
 
 # Init View
 Viewrender = view
@@ -136,15 +137,22 @@ def db_create_user(email, password, nickname,user_group):
     db.session.add(new_user)
     db.session.flush()
     db.session.commit()
+    db_set_user_session(new_user.id)
+
 
 def db_set_user_session(id):
     obj = db_getuserByid(id)
     if not obj == None:
-        p = hashlib.sha256(str(random.randint(0,300000))).hexdigest()
-        
-        obj.user_session = p
-        return p
+        session_random = hashlib.sha256(str(random.randint(0,300000)).encode('utf-8')).hexdigest()
+        obj.user_session = session_random
+        session['id'] = id
+        session['key'] = session_random
+        db.session.flush()
+        db.session.commit()
+        return session_random
     return False
+
+
 
 
 
@@ -235,25 +243,12 @@ def send_api_register():
         return Viewrender.getMSG('请填写完整的信息')
     if request.form['password'] == '':
         return Viewrender.getMSG('请填写完整的信息')
-    if not User.query.filter_by(email=request.form['email'],verify_email="True").first() == None:
-        return Viewrender.getMSG('此邮箱已被注册且验证')
+    if not User.query.filter_by(email=request.form['email']).first() == None:
+        return Viewrender.getMSG('此邮箱已被注册')
     db_create_user(email=request.form['email'],password=request.form['password'],nickname=request.form['nickname'],user_group='普通用户')
     return redirect('/')
 
-@app.route('/api/check_code_for_register', methods=['POST'])
-def send_api_check_emailcode():
-    request.form['key']
-    request.form['code']
-    register_email = ''
-    for i in verify_registered_email:
-        if request.form['code'] == i['key']:
-            if i['hash_url'] == request.form['code']:
-                request_email = i['email']
-                break
-    if register_email == '':
-        return '502'
 
-    return 'register_ok'
 
 
 def send_mail(msg):
