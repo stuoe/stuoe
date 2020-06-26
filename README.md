@@ -1,4 +1,4 @@
-# Stuoe Framework
+# Stuoe Framework 🍦
 
 Stuoe Framework是一个面向于想要快速构建论坛的新手和开发者的论坛框架。本身基于Python，界面使用MDUI，使用Jinja2来加速渲染界面。最基本的标签，回复，提到，富文本编辑器，等等功能都能胜任。拥有丰富的api进行开发，以及个性化主题.
 
