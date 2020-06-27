@@ -8,7 +8,12 @@
     <script src="//cdnjs.loli.net/ajax/libs/mdui/0.4.3/js/mdui.min.js"></script>
 </head>
 
-<body>
+<body class="mdui-theme-primary-{{ colorPrimary }} mdui-text-color-{{ colorText }}">
+    <style>
+        a {
+            TEXT-DECORATION: none
+        }
+    </style>
     {{ nav }}
     <br><br>
     <div class="mdui-container">
@@ -18,3 +23,8 @@
 </body>
 
 </html>
+<!-- Build For Stuoe Framework! https://github.com/stuoe/stuoe-->
+
+
+
+

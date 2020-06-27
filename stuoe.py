@@ -23,7 +23,7 @@ serverconf = dict(eval(open('server.conf', 'rb').read()))
 serverurl = serverconf['url']
 
 # Init Flask
-app = Flask(__name__)
+app = Flask(__name__,static_url_path='/static/',static_folder='public')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///stuoe.db'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 app.config['MAIL_SERVER'] = serverconf['stuoe_smtp_host']

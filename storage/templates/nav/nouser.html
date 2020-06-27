@@ -1,6 +1,7 @@
-<div class="mdui-toolbar" aria-setsize="20">
-  <a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a>
-  <span class="mdui-typo-title">{{ title }}</span>
+<div class="mdui-appbar mdui-appbar-fixed mdui-appbar-scroll-hide mdui-toolbar mdui-color-theme-accent"
+  aria-setsize="20">
+  <div class="mdui-toolbar">
+  <span class="mdui-typo-title"><a href="/">{{ title }}</a></span>
   <div class="mdui-toolbar-spacer"></div>
   <a href="/search" mdui-tooltip="{content: '搜索'}" class="mdui-btn mdui-btn-icon"><i
       class="mdui-icon material-icons">search</i></a>
@@ -20,7 +21,7 @@
       <a href="javascript:;" class="mdui-ripple">帮助/反馈</a>
     </li>
   </ul>
-  <div class="mdui-dialog" id="register-op">
+  <div class="mdui-dialog mdui-color-theme-accent" id="register-op">
     <div class="mdui-dialog-title">进行注册</div>
     <div class="mdui-dialog-content">
       <form action="/api/register" method="POST">
@@ -42,7 +43,7 @@
       </form>
     </div>
   </div>
-  <div class="mdui-dialog" id="login-op">
+  <div class="mdui-dialog mdui-color-theme-accent" id="login-op">
     <div class="mdui-dialog-title">进行登入</div>
     <div class="mdui-dialog-content">
       <form action="/api/login" method="POST">
@@ -61,4 +62,4 @@
     </div>
   </div>
 </div>
-<!-- 人间值得？我都不相信-->
+</div>
