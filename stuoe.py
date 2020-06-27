@@ -23,7 +23,7 @@ serverconf = dict(eval(open('server.conf', 'rb').read()))
 serverurl = serverconf['url']
 
 # Init Flask
-app = Flask(__name__,static_url_path='/static/',static_folder='public')
+app = Flask(__name__,static_url_path='/static',static_folder='public')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///stuoe.db'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 app.config['MAIL_SERVER'] = serverconf['stuoe_smtp_host']
@@ -152,6 +152,21 @@ def db_set_user_session(id):
         return session_random
     return False
 
+def get_session():
+    if session.get('id') == None or session.get('key') == None:
+        session.clear()
+        return False
+    obj = db_getuserByid(id)
+    if obj == None:
+        return False
+    if obj.session == session.get('key'):
+        return obj.nickname
+    else:
+        session.clear()
+
+
+    
+
 
 
 
@@ -208,6 +223,7 @@ def installing_step():
 # Router
 @app.route('/')
 def send_index():
+    print(get_session())
     return Viewrender.gethome()
 
 # Staticfile
