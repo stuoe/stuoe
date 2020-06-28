@@ -221,6 +221,8 @@ def installing_step():
         return redirect('/install')
 
 # Router
+
+
 @app.route('/')
 def send_index():
     if get_session() == False:
@@ -257,7 +259,7 @@ def send_api_register():
     request.form['email']
     request.form['password']
     if not re.match("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$", request.form['email']) != None:
-        return Viewrender.getMSG('请填写完整的信息')
+        return Viewrender.getMSG('请填写正确的邮箱')
     if request.form['email'] == '':
         return Viewrender.getMSG('请填写完整的信息')
     if request.form['password'] == '':
