@@ -156,10 +156,10 @@ def get_session():
     if session.get('id') == None or session.get('key') == None:
         session.clear()
         return False
-    obj = db_getuserByid(id)
+    obj = db_getuserByid(session.get('id'))
     if obj == None:
         return False
-    if obj.session == session.get('key'):
+    if obj.user_session == session.get('key'):
         return obj.nickname
     else:
         session.clear()
@@ -223,8 +223,11 @@ def installing_step():
 # Router
 @app.route('/')
 def send_index():
-    print(get_session())
-    return Viewrender.gethome()
+    if get_session() == False:
+        return Viewrender.gethome(auth=False)
+    else:
+        return Viewrender.gethome(auth=True,nickname=get_session())
+    
 
 # Staticfile
 
