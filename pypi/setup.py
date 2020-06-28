@@ -10,4 +10,4 @@ setup(
     packages=['stuoe'],
     install_requires=[]
     
-)pip 
+)
