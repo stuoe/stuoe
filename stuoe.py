@@ -229,6 +229,11 @@ def send_index():
         return Viewrender.gethome(auth=False)
     else:
         return Viewrender.gethome(auth=True,nickname=get_session())
+
+@app.route('/logout')
+def user_logout():
+    session.clear()
+    return redirect('/')
     
 
 # Staticfile
