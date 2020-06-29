@@ -73,31 +73,18 @@ class Group(db.Model):
         return self.Group_name
 
 
-class Discussion(db.Model):
-    # Waiting...
-    __tablename__ = 'Discussion'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    Discussion_title = db.Column(db.String(30))
-    Discussion_body_text = db.Column(db.String(60000))
-    Discussion_Publisher = db.Column(db.Integer, db.ForeignKey("User.id"))
-    Discussion_watch_user = db.Column(db.Integer, db.ForeignKey("User.id"))
-    Discussion_star_user = db.Column(db.Integer, db.ForeignKey("User.id"))
-    Discussion_Private_in_Publisher = db.Column(
-        db.Boolean, server_default='False')
-    Discussion_Private_in_group = db.Column(db.Boolean, server_default='False')
-    Discussion_Private_in_bbs = db.Column(db.Boolean, server_default='False')
-    Discussion_No_discussion = db.Column(db.Boolean, server_default='False')
-    Discussion_lock_up = db.Column(db.Boolean, server_default='False')
-    Discussion_high_quality = db.Column(db.Boolean, server_default='False')
-    Discussion_some_son = db.Column(db.String(40), server_default='False')
+class File(db.Model):
+    __tablename__ = 'File'
 
+class Post(db.Model):
+    __tablename__ = 'Post'
 
-class Discussion_son(db.Model):
-    # Waiting...
-    __tablename__ = 'Discussion_son'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    Discussion_son_Publisher = db.Column(db.Integer, db.ForeignKey("User.id"))
-    Discussion_son_body_text = db.Column(db.String(60000))
+class Messages(db.Model):
+    __tablename__ = 'Messages'
+
+class Tags(db..Model):
+    __tablename__ = 'Tags'
+
 
 
 db.create_all()
