@@ -1,6 +1,0 @@
-setup.py
-stuoe/__init__.py
-stuoe.egg-info/PKG-INFO
-stuoe.egg-info/SOURCES.txt
-stuoe.egg-info/dependency_links.txt
-stuoe.egg-info/top_level.txt
