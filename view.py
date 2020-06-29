@@ -19,5 +19,9 @@ def getTemplates(body='',auth=False,nickname='Nickname'):
 def gethome(auth=True,nickname='Nickname'):
     return getTemplates(auth=auth,nickname=nickname)
 
-def  getMSG(msg):
+def getMSG(msg):
     return getTemplates('<h4>' + msg + '</h4>')
+
+def getUserSpace(auth=False,nickname='Nickname'):
+    body = jinja2.Template(open('storage/templates/user.html','r',encoding="utf-8").read()).render()
+    return getTemplates(body=body,auth=auth,nickname=nickname)

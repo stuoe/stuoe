@@ -56,7 +56,7 @@ class User(db.Model):
     user_group = db.Column(db.Integer, db.ForeignKey("Group.Group_name"))
     user_ban = db.Column(db.Boolean, server_default='False')
     user_dirty = db.Column(db.Boolean, server_default='False')
-    registertime = db.Column(db.String(50))
+    registertime = db.Column(db.Integer)
 
     def __repr__(self):
         return {'id': self.id, 'email': self.email, 'user_des': self.user_des}
@@ -75,15 +75,26 @@ class Group(db.Model):
 
 class File(db.Model):
     __tablename__ = 'File'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
 class Post(db.Model):
     __tablename__ = 'Post'
+    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
+    pusher = db.Column(db.String(40),db.ForeignKey('User.id'))
+    title = db.Column(db.String(50))
+    body = db.Column(db.String(2000000))
+    pushingtime = db.Column(db.Integer)
+
+
+
 
 class Messages(db.Model):
     __tablename__ = 'Messages'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
-class Tags(db..Model):
+class Tags(db.Model):
     __tablename__ = 'Tags'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
 
 
@@ -120,7 +131,7 @@ def db_check_repeat_email(email):
 def db_create_user(email, password, nickname,user_group):
     if not db_check_repeat_email(email):
         return False
-    new_user = User(email=email, verify_email=False, passhash=hashlib.sha256(password.encode('utf-8')).hexdigest(), nickname=nickname, user_des='该用户还什么都没写呢',user_session='', point='1', url='', user_group=user_group, user_ban=False, user_dirty=False, registertime=str(time.time()))
+    new_user = User(email=email, verify_email=False, passhash=hashlib.sha256(password.encode('utf-8')).hexdigest(), nickname=nickname, user_des='该用户还什么都没写呢',user_session='', point='1', url='', user_group=user_group, user_ban=False, user_dirty=False, registertime=time.time())
     db.session.add(new_user)
     db.session.flush()
     db.session.commit()
@@ -220,7 +231,13 @@ def send_index():
 def user_logout():
     session.clear()
     return redirect('/')
-    
+
+@app.route('/u/<id>')
+def user_space(id):
+    if get_session() == False:
+        return Viewrender.getUserSpace(auth=False)
+    else:
+        return Viewrender.getUserSpace(auth=True,nickname=get_session())
 
 # Staticfile
 
