@@ -1,23 +1,31 @@
-<link rel="stylesheet" type="text/css" href="/static/simditor/styles/simditor.css" />
-
-<script type="text/javascript" src="/static/simditor-2.3.28/site/assets/scripts
-/jquery.min.js"></script>
-<script type="text/javascript" src="/static/simditor-2.3.28/site/assets/scripts
-/module.js"></script>
-<script type="text/javascript" src="/static/simditor-2.3.28/site/assets/scripts
-/hotkeys.js"></script>
-<script type="text/javascript" src="/static/simditor-2.3.28/site/assets/scripts
-/uploader.js"></script>
-<script type="text/javascript" src="/static/simditor-2.3.28/site/assets/scripts
-/simditor.js"></script>
-
-<textarea id="editor" placeholder="Balabala" autofocus></textarea>
-
-<script>
-    var editor = new Simditor({
-  textarea: $('#editor')
-  //optional options
-});
-</script>
 
 
+
+
+  <div class="mdui-container">
+    
+    <form method="POST" action='/write'>
+      <div class="mdui-textfield">
+        <label class="mdui-textfield-label">标题</label>
+        <input class="mdui-textfield-input" type="text" />
+      </div>
+      <br>
+      <textarea id="editor" placeholder="友善交流，拒绝祖安...." autofocus></textarea>
+      <br><br><br>
+      <button class="mdui-btn mdui-btn-raised mdui-ripple">发布</button>
+      <br>
+    </form>
+
+    <script>
+      var editor = new Simditor({
+        toolbar: [
+          'title', 'bold', 'italic', 'underline', 'strikethrough', 'fontScale',
+          'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|', 'link',
+          'image', 'hr', '|', 'alignment'
+        ],
+        textarea: '#editor',
+        placeholder: '友善交流，拒绝祖安....',
+        imageButton: ['upload']
+      });
+    </script>
+  </div>

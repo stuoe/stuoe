@@ -200,13 +200,18 @@
   left: 0;
 }
 .simditor .simditor-body {
-  padding: 22px 15px 40px;
-  min-height: 300px;
+  padding: 22px 15px 30px;
   outline: none;
   cursor: text;
   position: relative;
   z-index: 1;
   background: transparent;
+  /*开启滚动条*/
+  overflow-y: scroll !important;
+  /*设置高度*/
+  min-height: 120px !important;
+  max-height: 120px !important;
+
 }
 .simditor .simditor-body a.selected {
   background: #b3d4fd;
