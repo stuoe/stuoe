@@ -23,7 +23,7 @@ serverconf = dict(eval(open('server.conf', 'rb').read()))
 serverurl = serverconf['url']
 
 # Init Flask
-app = Flask(__name__,static_url_path='/static',static_folder='public')
+app = Flask(__name__, static_url_path='/static', static_folder='public')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///stuoe.db'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 app.config['MAIL_SERVER'] = serverconf['stuoe_smtp_host']
@@ -49,7 +49,8 @@ class User(db.Model):
     verify_email = db.Column(db.Boolean, server_default='False')
     passhash = db.Column(db.String(50))
     nickname = db.Column(db.String(50))
-    user_des = db.Column(db.String(50), server_default='该用户还什么都没写呢')
+    user_des = db.Column(
+        db.String(50), server_default='Wait....And Something Text About This User')
     user_session = db.Column(db.String(50), server_default='None')
     point = db.Column(db.Integer, server_default='1')
     url = db.Column(db.String(50), server_default='not url')
@@ -77,25 +78,24 @@ class File(db.Model):
     __tablename__ = 'File'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
+
 class Post(db.Model):
     __tablename__ = 'Post'
-    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
-    pusher = db.Column(db.String(40),db.ForeignKey('User.id'))
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    pusher = db.Column(db.String(40), db.ForeignKey('User.id'))
     title = db.Column(db.String(50))
     body = db.Column(db.String(2000000))
     pushingtime = db.Column(db.Integer)
-
-
 
 
 class Messages(db.Model):
     __tablename__ = 'Messages'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
+
 class Tags(db.Model):
     __tablename__ = 'Tags'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-
 
 
 db.create_all()
@@ -115,8 +115,10 @@ if Group.query.filter_by(Group_name='管理员').first() == None:
 
 # function
 
+
 def db_getuserByemail(email):
     return User.query.filter_by(email=email).first()
+
 
 def db_getuserByid(id):
     return User.query.filter_by(id=id).first()
@@ -128,10 +130,12 @@ def db_check_repeat_email(email):
     else:
         return False
 
-def db_create_user(email, password, nickname,user_group):
+
+def db_create_user(email, password, nickname, user_group):
     if not db_check_repeat_email(email):
         return False
-    new_user = User(email=email, verify_email=False, passhash=hashlib.sha256(password.encode('utf-8')).hexdigest(), nickname=nickname, user_des='该用户还什么都没写呢',user_session='', point='1', url='', user_group=user_group, user_ban=False, user_dirty=False, registertime=time.time())
+    new_user = User(email=email, verify_email=False, passhash=hashlib.sha256(password.encode('utf-8')).hexdigest(), nickname=nickname,
+                    user_des='Wait....And Something Text About This User', user_session='', point='1', url='', user_group=user_group, user_ban=False, user_dirty=False, registertime=time.time())
     db.session.add(new_user)
     db.session.flush()
     db.session.commit()
@@ -141,7 +145,8 @@ def db_create_user(email, password, nickname,user_group):
 def db_set_user_session(id):
     obj = db_getuserByid(id)
     if not obj == None:
-        session_random = hashlib.sha256(str(random.randint(0,300000)).encode('utf-8')).hexdigest()
+        session_random = hashlib.sha256(
+            str(random.randint(0, 300000)).encode('utf-8')).hexdigest()
         obj.user_session = session_random
         session['id'] = id
         session['key'] = session_random
@@ -149,6 +154,7 @@ def db_set_user_session(id):
         db.session.commit()
         return session_random
     return False
+
 
 def get_session():
     if session.get('id') == None or session.get('key') == None:
@@ -161,17 +167,6 @@ def get_session():
         return obj.nickname
     else:
         session.clear()
-
-
-    
-
-
-
-
-
-
-    
-
 
 
 # Install
@@ -211,7 +206,7 @@ def installing_step():
         serverconf['stuoe_admin_password'] = stuoe_admin_password
         serverconf['init'] = True
 
-        db_create_user(stuoe_admin_mail,stuoe_admin_password,'Admin','管理员')
+        db_create_user(stuoe_admin_mail, stuoe_admin_password, 'Admin', '管理员')
         open('server.conf', 'wb+').write(str(serverconf).encode('utf-8'))
         return redirect('/')
     else:
@@ -225,19 +220,24 @@ def send_index():
     if get_session() == False:
         return Viewrender.gethome(auth=False)
     else:
-        return Viewrender.gethome(auth=True,nickname=get_session())
+        return Viewrender.gethome(auth=True, nickname=get_session())
+
 
 @app.route('/logout')
 def user_logout():
     session.clear()
     return redirect('/')
 
+
 @app.route('/u/<id>')
 def user_space(id):
+    obj = db_getuserByid(id)
+    if obj == None:
+        return abort(404)
     if get_session() == False:
-        return Viewrender.getUserSpace(auth=False)
+        return Viewrender.getUserSpace(auth=False, userObj=obj)
     else:
-        return Viewrender.getUserSpace(auth=True,nickname=get_session())
+        return Viewrender.getUserSpace(auth=True, nickname=get_session(), userObj=obj)
 
 # Staticfile
 
@@ -274,23 +274,25 @@ def send_api_register():
         return Viewrender.getMSG('请填写完整的信息')
     if not User.query.filter_by(email=request.form['email']).first() == None:
         return Viewrender.getMSG('此邮箱已被注册')
-    db_create_user(email=request.form['email'],password=request.form['password'],nickname=request.form['nickname'],user_group='普通用户')
+    db_create_user(email=request.form['email'], password=request.form['password'],
+                   nickname=request.form['nickname'], user_group='普通用户')
     return redirect('/')
 
-@app.route('/api/login',methods=['POST'])
+
+@app.route('/api/login', methods=['POST'])
 def send_api_login():
     request.form['email']
     request.form['password']
     if request.form['email'] == '' or request.form['password'] == '':
         return Viewrender.getMSG('请填写完整信息')
     obj = db_getuserByemail(request.form['email'])
-    passhash = hashlib.sha256(request.form['password'].encode('utf-8')).hexdigest()
+    passhash = hashlib.sha256(
+        request.form['password'].encode('utf-8')).hexdigest()
     if obj.passhash == passhash:
         db_set_user_session(obj.id)
         return redirect('/')
     else:
         return Viewrender.getMSG('账号或者密码不正确')
-    
 
 
 def send_mail(msg):
@@ -299,6 +301,3 @@ def send_mail(msg):
 
 
 app.run(host='0.0.0.0', port=31)
-
-
-
