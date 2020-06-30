@@ -239,6 +239,10 @@ def user_space(id):
     else:
         return Viewrender.getUserSpace(auth=True, nickname=get_session(), userObj=obj)
 
+@app.route('/write')
+def write_index():
+    return Viewrender.getWrite(auth=False)
+
 # Staticfile
 
 # None  Other StaticFile
