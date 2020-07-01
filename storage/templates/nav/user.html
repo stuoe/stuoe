@@ -1,28 +1,11 @@
-<div class="mdui-toolbar">
-  <span class="mdui-typo-title"><a href="/">{{ title }}</a></span>
-  <div class="mdui-toolbar-spacer"></div>
-  <a mdui-tooltip="{content: '用户'}" class="mdui-btn mdui-color-theme-accent" mdui-menu="{target: '#account-op'}"><i
-      class="mdui-icon material-icons">account_box</i>{{ nickname }}</a>
-  <ul class="mdui-menu" id="account-op">
-    <li class="mdui-menu-item">
-      <a href="/u/{{ id }}" class="mdui-ripple">
-        <i class="mdui-menu-item-icon mdui-icon material-icons">account_box</i>资料
-      </a>
-    </li>
-    <li class="mdui-menu-item">
-      <a href="javascript:;" class="mdui-ripple">
-        <i class="mdui-menu-item-icon mdui-icon material-icons">settings</i>设置
-      </a>
-      
-
-    </li>
-
-    <li class="mdui-divider"></li>
-    <li class="mdui-menu-item">
-      <a href="/logout" class="mdui-ripple">
-        <i class="mdui-menu-item-icon mdui-icon material-icons">directions_walk</i>登出
-      </a>
-    </li>
-  </ul>
-</div>
-
+<div class="mdui-toolbar"> 
+  <span class="mdui-typo-title"><a href="/">{{ title }}</a></span> 
+  <div class="mdui-toolbar-spacer"></div> 
+  <a mdui-tooltip="{content: '用户'}" class="mdui-btn mdui-color-theme-accent" mdui-menu="{target: '#account-op'}"><i class="mdui-icon material-icons">account_box</i>{{ nickname }}</a> 
+  <ul class="mdui-menu" id="account-op"> 
+   <li class="mdui-menu-item"> <a href="/u/{{ id }}" class="mdui-ripple"> <i class="mdui-menu-item-icon mdui-icon material-icons">account_box</i>资料 </a> </li> 
+   <li class="mdui-menu-item"> <a href="/settings" class="mdui-ripple"> <i class="mdui-menu-item-icon mdui-icon material-icons">settings</i>设置 </a> </li> 
+   <li class="mdui-divider"></li> 
+   <li class="mdui-menu-item"> <a href="/logout" class="mdui-ripple"> <i class="mdui-menu-item-icon mdui-icon material-icons">directions_walk</i>登出 </a> </li> 
+  </ul> 
+ </div>

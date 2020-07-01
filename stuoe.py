@@ -156,7 +156,7 @@ def db_set_user_session(id):
     return False
 
 
-def get_session():
+def get_session(type='nickname'):
     if session.get('id') == None or session.get('key') == None:
         session.clear()
         return False
@@ -164,7 +164,13 @@ def get_session():
     if obj == None:
         return False
     if obj.user_session == session.get('key'):
-        return obj.nickname
+        if type == 'nickname':
+            return obj.nickname
+        elif type == 'id':
+            return obj.id
+        elif type == 'obj':
+            return obj
+        
     else:
         session.clear()
 
@@ -241,7 +247,22 @@ def user_space(id):
 
 @app.route('/write')
 def write_index():
-    return Viewrender.getWrite(auth=False)
+    if get_session() == False:
+        return Viewrender.getWrite(auth=False)
+    else:
+        return Viewrender.getWrite(auth=True, nickname=get_session())
+
+@app.route('/settings')
+def user_settings():
+    if get_session() == None:
+        return abort(403)
+    
+
+    
+
+    
+    
+
 
 # Staticfile
 

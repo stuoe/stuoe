@@ -28,3 +28,4 @@ def getUserSpace(auth=False,nickname='',userObj=''):
 
 def getWrite(auth=False,nickname=''):
     return getTemplates(body=open('storage/templates/write.html','r',encoding="utf-8").read(),auth=auth,nickname=nickname,title='编辑帖子')
+    
