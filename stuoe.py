@@ -226,7 +226,7 @@ def send_index():
     if get_session() == False:
         return Viewrender.gethome(auth=False)
     else:
-        return Viewrender.gethome(auth=True, nickname=get_session())
+        return Viewrender.gethome(auth=True, userObj=get_session('obj'))
 
 
 @app.route('/logout')
@@ -240,10 +240,11 @@ def user_space(id):
     obj = db_getuserByid(id)
     if obj == None:
         return abort(404)
-    if get_session() == False:
-        return Viewrender.getUserSpace(auth=False, userObj=obj)
+    user = get_session('obj')
+    if user == False:
+        return Viewrender.getUserSpace(auth=False, lookuserObj=obj)
     else:
-        return Viewrender.getUserSpace(auth=True, nickname=get_session(), userObj=obj)
+        return Viewrender.getUserSpace(auth=True, lookuserObj=obj,userObj=user)
 
 @app.route('/write')
 def write_index():
@@ -254,8 +255,9 @@ def write_index():
 
 @app.route('/settings')
 def user_settings():
-    if get_session() == None:
+    if get_session() == False:
         return abort(403)
+    return Viewrender.getSettings(get_session(type='obj'))
     
 
     
@@ -311,6 +313,8 @@ def send_api_login():
     if request.form['email'] == '' or request.form['password'] == '':
         return Viewrender.getMSG('请填写完整信息')
     obj = db_getuserByemail(request.form['email'])
+    if obj == None:
+        return Viewrender.getMSG('没有匹配的用户')
     passhash = hashlib.sha256(
         request.form['password'].encode('utf-8')).hexdigest()
     if obj.passhash == passhash:

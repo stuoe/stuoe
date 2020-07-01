@@ -2,10 +2,10 @@
 <div align="left">
     <img src="https://avatars1.githubusercontent.com/u/60885817?s=460&u=c9ec341e3c458f25e36a87457c6ec6a4efae0170&v=4"
         class="mdui-img-fluid mdui-img-circle" width="200" height="200"><br>
-    <div style="white-space:nowrap" class="mdui-typo-headline"><strong>{{ nickname }}</strong>
+    <div style="white-space:nowrap" class="mdui-typo-headline"><strong>{{ userObj.nickname }}</strong>
         <div class="mdui-chip">
 
-            <span class="mdui-chip-title">{{ userGroup }}</span>
+            <span class="mdui-chip-title">{{ userObj.user_group }}</span>
         </div>
     </div>
 
@@ -13,7 +13,7 @@
     <br>
 
     <div class="mdui-typo">
-        <p><em>{{ des }}</em></p>
+        <p><em>{{ userObj.user_des }}</em></p>
 
     </div>
     <div class="mdui-divider"></div>
