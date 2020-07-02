@@ -50,7 +50,8 @@ class User(db.Model):
     passhash = db.Column(db.String(50))
     nickname = db.Column(db.String(50))
     user_des = db.Column(
-        db.String(50), server_default='Wait....And Something Text About This User')
+        db.String(50),
+        server_default='Wait....And Something Text About This User')
     user_session = db.Column(db.String(50), server_default='None')
     point = db.Column(db.Integer, server_default='1')
     url = db.Column(db.String(50), server_default='not url')
@@ -102,14 +103,16 @@ db.create_all()
 
 # Check whether two groups are created
 
-if Group.query.filter_by(Group_name='注册用户').first() == None:
+if Group.query.filter_by(Group_name='注册用户').first() is None:
     RegisterGourp = Group(
         Group_name='注册用户', Group_des="普通的注册用户", Highest_authority_group=False)
     db.session.add(RegisterGourp)
     db.session.commit()
-if Group.query.filter_by(Group_name='管理员').first() == None:
+if Group.query.filter_by(Group_name='管理员').first() is None:
     AdminGourp = Group(
-        Group_name='管理员', Group_des="维持论坛秩序，论坛所有者或者所有者的协助者", Highest_authority_group=True)
+        Group_name='管理员',
+        Group_des="维持论坛秩序，论坛所有者或者所有者的协助者",
+        Highest_authority_group=True)
     db.session.add(AdminGourp)
     db.session.commit()
 
@@ -125,7 +128,7 @@ def db_getuserByid(id):
 
 
 def db_check_repeat_email(email):
-    if User.query.filter_by(email=email).first() == None:
+    if User.query.filter_by(email=email).first() is None:
         return True
     else:
         return False
@@ -134,8 +137,20 @@ def db_check_repeat_email(email):
 def db_create_user(email, password, nickname, user_group):
     if not db_check_repeat_email(email):
         return False
-    new_user = User(email=email, verify_email=False, passhash=hashlib.sha256(password.encode('utf-8')).hexdigest(), nickname=nickname,
-                    user_des='Wait....And Something Text About This User', user_session='', point='1', url='', user_group=user_group, user_ban=False, user_dirty=False, registertime=time.time())
+    new_user = User(
+        email=email,
+        verify_email=False,
+        passhash=hashlib.sha256(
+            password.encode('utf-8')).hexdigest(),
+        nickname=nickname,
+        user_des='Wait....And Something Text About This User',
+        user_session='',
+        point='1',
+        url='',
+        user_group=user_group,
+        user_ban=False,
+        user_dirty=False,
+        registertime=time.time())
     db.session.add(new_user)
     db.session.flush()
     db.session.commit()
@@ -144,7 +159,7 @@ def db_create_user(email, password, nickname, user_group):
 
 def db_set_user_session(id):
     obj = db_getuserByid(id)
-    if not obj == None:
+    if obj is not None:
         session_random = hashlib.sha256(
             str(random.randint(0, 300000)).encode('utf-8')).hexdigest()
         obj.user_session = session_random
@@ -157,11 +172,11 @@ def db_set_user_session(id):
 
 
 def get_session(type='nickname'):
-    if session.get('id') == None or session.get('key') == None:
+    if session.get('id') is None or session.get('key') is None:
         session.clear()
         return False
     obj = db_getuserByid(session.get('id'))
-    if obj == None:
+    if obj is None:
         return False
     if obj.user_session == session.get('key'):
         if type == 'nickname':
@@ -170,7 +185,7 @@ def get_session(type='nickname'):
             return obj.id
         elif type == 'obj':
             return obj
-        
+
     else:
         session.clear()
 
@@ -185,7 +200,14 @@ def send_redict():
     a = open('storage/templates/install/index.html',
              'r', encoding='utf-8').read()
     m = jinja2.Template(str(a))
-    return m.render(name=serverconf['stuoe_name'], smtp_host=serverconf['stuoe_smtp_host'], smtp_port=serverconf['stuoe_smtp_port'], smtp_email=serverconf['stuoe_smtp_email'], smtp_password=serverconf['stuoe_smtp_password'], admin_mail=serverconf['stuoe_admin_mail'], admin_password=serverconf['stuoe_admin_password'])
+    return m.render(
+        name=serverconf['stuoe_name'],
+        smtp_host=serverconf['stuoe_smtp_host'],
+        smtp_port=serverconf['stuoe_smtp_port'],
+        smtp_email=serverconf['stuoe_smtp_email'],
+        smtp_password=serverconf['stuoe_smtp_password'],
+        admin_mail=serverconf['stuoe_admin_mail'],
+        admin_password=serverconf['stuoe_admin_password'])
 
 
 @app.route('/install/start', methods=['GET', 'POST'])
@@ -201,7 +223,9 @@ def installing_step():
         stuoe_admin_mail = request.form['stuoe_admin_mail']
         stuoe_admin_password = request.form['stuoe_admin_password']
         if stuoe_name == '':
-            return open('storage\stuoe\public\install_error.html', 'rb').read()
+            return open(
+                r'storage\stuoe\public\install_error.html',
+                'rb').read()
         serverconf['stuoe_name'] = stuoe_name
         serverconf['stuoe_des'] = stuoe_name
         serverconf['stuoe_smtp_host'] = stuoe_smtp_host
@@ -238,13 +262,15 @@ def user_logout():
 @app.route('/u/<id>')
 def user_space(id):
     obj = db_getuserByid(id)
-    if obj == None:
+    if obj is None:
         return abort(404)
     user = get_session('obj')
-    if user == False:
+    if not user:
         return Viewrender.getUserSpace(auth=False, lookuserObj=obj)
     else:
-        return Viewrender.getUserSpace(auth=True, lookuserObj=obj,userObj=user)
+        return Viewrender.getUserSpace(
+            auth=True, lookuserObj=obj, userObj=user)
+
 
 @app.route('/write')
 def write_index():
@@ -253,43 +279,48 @@ def write_index():
     else:
         return Viewrender.getWrite(auth=True, nickname=get_session())
 
+
 @app.route('/settings')
 def user_settings():
     if get_session() == False:
         return abort(403)
     return Viewrender.getSettings(get_session(type='obj'))
-    
-@app.route('/settings/profile',methods=['POST'])
+
+
+@app.route('/settings/profile', methods=['POST'])
 def user_changsettings_profile():
     user = get_session('obj')
-    if user == False:
+    if not user:
         return abort(403)
     request.form['nickname']
     request.form['user_des']
     request.form['url']
     if request.form == '':
-        return Viewrender.getMSG('昵称不能为空',auth=True,userObj=user)
+        return Viewrender.getMSG('昵称不能为空', auth=True, userObj=user)
     user.nickname = request.form['nickname']
     user.user_des = request.form['user_des']
-    user.url = request.form['url']    
+    user.url = request.form['url']
     db.session.flush()
     db.session.commit()
     return redirect('/settings')
 
-@app.route('/settings/email',methods=['POST'])
+
+@app.route('/settings/email', methods=['POST'])
 def user_changsettings_email():
     user = get_session('obj')
-    if user == False:
+    if not user:
         return abort(403)
     request.form['email']
-    if not re.match("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$", request.form['email']) != None:
+    if not re.match(
+        "^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$",
+            request.form['email']) is not None:
         return Viewrender.getMSG('请填写正确的邮箱')
-    action = Viewrender.renderEmailCheckMessages(user,request.form['email'])
-    flask_mail.Message(recipients=[user.email],
-                      body=action['msg'],
-                      subject='更改邮箱')
+    action = Viewrender.renderEmailCheckMessages(user, request.form['email'])
+    msg = flask_mail.Message(recipients=[user.email],
+                             body=action['msg'],
+                             subject='更改邮箱')
+    send_mail(msg)
     return ''
-    
 
 
 # Staticfile
@@ -319,16 +350,21 @@ def send_api_register():
     request.form['nickname']
     request.form['email']
     request.form['password']
-    if not re.match("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$", request.form['email']) != None:
+    if not re.match(
+        "^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$",
+            request.form['email']) is not None:
         return Viewrender.getMSG('请填写正确的邮箱')
     if request.form['email'] == '':
         return Viewrender.getMSG('请填写完整的信息')
     if request.form['password'] == '':
         return Viewrender.getMSG('请填写完整的信息')
-    if not User.query.filter_by(email=request.form['email']).first() == None:
+    if not User.query.filter_by(email=request.form['email']).first() is None:
         return Viewrender.getMSG('此邮箱已被注册')
-    db_create_user(email=request.form['email'], password=request.form['password'],
-                   nickname=request.form['nickname'], user_group='普通用户')
+    db_create_user(
+        email=request.form['email'],
+        password=request.form['password'],
+        nickname=request.form['nickname'],
+        user_group='普通用户')
     return redirect('/')
 
 
@@ -339,7 +375,7 @@ def send_api_login():
     if request.form['email'] == '' or request.form['password'] == '':
         return Viewrender.getMSG('请填写完整信息')
     obj = db_getuserByemail(request.form['email'])
-    if obj == None:
+    if obj is None:
         return Viewrender.getMSG('没有匹配的用户')
     passhash = hashlib.sha256(
         request.form['password'].encode('utf-8')).hexdigest()
