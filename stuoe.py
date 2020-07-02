@@ -317,15 +317,37 @@ def user_changsettings_email():
             request.form['email']) is not None:
         return Viewrender.getMSG('请填写正确的邮箱')
     action = Viewrender.renderEmailCheckMessages(user, request.form['email'])
-    msg = flask_mail.Message(recipients=[user.email],
+    msg = flask_mail.Message(recipients=[request.form['email']],
                              html=action['msg'],
                              subject='更改邮箱',)
     send_mail(msg)
     verify_registered_email.append({
         "userObj": user,
-        "code": action['code']
+        "code": action['code'],
+        "email": request.form['email']
     })
-    return 'Some Pages'
+    return redirect('/settings/check')
+
+
+@app.route('/settings/check', methods=['GET', 'POST'])
+def user_changsettings_checkemail():
+    user = get_session('obj')
+    if not user:
+        return abort(403)
+    if request.method == 'GET':
+        return Viewrender.getCheck(user)
+    request.form['code']
+    for i in verify_registered_email:
+        if i['userObj'].id == user.id:
+            if request.form['code'] == i['code']:
+                user.email = i['email']
+                user.verify_email = True
+                db.session.flush()
+                db.session.commit()
+                return Viewrender.getMSG("设置成功")
+            else:
+                return Viewrender.getMSG("验证码不正确")
+    return Viewrender.getMSG('该用户并未发起更改邮件事务,找不到对象')
 
 
 # Staticfile
@@ -393,7 +415,7 @@ def send_api_login():
 
 def send_mail(msg):
     with app.app_context():
-        mail.send(msg)
+        threading._start_new_thread(mail.send,(msg,))
 
 
 app.run(host='0.0.0.0', port=3000)

@@ -88,3 +88,9 @@ def renderEmailCheckMessages(userObj, newemail):
     randomcode = str(random.randint(1000, 9999))
     msg = m1.render(oldmail=userObj.email, newemail=newemail, code=randomcode)
     return {'msg': msg, 'code': randomcode}
+
+
+def getCheck(userObj):
+    body = jinja2.Template(open('storage/templates/check.html',
+                                'r', encoding="utf-8").read()).render(UserObj=userObj)
+    return getTemplates(body=body, auth=True, userObj=userObj)
