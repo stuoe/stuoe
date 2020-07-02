@@ -259,10 +259,22 @@ def user_settings():
         return abort(403)
     return Viewrender.getSettings(get_session(type='obj'))
     
-
-    
-
-    
+@app.route('/settings/profile',methods=['POST'])
+def user_changsettings():
+    user = get_session('obj')
+    if user == False:
+        return abort(403)
+    request.form['nickname']
+    request.form['user_des']
+    request.form['url']
+    if request.form == '':
+        return Viewrender.getMSG('昵称不能为空',auth=True,userObj=user)
+    user.nickname = request.form['nickname']
+    user.user_des = request.form['user_des']
+    user.url = request.form['url']    
+    db.session.flush()
+    db.session.commit()
+    return redirect('/settings')
     
 
 
