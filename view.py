@@ -86,5 +86,5 @@ def getSettings(userObj=''):
 
 def renderEmailCheckMessages(userObj, newemail):
     randomcode = str(random.randint(1000, 9999))
-    msg = m1.render(old=userObj.email, newemail=newemail, code=randomcode)
+    msg = m1.render(oldmail=userObj.email, newemail=newemail, code=randomcode)
     return {'msg': msg, 'code': randomcode}

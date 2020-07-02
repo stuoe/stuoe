@@ -31,6 +31,7 @@ app.config['MAIL_PORT'] = int(serverconf['stuoe_smtp_port'])
 app.config['MAIL_USERNAME'] = serverconf['stuoe_smtp_email']
 app.config['MAIL_PASSWORD'] = serverconf['stuoe_smtp_password']
 app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_DEFAULT_SENDER'] = serverconf['stuoe_smtp_email']
 app.config['SECRET_KEY'] = os.urandom(20)
 
 # Init View
@@ -317,10 +318,14 @@ def user_changsettings_email():
         return Viewrender.getMSG('请填写正确的邮箱')
     action = Viewrender.renderEmailCheckMessages(user, request.form['email'])
     msg = flask_mail.Message(recipients=[user.email],
-                             body=action['msg'],
-                             subject='更改邮箱')
+                             html=action['msg'],
+                             subject='更改邮箱',)
     send_mail(msg)
-    return ''
+    verify_registered_email.append({
+        "userObj": user,
+        "code": action['code']
+    })
+    return 'Some Pages'
 
 
 # Staticfile
@@ -388,7 +393,7 @@ def send_api_login():
 
 def send_mail(msg):
     with app.app_context():
-        threading._start_new_thread(mail.send, (msg,))
+        mail.send(msg)
 
 
 app.run(host='0.0.0.0', port=3000)
