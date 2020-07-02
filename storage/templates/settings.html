@@ -25,3 +25,12 @@
 <br>
 <div class="mdui-typo-headline">账号安全</div>
 <br><br>
+<form action="/settings/email" method="POST">
+    <div class="mdui-textfield">
+        <i class="mdui-icon material-icons">email</i>
+        <label class="mdui-textfield-label">绑定邮箱</label>
+        <input name="email" class="mdui-textfield-input" type="nickname" value="{{ UserObj.email }}" />
+    </div>
+    <br>
+    <button type="submit" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">更改并验证</button>
+</form>

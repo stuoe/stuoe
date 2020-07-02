@@ -260,7 +260,7 @@ def user_settings():
     return Viewrender.getSettings(get_session(type='obj'))
     
 @app.route('/settings/profile',methods=['POST'])
-def user_changsettings():
+def user_changsettings_profile():
     user = get_session('obj')
     if user == False:
         return abort(403)
@@ -275,6 +275,20 @@ def user_changsettings():
     db.session.flush()
     db.session.commit()
     return redirect('/settings')
+
+@app.route('/settings/email',methods=['POST'])
+def user_changsettings_email():
+    user = get_session('obj')
+    if user == False:
+        return abort(403)
+    request.form['email']
+    if not re.match("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$", request.form['email']) != None:
+        return Viewrender.getMSG('请填写正确的邮箱')
+    action = Viewrender.renderEmailCheckMessages(user,request.form['email'])
+    flask_mail.Message(recipients=[user.email],
+                      body=action['msg'],
+                      subject='更改邮箱')
+    return ''
     
 
 
