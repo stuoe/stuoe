@@ -21,10 +21,9 @@ avater = open
 # Get Configs File
 serverconf = dict(eval(open('server.conf', 'rb').read()))
 serverurl = serverconf['url']
-
 # Init Flask
 app = Flask(__name__, static_url_path='/static', static_folder='public')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///stuoe.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sqlite3.db'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 app.config['MAIL_SERVER'] = serverconf['stuoe_smtp_host']
 app.config['MAIL_PORT'] = int(serverconf['stuoe_smtp_port'])
@@ -71,6 +70,7 @@ class Group(db.Model):
     Group_name = db.Column(db.String(30), primary_key=True)
     Group_des = db.Column(db.String(30), server_default='此分组还没有描述')
     Highest_authority_group = db.Column(db.Boolean, server_default='False')
+    user = db.relationship("User",backref="Group")
 
     def __repr__(self):
         return self.Group_name
@@ -88,6 +88,7 @@ class Post(db.Model):
     title = db.Column(db.String(50))
     body = db.Column(db.String(2000000))
     pushingtime = db.Column(db.Integer)
+    tags = db.Column(db.String(40), db.ForeignKey('Tags.id'))
 
 
 class Messages(db.Model):
@@ -98,6 +99,10 @@ class Messages(db.Model):
 class Tags(db.Model):
     __tablename__ = 'Tags'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(30),server_default='Hashing')
+    post = db.relationship("Post",backref="Tags")
+    lock = db.Column(db.Boolean, server_default='False')
+
 
 
 db.create_all()
@@ -108,6 +113,7 @@ if Group.query.filter_by(Group_name='注册用户').first() is None:
     RegisterGourp = Group(
         Group_name='注册用户', Group_des="普通的注册用户", Highest_authority_group=False)
     db.session.add(RegisterGourp)
+    db.session.flush()
     db.session.commit()
 if Group.query.filter_by(Group_name='管理员').first() is None:
     AdminGourp = Group(
@@ -116,7 +122,17 @@ if Group.query.filter_by(Group_name='管理员').first() is None:
         Highest_authority_group=True)
     db.session.add(AdminGourp)
     db.session.commit()
-
+if Tags.query.filter_by(name="新鲜事").first() is None:
+    goodnewsTags = Tags(name='新鲜事',lock=False)
+    db.session.add(goodnewsTags)
+    db.session.flush()
+    db.session.commit()
+if Tags.query.filter_by(name="咕咚事").first() is None:
+    goodnewsTags = Tags(name='咕咚事',lock=False)
+    db.session.add(goodnewsTags)
+    db.session.flush()
+    db.session.commit()
+    
 # function
 
 
@@ -276,9 +292,10 @@ def user_space(id):
 @app.route('/write')
 def write_index():
     if get_session() == False:
-        return Viewrender.getWrite(auth=False)
+        return Viewrender.getWrite(auth=False,Tags=Tags.query.all())
     else:
-        return Viewrender.getWrite(auth=True, nickname=get_session())
+
+        return Viewrender.getWrite(auth=True, userObj=get_session(type="obj"),Tags=Tags.query.all())
 
 
 @app.route('/settings')

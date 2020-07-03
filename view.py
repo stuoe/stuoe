@@ -67,12 +67,14 @@ def getUserSpace(auth=False, lookuserObj='', userObj=''):
     return getTemplates(body=body, auth=auth, userObj=userObj)
 
 
-def getWrite(auth=False, userObj=''):
-    return getTemplates(
-        body=open(
+def getWrite(auth=False, userObj='',Tags=''):
+    print(Tags)
+    body = jinja2.Template(open(
             'storage/templates/write.html',
             'r',
-            encoding="utf-8").read(),
+            encoding="utf-8").read()).render(Tags=Tags)
+    return getTemplates(
+        body=body,
         auth=auth,
         userObj=userObj,
         title='编辑帖子')

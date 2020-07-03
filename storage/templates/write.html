@@ -7,11 +7,18 @@
     <form method="POST" action='/write'>
       <div class="mdui-textfield">
         <label class="mdui-textfield-label">标题</label>
-        <input class="mdui-textfield-input" type="text" />
+        <input class="mdui-textfield-input" type="text" name="title"/>
       </div>
       <br>
-      <textarea id="editor" placeholder="友善交流，拒绝祖安...." autofocus></textarea>
-      <br><br><br>
+      <select class="mdui-select" mdui-select="{position: 'bottom'}" name="tags">
+        {% for tags in Tags %}
+          <option value="{{ tags.name }}"> 主题 - {{ tags.name }}</option>
+        {% endfor %}
+      </select>
+      <br><br>
+      <textarea name="body" id="editor" placeholder="友善交流，拒绝祖安...." autofocus></textarea>
+      <br>
+      <br><br>
       <button class="mdui-btn mdui-btn-raised mdui-ripple">发布</button>
       <br>
     </form>
