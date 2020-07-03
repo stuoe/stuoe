@@ -1,0 +1,25 @@
+<div class="mdui-typo-display-1">{{ post.title }}</div>
+<br><br>
+
+<div class="mdui-chip mdui-ripple">
+    <a href="/u/{{ user.id }}">
+    <img class="mdui-chip-icon"
+        src="https://avatar.csdnimg.cn/5/D/3/3_weixin_45771836_1591890019.jpg" />
+    <span class="mdui-chip-title">{{ user.nickname }}</span>
+    </a>
+</div>
+
+<div class="mdui-chip mdui-ripple">
+    <a href="/p/{{ tags.id }}">
+    <span class="mdui-chip-icon">T</span>
+    <span class="mdui-chip-title">{{ tags.name }}</span>
+</a>
+</div>
+<br>
+<div class="mdui-divider"></div>
+<br><br>
+<div class="mdui-typo">
+    {{ post.body }}
+</div>
+<br>
+<br>

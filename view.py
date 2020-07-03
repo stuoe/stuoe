@@ -96,3 +96,8 @@ def getCheck(userObj):
     body = jinja2.Template(open('storage/templates/check.html',
                                 'r', encoding="utf-8").read()).render(UserObj=userObj)
     return getTemplates(body=body, auth=True, userObj=userObj)
+
+def getPost(auth=False,userObj='',pusherUserObj='',Post='',Tags=''):
+    body = jinja2.Template(open('storage/templates/post.html',
+                                'r', encoding="utf-8").read()).render(user=pusherUserObj,post=Post,tags=Tags)
+    return getTemplates(body=body,auth=auth,userObj=userObj)

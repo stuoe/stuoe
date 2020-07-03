@@ -139,9 +139,17 @@ if Tags.query.filter_by(name="咕咚事").first() is None:
 def db_getuserByemail(email):
     return User.query.filter_by(email=email).first()
 
-
 def db_getuserByid(id):
     return User.query.filter_by(id=id).first()
+
+def db_getpostByid(id):
+    return Post.query.filter_by(id=id).first()
+
+def db_gettagsByname(name):
+    return Tags.query.filter_by(name=name).first()
+
+def db_getGroupByid(name):
+    return Group.query.filter_by(name=name).first()
 
 
 def db_check_repeat_email(email):
@@ -276,9 +284,9 @@ def user_logout():
     return redirect('/')
 
 
-@app.route('/u/<id>')
-def user_space(id):
-    obj = db_getuserByid(id)
+@app.route('/u/<uid>')
+def user_space(uid):
+    obj = db_getuserByid(uid)
     if obj is None:
         return abort(404)
     user = get_session('obj')
@@ -288,7 +296,20 @@ def user_space(id):
         return Viewrender.getUserSpace(
             auth=True, lookuserObj=obj, userObj=user)
 
+@app.route('/p/<pid>')
+def post_pages(pid):
+    obj = db_getpostByid(pid)
+    if obj is None:
+        return abort(404)
+    user = get_session('obj')
+    pusherUser = db_getuserByid(obj.pusher)
+    postTags = db_gettagsByname(obj.tags)
+    if not user:
+        return Viewrender.getPost(auth=False,pusherUserObj=pusherUser,Post=obj,Tags=postTags)
+    else:
+        return Viewrender.getPost(auth=True,pusherUserObj=pusherUser,Post=obj,Tags=postTags,userObj=user)
 
+    
 @app.route('/write')
 def write_index():
     if get_session() == False:
@@ -429,6 +450,33 @@ def send_api_login():
     else:
         return Viewrender.getMSG('账号或者密码不正确')
 
+@app.route('/postwrite',methods=['POST'])
+def pushing_post():
+    user = get_session('obj')
+    if not user:
+        return abort(403)
+    request.form['title']
+    request.form['tags']
+    request.form['body']
+    if request.form['title'] == '' or request.form['tags'] == '' or request.form['body'] == '':
+        return Viewrender.getMSG('请填写完善标题，标签，正文',user)
+    pickerInListBool =  False
+    for tags in Tags.query.all():
+        if tags.name == request.form['tags'] and tags.lock==False:
+            pickerInListBool = True
+            break
+    if not pickerInListBool:
+        return Viewrender.getMSG('标签不存在或已被管理员关闭讨论',user)
+    if not user.verify_email:
+        return Viewrender.getMSG('该用户并未验证邮箱，无权限发布讨论',user)
+    if user.user_ban:
+        return Viewrender.getMSG('该用户发布讨论权限已被禁用，请联系管理员',user)
+    newPost = Post(pusher=user.id,title=request.form['title'],body=request.form['body'],pushingtime=time.time(),tags=request.form['tags'])
+    db.session.add(newPost)
+    db.session.flush()
+    db.session.commit()
+    return redirect('/p/' + str(newPost.id))
+
 
 def send_mail(msg):
     with app.app_context():
@@ -436,3 +484,4 @@ def send_mail(msg):
 
 
 app.run(host='0.0.0.0', port=3000)
+
