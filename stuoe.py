@@ -232,7 +232,7 @@ def installing_step():
         serverconf['stuoe_smtp_host'] = stuoe_smtp_host
         serverconf['stuoe_smtp_port'] = stuoe_smtp_port
         serverconf['stuoe_smtp_email'] = stuoe_smtp_email
-        serverconf['stuoe_smtp_password'] = stuoe_smtp_password
+        serverconf['stuoe_smtp_password'] = "Action"
         serverconf['stuoe_admin_mail'] = stuoe_admin_mail
         serverconf['stuoe_admin_password'] = stuoe_admin_password
         serverconf['init'] = True
@@ -315,12 +315,12 @@ def user_changsettings_email():
     if not re.match(
         "^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$",
             request.form['email']) is not None:
-        return Viewrender.getMSG('请填写正确的邮箱')
+        return Viewrender.getMSG('请填写正确的邮箱',auth=True,userObj=user)
     action = Viewrender.renderEmailCheckMessages(user, request.form['email'])
     msg = flask_mail.Message(recipients=[request.form['email']],
                              html=action['msg'],
                              subject='更改邮箱',)
-    send_mail(msg)
+    threading._start_new_thread(send_mail,(msg,))
     verify_registered_email.append({
         "userObj": user,
         "code": action['code'],
@@ -344,10 +344,10 @@ def user_changsettings_checkemail():
                 user.verify_email = True
                 db.session.flush()
                 db.session.commit()
-                return Viewrender.getMSG("设置成功")
+                return Viewrender.getMSG("设置成功",auth=True,userObj=user)
             else:
-                return Viewrender.getMSG("验证码不正确")
-    return Viewrender.getMSG('该用户并未发起更改邮件事务,找不到对象')
+                return Viewrender.getMSG("验证码不正确",auth=True,userObj=user)
+    return Viewrender.getMSG('该用户并未发起更改邮件事务,找不到对象',auth=True,userObj=user)
 
 
 # Staticfile
@@ -415,7 +415,7 @@ def send_api_login():
 
 def send_mail(msg):
     with app.app_context():
-        threading._start_new_thread(mail.send,(msg,))
+        mail.send(msg)
 
 
 app.run(host='0.0.0.0', port=3000)
