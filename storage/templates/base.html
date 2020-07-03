@@ -6,6 +6,19 @@
   <link rel="stylesheet" href="/static/mdui/css/mdui.min.css" /> 
   <link rel="stylesheet" href="/static/stuoe.css" /> 
   <script src="/static/mdui/js/mdui.min.js"></script> 
+  <!-- Google Analytics --> 
+  <script>
+    (function (i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date(); a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-XXXXX-Y', 'auto');
+    ga('send', 'pageview');
+  </script> 
+  <!-- End Google Analytics --> 
   <link rel="stylesheet" type="text/css" href="/static/simditor/styles/simditor.css" /> 
   <script type="text/javascript" src="/static/simditor-2.3.28/site/assets/scripts
 /jquery.min.js"></script> 
@@ -20,15 +33,15 @@
  </head> 
  <body class="mdui-theme-primary-{{ colorPrimary }} "> 
   <style>
-        a {
-            TEXT-DECORATION: none
-        }
-    </style> 
+    a {
+      TEXT-DECORATION: none
+    }
+  </style> 
   <div class="mdui-container mdui-color-theme-theme">
     {{ nav }} 
-   <br />
+   <br /> 
    <br /> {{ body}} 
-  </div>   
-  <!-- Build For Stuoe Framework! https://github.com/stuoe/stuoe-->
+  </div> 
+  <!-- Build For Stuoe Framework! https://github.com/stuoe/stuoe-->  
  </body>
 </html>
