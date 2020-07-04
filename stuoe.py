@@ -92,6 +92,7 @@ class Post(db.Model):
     body = db.Column(db.String(2000000))
     pushingtime = db.Column(db.Integer)
     tags = db.Column(db.String(40), db.ForeignKey('Tags.id'))
+    lock = db.Column(db.Boolean, server_default='False')
     
 
 
@@ -114,9 +115,12 @@ class Tags(db.Model):
 class Reply(db.Model):
     __tablename__ = 'Reply'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    father = db.Column(db.String(40),db.ForeignKey('Post.id'))
     pusher = db.Column(db.String(40), db.ForeignKey('User.id'))
     body = db.Column(db.String(2000000))
     pushingtime = db.Column(db.Integer)
+
+
 
 db.create_all()
 
@@ -483,16 +487,37 @@ def pushing_post():
             pickerInListBool = True
             break
     if not pickerInListBool:
-        return Viewrender.getMSG('标签不存在或已被管理员关闭讨论',user)
+        return Viewrender.getMSG('标签不存在或已被管理员关闭此标签的讨论',user)
     if not user.verify_email:
         return Viewrender.getMSG('该用户并未验证邮箱，无权限发布讨论',user)
     if user.user_ban:
         return Viewrender.getMSG('该用户发布讨论权限已被禁用，请联系管理员',user)
-    newPost = Post(pusher=user.id,title=request.form['title'],body=request.form['body'],pushingtime=time.time(),tags=request.form['tags'])
+    newPost = Post(pusher=user.id,title=request.form['title'],body=request.form['body'],pushingtime=time.time(),tags=request.form['tags'],lock=False)
     db.session.add(newPost)
     db.session.flush()
     db.session.commit()
     return redirect('/p/' + str(newPost.id))
+
+@app.route('/postreply/<pid>',methods=['POST'])
+def make_Reply(pid):
+    user = get_session('obj')
+    post = db_getpostByid(pid)
+    request.form['body']
+    if not user:
+        return abort(403)
+    if post == None:
+        return Viewrender.getMSG('回复的帖子不存在')
+    if request.form['body'] == '':
+        return Viewrender.getMSG('请填写正文',user)
+    if user.user_ban:
+        return Viewrender.getMSG('该用户发布讨论权限已被禁用，请联系管理员',user)
+    if post.lock:
+        return Viewrender.getMSG('此讨论已被发布者或者管理员锁定，无法回复')
+    newReply = Reply(father=pid,pusher=user.id,body=request.form['body'],pushingtime=time.time())
+    db.session.add(newReply)
+    db.session.flush()
+    db.session.commit()
+    return redirect('/p/' + str(post.id))
 
 
 def send_mail(msg):
