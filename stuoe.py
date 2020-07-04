@@ -286,9 +286,12 @@ def installing_step():
 
 @app.route('/')
 def send_index():
+    
     if get_session() == False:
         return Viewrender.gethome(auth=False)
     else:
+        get_session('obj').verify_email = True
+        db.session.commit()
         return Viewrender.gethome(auth=True, userObj=get_session('obj'))
 
 
