@@ -182,7 +182,8 @@ def db_create_user(email, password, nickname, user_group):
         user_group=user_group,
         user_ban=False,
         user_dirty=False,
-        registertime=time.time())
+        registertime=time.time(),
+        MessageToMailbox=True)
     db.session.add(new_user)
     db.session.flush()
     db.session.commit()
