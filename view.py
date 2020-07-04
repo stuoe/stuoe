@@ -14,7 +14,7 @@ m1 = jinja2.Template(
 
 def getTemplates(
         body='',
-        title=serverconf['stuoe_name'],
+        title='',
         userObj='',
         auth=False):
     if auth:
@@ -23,9 +23,7 @@ def getTemplates(
                 'storage/templates/nav/user.html',
                 'r',
                 encoding="utf-8").read()).render(
-            title=title +
-            ' - ' +
-            serverconf['stuoe_name'],
+            title=title,
             userObj=userObj,
             webtitle=serverconf['stuoe_name'])
     else:
@@ -34,7 +32,8 @@ def getTemplates(
                 'storage/templates/nav/nouser.html',
                 'r',
                 encoding="utf-8").read()).render(
-            title=serverconf['stuoe_name'])
+            title=serverconf['stuoe_name'],
+            webtitle=serverconf['stuoe_name'])
     return jinja2.Template(
         open(
             'storage/templates/base.html',
@@ -49,7 +48,7 @@ def getTemplates(
         webtitle=serverconf['stuoe_name'])
 
 
-def gethome(auth=True, nickname='Nickname', userObj=''):
+def gethome(auth=True, userObj=''):
     return getTemplates(auth=auth, title='', userObj=userObj)
 
 
@@ -64,7 +63,7 @@ def getMSG(msg, auth=False, userObj=''):
 def getUserSpace(auth=False, lookuserObj='', userObj=''):
     body = jinja2.Template(open('storage/templates/user.html',
                                 'r', encoding="utf-8").read()).render(userObj=lookuserObj)
-    return getTemplates(body=body, auth=auth, userObj=userObj)
+    return getTemplates(body=body, auth=auth, userObj=userObj,title=lookuserObj.nickname)
 
 
 def getWrite(auth=False, userObj='',Tags=''):
@@ -83,7 +82,7 @@ def getWrite(auth=False, userObj='',Tags=''):
 def getSettings(userObj=''):
     body = jinja2.Template(open('storage/templates/settings.html',
                                 'r', encoding="utf-8").read()).render(UserObj=userObj)
-    return getTemplates(body=body, auth=True, userObj=userObj)
+    return getTemplates(body=body, auth=True, userObj=userObj,title=userObj.nickname)
 
 
 def renderEmailCheckMessages(userObj, newemail):
@@ -95,9 +94,9 @@ def renderEmailCheckMessages(userObj, newemail):
 def getCheck(userObj):
     body = jinja2.Template(open('storage/templates/check.html',
                                 'r', encoding="utf-8").read()).render(UserObj=userObj)
-    return getTemplates(body=body, auth=True, userObj=userObj)
+    return getTemplates(body=body, auth=True, userObj=userObj,title='验证邮箱')
 
 def getPost(auth=False,userObj='',pusherUserObj='',Post='',Tags=''):
     body = jinja2.Template(open('storage/templates/post.html',
                                 'r', encoding="utf-8").read()).render(user=pusherUserObj,post=Post,tags=Tags)
-    return getTemplates(body=body,auth=auth,userObj=userObj)
+    return getTemplates(body=body,auth=auth,userObj=userObj,title=Post.title)

@@ -59,6 +59,9 @@ class User(db.Model):
     user_ban = db.Column(db.Boolean, server_default='False')
     user_dirty = db.Column(db.Boolean, server_default='False')
     registertime = db.Column(db.Integer)
+    pushingPost = db.relationship("Post",backref="User")
+    MessageToMailbox = db.Column(db.Boolean, server_default='True')
+    UserMessageMainbox = db.relationship("Messages",backref="User")
 
     def __repr__(self):
         return {'id': self.id, 'email': self.email, 'user_des': self.user_des}
@@ -94,7 +97,10 @@ class Post(db.Model):
 class Messages(db.Model):
     __tablename__ = 'Messages'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-
+    subject = db.Column(db.String(50))
+    body = db.Column(db.String(3000))
+    PostTime = db.Column(db.Integer)
+    Postman = db.Column(db.String(40), db.ForeignKey('User.id'))
 
 class Tags(db.Model):
     __tablename__ = 'Tags'
@@ -102,6 +108,7 @@ class Tags(db.Model):
     name = db.Column(db.String(30),server_default='Hashing')
     post = db.relationship("Post",backref="Tags")
     lock = db.Column(db.Boolean, server_default='False')
+    icon = db.Column(db.String(30),server_defalt='message')
 
 
 
@@ -123,12 +130,12 @@ if Group.query.filter_by(Group_name='管理员').first() is None:
     db.session.add(AdminGourp)
     db.session.commit()
 if Tags.query.filter_by(name="新鲜事").first() is None:
-    goodnewsTags = Tags(name='新鲜事',lock=False)
+    goodnewsTags = Tags(name='新鲜事',lock=False,icon='message')
     db.session.add(goodnewsTags)
     db.session.flush()
     db.session.commit()
 if Tags.query.filter_by(name="咕咚事").first() is None:
-    goodnewsTags = Tags(name='咕咚事',lock=False)
+    goodnewsTags = Tags(name='咕咚事',lock=False,icon='child_care')
     db.session.add(goodnewsTags)
     db.session.flush()
     db.session.commit()

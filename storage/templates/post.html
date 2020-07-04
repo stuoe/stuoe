@@ -3,18 +3,18 @@
 
 <div class="mdui-chip mdui-ripple">
     <a href="/u/{{ user.id }}">
-    <img class="mdui-chip-icon"
-        src="https://avatar.csdnimg.cn/5/D/3/3_weixin_45771836_1591890019.jpg" />
-    <span class="mdui-chip-title">{{ user.nickname }}</span>
+        <img class="mdui-chip-icon" src="https://avatar.csdnimg.cn/5/D/3/3_weixin_45771836_1591890019.jpg" />
     </a>
+    <span class="mdui-chip-title">{{ user.nickname }}</span>
 </div>
 
 <div class="mdui-chip mdui-ripple">
-    <a href="/p/{{ tags.id }}">
-    <span class="mdui-chip-icon">T</span>
-    <span class="mdui-chip-title">{{ tags.name }}</span>
+    <a href="/t/{{ tags.id }}">
+    <span class="mdui-chip-icon"><i class="mdui-icon material-icons">{{ tags.icon }}</i></span>
 </a>
-</div>
+    <span class="mdui-chip-title">{{ tags.name }}</span>
+
+  </div>
 <br>
 <div class="mdui-divider"></div>
 <br><br>
