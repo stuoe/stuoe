@@ -92,6 +92,7 @@ class Post(db.Model):
     body = db.Column(db.String(2000000))
     pushingtime = db.Column(db.Integer)
     tags = db.Column(db.String(40), db.ForeignKey('Tags.id'))
+    
 
 
 class Messages(db.Model):
@@ -110,7 +111,12 @@ class Tags(db.Model):
     lock = db.Column(db.Boolean, server_default='False')
     icon = db.Column(db.String(30),server_defalt='message')
 
-
+class Reply(db.Model):
+    __tablename__ = 'Reply'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    pusher = db.Column(db.String(40), db.ForeignKey('User.id'))
+    body = db.Column(db.String(2000000))
+    pushingtime = db.Column(db.Integer)
 
 db.create_all()
 
