@@ -59,9 +59,9 @@ class User(db.Model):
     user_ban = db.Column(db.Boolean, server_default='False')
     user_dirty = db.Column(db.Boolean, server_default='False')
     registertime = db.Column(db.Integer)
-    pushingPost = db.relationship("Post",backref="User")
+    pushingPost = db.relationship("Post", backref="User")
     MessageToMailbox = db.Column(db.Boolean, server_default='True')
-    UserMessageMainbox = db.relationship("Messages",backref="User")
+    UserMessageMainbox = db.relationship("Messages", backref="User")
 
     def __repr__(self):
         return {'id': self.id, 'email': self.email, 'user_des': self.user_des}
@@ -73,7 +73,7 @@ class Group(db.Model):
     Group_name = db.Column(db.String(30), primary_key=True)
     Group_des = db.Column(db.String(30), server_default='此分组还没有描述')
     Highest_authority_group = db.Column(db.Boolean, server_default='False')
-    user = db.relationship("User",backref="Group")
+    user = db.relationship("User", backref="Group")
 
     def __repr__(self):
         return self.Group_name
@@ -95,8 +95,7 @@ class Post(db.Model):
     pushingtime = db.Column(db.Integer)
     tags = db.Column(db.String(40), db.ForeignKey('Tags.id'))
     lock = db.Column(db.Boolean, server_default='False')
-    reply = db.relationship("Reply",backref="Post")
-    
+    reply = db.relationship("Reply", backref="Post")
 
 
 class Messages(db.Model):
@@ -107,23 +106,23 @@ class Messages(db.Model):
     PostTime = db.Column(db.Integer)
     Postman = db.Column(db.String(40), db.ForeignKey('User.id'))
 
+
 class Tags(db.Model):
     __tablename__ = 'Tags'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(30),server_default='Hashing')
-    post = db.relationship("Post",backref="Tags")
+    name = db.Column(db.String(30), server_default='Hashing')
+    post = db.relationship("Post", backref="Tags")
     lock = db.Column(db.Boolean, server_default='False')
-    icon = db.Column(db.String(30),server_defalt='message')
+    icon = db.Column(db.String(30), server_defalt='message')
+
 
 class Reply(db.Model):
     __tablename__ = 'Reply'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    father = db.Column(db.String(40),db.ForeignKey('Post.id'))
+    father = db.Column(db.String(40), db.ForeignKey('Post.id'))
     pusher = db.Column(db.String(40), db.ForeignKey('User.id'))
     body = db.Column(db.String(2000000))
     pushingtime = db.Column(db.Integer)
-
-
 
 
 db.create_all()
@@ -144,21 +143,21 @@ if Group.query.filter_by(Group_name='管理员').first() is None:
     db.session.add(AdminGourp)
     db.session.commit()
 if Tags.query.filter_by(name="新鲜事").first() is None:
-    goodnewsTags = Tags(name='新鲜事',lock=False,icon='message')
+    goodnewsTags = Tags(name='新鲜事', lock=False, icon='message')
     db.session.add(goodnewsTags)
     db.session.flush()
     db.session.commit()
 if Tags.query.filter_by(name="咕咚事").first() is None:
-    goodnewsTags = Tags(name='咕咚事',lock=False,icon='child_care')
+    goodnewsTags = Tags(name='咕咚事', lock=False, icon='child_care')
     db.session.add(goodnewsTags)
     db.session.flush()
     db.session.commit()
 
 
 class replyObj():
-    def __init__(self,user,reply):
+    def __init__(self, user, reply):
         self.user = user
-        self.reply = reply  
+        self.reply = reply
 
 
 # function
@@ -167,14 +166,18 @@ class replyObj():
 def db_getuserByemail(email):
     return User.query.filter_by(email=email).first()
 
+
 def db_getuserByid(id):
     return User.query.filter_by(id=id).first()
+
 
 def db_getpostByid(id):
     return Post.query.filter_by(id=id).first()
 
+
 def db_gettagsByname(name):
     return Tags.query.filter_by(name=name).first()
+
 
 def db_getGroupByid(name):
     return Group.query.filter_by(name=name).first()
@@ -301,7 +304,7 @@ def installing_step():
 
 @app.route('/')
 def send_index():
-    
+
     if get_session() == False:
         return Viewrender.gethome(auth=False)
     else:
@@ -328,6 +331,7 @@ def user_space(uid):
         return Viewrender.getUserSpace(
             auth=True, lookuserObj=obj, userObj=user)
 
+
 @app.route('/p/<pid>')
 def post_pages(pid):
     obj = db_getpostByid(pid)
@@ -338,20 +342,33 @@ def post_pages(pid):
     postTags = db_gettagsByname(obj.tags)
     replyList = list()
     for i in Reply.query.filter_by(father=obj.id).all():
-        replyList.append(replyObj(user=db_getuserByid(i.pusher),reply=i))
+        replyList.append(replyObj(user=db_getuserByid(i.pusher), reply=i))
     if not user:
-        return Viewrender.getPost(auth=False,pusherUserObj=pusherUser,Post=obj,Tags=postTags,replyList=replyList)
+        return Viewrender.getPost(
+            auth=False,
+            pusherUserObj=pusherUser,
+            Post=obj,
+            Tags=postTags,
+            replyList=replyList)
     else:
-        return Viewrender.getPost(auth=True,pusherUserObj=pusherUser,Post=obj,Tags=postTags,userObj=user,replyList=replyList)
+        return Viewrender.getPost(
+            auth=True,
+            pusherUserObj=pusherUser,
+            Post=obj,
+            Tags=postTags,
+            userObj=user,
+            replyList=replyList)
 
-    
+
 @app.route('/write')
 def write_index():
     if get_session() == False:
-        return Viewrender.getWrite(auth=False,Tags=Tags.query.all())
+        return Viewrender.getWrite(auth=False, Tags=Tags.query.all())
     else:
 
-        return Viewrender.getWrite(auth=True, userObj=get_session(type="obj"),Tags=Tags.query.all())
+        return Viewrender.getWrite(
+            auth=True, userObj=get_session(
+                type="obj"), Tags=Tags.query.all())
 
 
 @app.route('/settings')
@@ -388,12 +405,12 @@ def user_changsettings_email():
     if not re.match(
         "^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$",
             request.form['email']) is not None:
-        return Viewrender.getMSG('请填写正确的邮箱',auth=True,userObj=user)
+        return Viewrender.getMSG('请填写正确的邮箱', auth=True, userObj=user)
     action = Viewrender.renderEmailCheckMessages(user, request.form['email'])
     msg = flask_mail.Message(recipients=[request.form['email']],
                              html=action['msg'],
                              subject='更改邮箱',)
-    threading._start_new_thread(send_mail,(msg,))
+    threading._start_new_thread(send_mail, (msg,))
     verify_registered_email.append({
         "userObj": user,
         "code": action['code'],
@@ -411,7 +428,6 @@ def uploader_avater():
     file_name = form.name.data
 
 
-
 @app.route('/settings/check', methods=['GET', 'POST'])
 def user_changsettings_checkemail():
     user = get_session('obj')
@@ -427,10 +443,10 @@ def user_changsettings_checkemail():
                 user.verify_email = True
                 db.session.flush()
                 db.session.commit()
-                return Viewrender.getMSG("设置成功",auth=True,userObj=user)
+                return Viewrender.getMSG("设置成功", auth=True, userObj=user)
             else:
-                return Viewrender.getMSG("验证码不正确",auth=True,userObj=user)
-    return Viewrender.getMSG('该用户并未发起更改邮件事务,找不到对象',auth=True,userObj=user)
+                return Viewrender.getMSG("验证码不正确", auth=True, userObj=user)
+    return Viewrender.getMSG('该用户并未发起更改邮件事务,找不到对象', auth=True, userObj=user)
 
 
 # Staticfile
@@ -495,7 +511,8 @@ def send_api_login():
     else:
         return Viewrender.getMSG('账号或者密码不正确')
 
-@app.route('/postwrite',methods=['POST'])
+
+@app.route('/postwrite', methods=['POST'])
 def pushing_post():
     user = get_session('obj')
     if not user:
@@ -504,45 +521,55 @@ def pushing_post():
     request.form['tags']
     request.form['body']
     if request.form['title'] == '' or request.form['tags'] == '' or request.form['body'] == '':
-        return Viewrender.getMSG('请填写完善标题，标签，正文',user)
-    pickerInListBool =  False
+        return Viewrender.getMSG('请填写完善标题，标签，正文', user)
+    pickerInListBool = False
     for tags in Tags.query.all():
-        if tags.name == request.form['tags'] and tags.lock==False:
+        if tags.name == request.form['tags'] and tags.lock == False:
             pickerInListBool = True
             break
     if not pickerInListBool:
-        return Viewrender.getMSG('标签不存在或已被管理员关闭此标签的讨论',user)
+        return Viewrender.getMSG('标签不存在或已被管理员关闭此标签的讨论', user)
     if not user.verify_email:
-        return Viewrender.getMSG('该用户并未验证邮箱，无权限发布讨论',user)
+        return Viewrender.getMSG('该用户并未验证邮箱，无权限发布讨论', user)
     if user.user_ban:
-        return Viewrender.getMSG('该用户发布讨论权限已被禁用，请联系管理员',user)
-    newPost = Post(pusher=user.id,title=request.form['title'],body=request.form['body'],pushingtime=time.time(),tags=request.form['tags'],lock=False)
+        return Viewrender.getMSG('该用户发布讨论权限已被禁用，请联系管理员', user)
+    newPost = Post(
+        pusher=user.id,
+        title=request.form['title'],
+        body=request.form['body'],
+        pushingtime=time.time(),
+        tags=request.form['tags'],
+        lock=False)
     db.session.add(newPost)
     db.session.flush()
     db.session.commit()
     return redirect('/p/' + str(newPost.id))
 
-@app.route('/postreply/<pid>',methods=['POST'])
+
+@app.route('/postreply/<pid>', methods=['POST'])
 def make_Reply(pid):
     user = get_session('obj')
     post = db_getpostByid(pid)
     request.form['body']
     if not user:
         return abort(403)
-    if post == None:
+    if post is None:
         return Viewrender.getMSG('回复的帖子不存在')
     if request.form['body'] == '':
-        return Viewrender.getMSG('请填写正文',user)
+        return Viewrender.getMSG('请填写正文', user)
     if user.user_ban:
-        return Viewrender.getMSG('该用户发布讨论权限已被禁用，请联系管理员',user)
+        return Viewrender.getMSG('该用户发布讨论权限已被禁用，请联系管理员', user)
     if post.lock:
         return Viewrender.getMSG('此讨论已被发布者或者管理员锁定，无法回复')
-    newReply = Reply(father=pid,pusher=user.id,body=request.form['body'],pushingtime=time.time())
+    newReply = Reply(
+        father=pid,
+        pusher=user.id,
+        body=request.form['body'],
+        pushingtime=time.time())
     db.session.add(newReply)
     db.session.flush()
     db.session.commit()
     return redirect('/p/' + str(post.id))
-
 
 
 def send_mail(msg):
@@ -551,4 +578,3 @@ def send_mail(msg):
 
 
 app.run(host='0.0.0.0', port=3000)
-

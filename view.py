@@ -63,15 +63,19 @@ def getMSG(msg, auth=False, userObj=''):
 def getUserSpace(auth=False, lookuserObj='', userObj=''):
     body = jinja2.Template(open('storage/templates/user.html',
                                 'r', encoding="utf-8").read()).render(userObj=lookuserObj)
-    return getTemplates(body=body, auth=auth, userObj=userObj,title=lookuserObj.nickname)
+    return getTemplates(
+        body=body,
+        auth=auth,
+        userObj=userObj,
+        title=lookuserObj.nickname)
 
 
-def getWrite(auth=False, userObj='',Tags=''):
+def getWrite(auth=False, userObj='', Tags=''):
     print(Tags)
     body = jinja2.Template(open(
-            'storage/templates/write.html',
-            'r',
-            encoding="utf-8").read()).render(Tags=Tags)
+        'storage/templates/write.html',
+        'r',
+        encoding="utf-8").read()).render(Tags=Tags)
     return getTemplates(
         body=body,
         auth=auth,
@@ -82,7 +86,11 @@ def getWrite(auth=False, userObj='',Tags=''):
 def getSettings(userObj=''):
     body = jinja2.Template(open('storage/templates/settings.html',
                                 'r', encoding="utf-8").read()).render(UserObj=userObj)
-    return getTemplates(body=body, auth=True, userObj=userObj,title=userObj.nickname)
+    return getTemplates(
+        body=body,
+        auth=True,
+        userObj=userObj,
+        title=userObj.nickname)
 
 
 def renderEmailCheckMessages(userObj, newemail):
@@ -94,9 +102,28 @@ def renderEmailCheckMessages(userObj, newemail):
 def getCheck(userObj):
     body = jinja2.Template(open('storage/templates/check.html',
                                 'r', encoding="utf-8").read()).render(UserObj=userObj)
-    return getTemplates(body=body, auth=True, userObj=userObj,title='验证邮箱')
+    return getTemplates(body=body, auth=True, userObj=userObj, title='验证邮箱')
 
-def getPost(auth=False,userObj='',pusherUserObj='',Post='',Tags='',replyList=''):
-    body = jinja2.Template(open('storage/templates/post.html',
-                                'r', encoding="utf-8").read()).render(user=pusherUserObj,post=Post,tags=Tags,ReplyList=replyList,list=list)
-    return getTemplates(body=body,auth=auth,userObj=userObj,title=Post.title)
+
+def getPost(
+        auth=False,
+        userObj='',
+        pusherUserObj='',
+        Post='',
+        Tags='',
+        replyList=''):
+    body = jinja2.Template(
+        open(
+            'storage/templates/post.html',
+            'r',
+            encoding="utf-8").read()).render(
+        user=pusherUserObj,
+        post=Post,
+        tags=Tags,
+        ReplyList=replyList,
+        list=list)
+    return getTemplates(
+        body=body,
+        auth=auth,
+        userObj=userObj,
+        title=Post.title)
