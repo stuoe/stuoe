@@ -1,48 +1,83 @@
-<div class="mdui-typo-display-1">{{ post.title }}</div>
-<br><br>
+<div>
+  <div class="mdui-typo-display-1">{{ post.title }}</div>
+  <br><br>
 
-<div class="mdui-chip mdui-ripple">
+  <div class="mdui-chip mdui-ripple">
     <a href="/u/{{ user.id }}">
-        <img class="mdui-chip-icon" src="https://avatar.csdnimg.cn/5/D/3/3_weixin_45771836_1591890019.jpg" />
+      <img class="mdui-chip-icon" src="https://avatar.csdnimg.cn/5/D/3/3_weixin_45771836_1591890019.jpg" />
     </a>
     <span class="mdui-chip-title">{{ user.nickname }}</span>
-</div>
+  </div>
 
-<div class="mdui-chip mdui-ripple">
+  <div class="mdui-chip mdui-ripple">
     <a href="/t/{{ tags.id }}">
-    <span class="mdui-chip-icon"><i class="mdui-icon material-icons">{{ tags.icon }}</i></span>
-</a>
+      <span class="mdui-chip-icon"><i class="mdui-icon material-icons">{{ tags.icon }}</i></span>
+    </a>
     <span class="mdui-chip-title">{{ tags.name }}</span>
 
   </div>
-<br>
-<div class="mdui-divider"></div>
-<br><br>
-<div class="mdui-typo">
+  
+  <div class="mdui-typo">
     {{ post.body }}
+  </div>
+  <br>
+  <br>
+  <div class="mdui-divider"></div>
+  <br><br><br><br>
+</div>
+{% for a in ReplyList %}
+<div class="mdui-chip mdui-ripple">
+  <a href="/u/{{ user.id }}">
+    <img class="mdui-chip-icon" src="https://avatar.csdnimg.cn/5/D/3/3_weixin_45771836_1591890019.jpg" />
+  </a>
+  <span class="mdui-chip-title">{{ a.user.nickname }}</span>
+</div>
+<div class="mdui-chip mdui-ripple">
+  <a href="/t/{{ tags.id }}">
+    <span class="mdui-chip-icon">F</span>
+  </a>
+  <span class="mdui-chip-title">回复</span>
+
+</div>
+
+<br>
+
+<div class="mdui-typo">
+  {{ a.reply.body }}
 </div>
 <br>
 <br>
-<form method="POST" action='/postreply/{{ post.id }}'>
-      
-      <br>
-      <br><br>
-      <textarea name="body" id="editor" placeholder="有什么补充的？尽情讨论吧!" autofocus><div class="mdui-typo"></div></div></textarea>
-      <br>
-      <br><br>
-      <button class="mdui-btn mdui-btn-raised mdui-ripple">发布</button>
-      <br>
-    </form>
+<div class="mdui-divider"></div>
+<br>
+{% endfor %}
 
-    <script>
-      var editor = new Simditor({
-        toolbar: [
-          'title', 'bold', 'italic', 'underline', 'strikethrough', 'fontScale',
-          'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|', 'link',
-          'image', 'hr', '|', 'alignment'
-        ],
-        textarea: '#editor',
-        placeholder: '有什么补充的？尽情讨论吧!',
-        imageButton: ['upload']
-      });
-    </script>
+<form method="POST" action='/postreply/{{ post.id }}'>
+
+  <br>
+  <br><br>
+  <textarea name="body" id="editor" placeholder="有什么补充的？尽情讨论吧!" autofocus><div class="mdui-typo"></div></div></textarea>
+  <br>
+  <br><br>
+  <button class="mdui-btn mdui-btn-raised mdui-ripple">回复</button>
+  <br>
+</form>
+
+<script>
+  var editor = new Simditor({
+    toolbar: [
+      'title', 'bold', 'italic', 'underline', 'strikethrough', 'fontScale',
+      'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|', 'link',
+      'image', 'hr', '|', 'alignment'
+    ],
+    textarea: '#editor',
+    placeholder: '有什么补充的？尽情讨论吧!',
+    imageButton: ['upload'],
+    upload: {
+      url: '',
+      params: null,
+      fileKey: 'upload_file',
+      connectionCount: 3,
+      leaveConfirm: 'Uploading is in progress, are you sure to leave this page?'
+    }
+  });
+</script><br>

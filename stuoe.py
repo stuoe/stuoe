@@ -82,6 +82,8 @@ class Group(db.Model):
 class File(db.Model):
     __tablename__ = 'File'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(3000))
+    file = db.Column(db.LargeBinary())
 
 
 class Post(db.Model):
@@ -93,6 +95,7 @@ class Post(db.Model):
     pushingtime = db.Column(db.Integer)
     tags = db.Column(db.String(40), db.ForeignKey('Tags.id'))
     lock = db.Column(db.Boolean, server_default='False')
+    reply = db.relationship("Reply",backref="Post")
     
 
 
@@ -119,6 +122,7 @@ class Reply(db.Model):
     pusher = db.Column(db.String(40), db.ForeignKey('User.id'))
     body = db.Column(db.String(2000000))
     pushingtime = db.Column(db.Integer)
+
 
 
 
@@ -149,7 +153,14 @@ if Tags.query.filter_by(name="咕咚事").first() is None:
     db.session.add(goodnewsTags)
     db.session.flush()
     db.session.commit()
-    
+
+
+class replyObj():
+    def __init__(self,user,reply):
+        self.user = user
+        self.reply = reply  
+
+
 # function
 
 
@@ -325,10 +336,13 @@ def post_pages(pid):
     user = get_session('obj')
     pusherUser = db_getuserByid(obj.pusher)
     postTags = db_gettagsByname(obj.tags)
+    replyList = list()
+    for i in Reply.query.filter_by(father=obj.id).all():
+        replyList.append(replyObj(user=db_getuserByid(i.pusher),reply=i))
     if not user:
-        return Viewrender.getPost(auth=False,pusherUserObj=pusherUser,Post=obj,Tags=postTags)
+        return Viewrender.getPost(auth=False,pusherUserObj=pusherUser,Post=obj,Tags=postTags,replyList=replyList)
     else:
-        return Viewrender.getPost(auth=True,pusherUserObj=pusherUser,Post=obj,Tags=postTags,userObj=user)
+        return Viewrender.getPost(auth=True,pusherUserObj=pusherUser,Post=obj,Tags=postTags,userObj=user,replyList=replyList)
 
     
 @app.route('/write')
@@ -386,6 +400,16 @@ def user_changsettings_email():
         "email": request.form['email']
     })
     return redirect('/settings/check')
+
+
+@app.route('/settings/avater', methods=['POST'])
+def uploader_avater():
+    user = get_session('obj')
+    if not user:
+        return abort(403)
+    file = request.files['file'].read()
+    file_name = form.name.data
+
 
 
 @app.route('/settings/check', methods=['GET', 'POST'])
@@ -518,6 +542,7 @@ def make_Reply(pid):
     db.session.flush()
     db.session.commit()
     return redirect('/p/' + str(post.id))
+
 
 
 def send_mail(msg):

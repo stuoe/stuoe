@@ -96,7 +96,7 @@ def getCheck(userObj):
                                 'r', encoding="utf-8").read()).render(UserObj=userObj)
     return getTemplates(body=body, auth=True, userObj=userObj,title='验证邮箱')
 
-def getPost(auth=False,userObj='',pusherUserObj='',Post='',Tags=''):
+def getPost(auth=False,userObj='',pusherUserObj='',Post='',Tags='',replyList=''):
     body = jinja2.Template(open('storage/templates/post.html',
-                                'r', encoding="utf-8").read()).render(user=pusherUserObj,post=Post,tags=Tags)
+                                'r', encoding="utf-8").read()).render(user=pusherUserObj,post=Post,tags=Tags,ReplyList=replyList,list=list)
     return getTemplates(body=body,auth=auth,userObj=userObj,title=Post.title)
