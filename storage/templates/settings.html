@@ -29,10 +29,10 @@
 <br>
 <br>
 <div class="mdui-typo-headline">更改社交头像</div>
-<form action="{{ url_for('upload') }}" method="POST">
+<form action="/settings/avater" method="POST">
     <div class="mdui-textfield">
         <input style="position:absolute;opacity:0;" type="file" name="avater">
-        <img style="width: 60px;height: 60px;" class="mdui-img-circle" src="https://avatar.csdnimg.cn/5/D/3/3_weixin_45771836_1591890019.jpg" /><br><br>
+        <img mdui-tooltip="{content: '上传头像'}" style="width: 60px;height: 60px;" class="mdui-img-circle" src="https://avatar.csdnimg.cn/5/D/3/3_weixin_45771836_1591890019.jpg" /><br><br>
         <input class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"type="submit" value="上传">
     </div>
 </form>

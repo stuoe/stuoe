@@ -31,21 +31,21 @@
                 <ul class="mdui-list mdui-list-dense">
                     <li class="mdui-list-item mdui-ripple">
                         <i class="mdui-list-item-icon mdui-icon material-icons">chat</i>
-                        <div class="mdui-list-item-content">所有讨论</div>
+                        <div class="mdui-list-item-content"><a href="/">所有讨论</a></div>
                     </li>
                     <li class="mdui-list-item mdui-ripple">
                         <i class="mdui-list-item-icon mdui-icon material-icons">watch_later</i>
-                        <div class="mdui-list-item-content">参与的</div>
+                        <div class="mdui-list-item-content"><a href="/relation">参与的</a></div>
                     </li>
                     <li class="mdui-list-item mdui-ripple">
                         <i class="mdui-list-item-icon mdui-icon material-icons">notifications</i>
-                        <div class="mdui-list-item-content">关于的</div>
+                        <div class="mdui-list-item-content"><a href="/notifications">通知</a></div>
                     </li>
                     <li class="mdui-divider"></li>
                     {% for i in tagslist %}
                     <li class="mdui-list-item mdui-ripple">
                         <i class="mdui-list-item-icon mdui-icon material-icons">{{ i.icon }}</i>
-                        <div class="mdui-list-item-content">{{ i.name }}</div>
+                        <div class="mdui-list-item-content"><a href="/t/{{ i.id }}">{{ i.name }}</a></div>
                     </li>
                     {% endfor %}
                 </ul>
@@ -58,26 +58,16 @@
         </div>
         <div class="mdui-col-xs-10">
             <ul class="mdui-list">
+                {% for post in postlist %}
                 <li class="mdui-list-item mdui-ripple">
-                    <div class="mdui-list-item-avatar"><img src="avatar1.jpg" /></div>
-                    <div class="mdui-list-item-content">Brendan Lim</div>
-                    <i class="mdui-list-item-icon mdui-icon material-icons">chat_bubble</i>
+                    
+                    <div class="mdui-list-item-avatar"><img
+                            src="https://avatars0.githubusercontent.com/u/60885817?s=88&u=c9ec341e3c458f25e36a87457c6ec6a4efae0170&v=4" />
+                    </div>
+                    <div class="mdui-list-item-content"><a href="/p/{{ post.id }}">{{ post.title }}</a></div>
+                    <i class="mdui-list-item-icon mdui-icon material-icons">chat_bubble_outline</i>
                 </li>
-                <li class="mdui-list-item mdui-ripple">
-                    <div class="mdui-list-item-avatar"><img src="avatar2.jpg" /></div>
-                    <div class="mdui-list-item-content">me, Scott, Jennifer</div>
-                    <i class="mdui-list-item-icon mdui-icon material-icons">chat_bubble</i>
-                </li>
-                <li class="mdui-list-item mdui-ripple">
-                    <div class="mdui-list-item-avatar"><img src="avatar3.jpg" /></div>
-                    <div class="mdui-list-item-content">Grace Ng</div>
-                    <i class="mdui-list-item-icon mdui-icon material-icons">chat_bubble</i>
-                </li>
-                <li class="mdui-list-item mdui-ripple">
-                    <div class="mdui-list-item-avatar"><img src="avatar4.jpg" /></div>
-                    <div class="mdui-list-item-content">Kerem Suer</div>
-                    <i class="mdui-list-item-icon mdui-icon material-icons">chat_bubble</i>
-                </li>
+                {% endfor %}
             </ul>
         </div>
     </div>

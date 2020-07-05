@@ -312,11 +312,11 @@ def installing_step():
 def send_index():
 
     if get_session() == False:
-        return Viewrender.gethome(auth=False,tagslist=Tags.query.filter_by().all())
+        return Viewrender.gethome(auth=False,tagslist=Tags.query.filter_by().all(),postlist=reversed(Post.query.filter_by().all()[:8]))
     else:
         get_session('obj').verify_email = True
         db.session.commit()
-        return Viewrender.gethome(auth=True, userObj=get_session('obj'),tagslist=Tags.query.filter_by().all())
+        return Viewrender.gethome(auth=True, userObj=get_session('obj'),tagslist=Tags.query.filter_by().all(),postlist=reversed(Post.query.filter_by().all()[:8]))
 
 
 @app.route('/logout')
