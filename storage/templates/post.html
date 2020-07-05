@@ -7,23 +7,42 @@
     <div class="mdui-typo-display-1" align="center">{{post.title}}</div><br><br>
   </div>
   <!--End Title And Tags-->
-  <div class="mdui-chip mdui-ripple"><a href="/u/{{ user.id }}"><img class="mdui-chip-icon"
-        src="https://avatar.csdnimg.cn/5/D/3/3_weixin_45771836_1591890019.jpg" /></a><span
-      class="mdui-chip-title">{{user.nickname}}</span></div>
-  <div class="mdui-shadow-0">
-    <div class="mdui-typo">{{post.body}}</div>
+  <div class="mdui-row mdui-row-gapless">
+    <!-- Body and Reply-->
+    <div class="mdui-col-xs-11">
+      <div class="mdui-chip mdui-ripple"><a href="/u/{{ user.id }}"><img class="mdui-chip-icon"
+            src="https://avatar.csdnimg.cn/5/D/3/3_weixin_45771836_1591890019.jpg" /></a><span
+          class="mdui-chip-title">{{user.nickname}}</span></div>
+      <div class="mdui-shadow-0">
+        <div class="mdui-typo">{{post.body}}</div>
+      </div>
+      <div class="mdui-divider"></div><br><br>{%for a in ReplyList%}<div class="mdui-chip mdui-ripple"><a
+          href="/u/{{ user.id }}"><img class="mdui-chip-icon"
+            src="https://avatar.csdnimg.cn/5/D/3/3_weixin_45771836_1591890019.jpg" /></a><span
+          class="mdui-chip-title">{{a.user.nickname}}</span></div>
+      <div class="mdui-chip mdui-ripple"><a href="/t/{{ tags.id }}"><span class="mdui-chip-icon">F</span></a><span
+          class="mdui-chip-title">回复</span></div>
+      <div class="mdui-typo">{{a.reply.body}}</div><br><br>
+      <div class="mdui-divider"></div><br>{%endfor%}
+      <!-- Wrie Reply-->
+      <div id="reply">
+        <form method="POST" action='/postreply/{{ post.id }}'>
+          <br><br><br><textarea name="body" id="editor" placeholder="有什么补充的？尽情讨论吧!"
+            autofocus><div class="mdui-typo"></div></div></textarea><br><br><br><button
+            class="mdui-btn mdui-color-theme-accent ">回复</button><br></form>
+      </div>
+      <!-- End Write Reply-->
+      <script>var editor = new Simditor({ toolbar: ['title', 'bold', 'italic', 'underline', 'strikethrough', 'fontScale', 'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|', 'link', 'image', 'hr', '|', 'alignment'], textarea: '#editor', placeholder: '有什么补充的？尽情讨论吧!', imageButton: ['upload'], upload: { url: '', params: null, fileKey: 'upload_file', connectionCount: 3, leaveConfirm: 'Uploading is in progress, are you sure to leave this page?' } });</script>
+      <br>
+    </div>
+    <div class="mdui-col-xs-1 mdui-container mdui-container">
+      <div>
+        <br><br><br><br><br><br><br><br>
+        <a href="#reply" class="mdui-btn mdui-color-theme-accent mdui-btn-block">
+          <div class="mdui-text-color-white" style="font-weight:700;">   回复   </div>
+        </a>
+      </div>
+    </div>
   </div>
-  <div class="mdui-divider"></div><br><br>{%for a in ReplyList%}<div class="mdui-chip mdui-ripple"><a
-      href="/u/{{ user.id }}"><img class="mdui-chip-icon"
-        src="https://avatar.csdnimg.cn/5/D/3/3_weixin_45771836_1591890019.jpg" /></a><span
-      class="mdui-chip-title">{{a.user.nickname}}</span></div>
-  <div class="mdui-chip mdui-ripple"><a href="/t/{{ tags.id }}"><span class="mdui-chip-icon">F</span></a><span
-      class="mdui-chip-title">回复</span></div>
-  <div class="mdui-typo">{{a.reply.body}}</div><br><br>
-  <div class="mdui-divider"></div><br>{%endfor%}<form method="POST" action='/postreply/{{ post.id }}'>
-    <br><br><br><textarea name="body" id="editor" placeholder="有什么补充的？尽情讨论吧!"
-      autofocus><div class="mdui-typo"></div></div></textarea><br><br><br><button
-      class="mdui-btn mdui-btn-raised mdui-ripple">回复</button><br></form>
-  <script>var editor = new Simditor({ toolbar: ['title', 'bold', 'italic', 'underline', 'strikethrough', 'fontScale', 'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|', 'link', 'image', 'hr', '|', 'alignment'], textarea: '#editor', placeholder: '有什么补充的？尽情讨论吧!', imageButton: ['upload'], upload: { url: '', params: null, fileKey: 'upload_file', connectionCount: 3, leaveConfirm: 'Uploading is in progress, are you sure to leave this page?' } });</script>
-  <br>
+  <!--End Body and Reply-->
 </div>
