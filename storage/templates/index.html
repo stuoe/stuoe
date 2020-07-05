@@ -1,0 +1,81 @@
+<div class="mdui-container">
+    <!--Title and describe-->
+    <header>
+        <div class="mdui-shadow-0 mdui-text-color-theme-icon" align="center">
+            <div class="mdui-typo-headline" style="font-weight: 400;">{{ webtitle }}</div><br>
+            <div class="mdui-typo-subheading" style="font-weight: 300;">{{ des }}</div>
+        </div><br><br><br>
+        <div class="mdui-divider"></div><br>
+    </header>
+    <!--End Title and describe-->
+
+
+    <!-- Start Discuss or RegisterLogin-->
+    <div class="mdui-row mdui-row-gapless">
+        <div class="mdui-col-xs-2">
+            <div class="mdui-col">
+                {% if userObj == '' %}
+                <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">
+                    <div class="mdui-text-color-white" style="font-weight:700;"> 登入或注册账号以讨论 </div>
+                </button>
+                {% else %}
+                <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">
+                    <div class="mdui-text-color-white" style="font-weight:700;"> 开始一个新的讨论 </div>
+                </button>
+                {% endif %}
+                <br>
+                <br>
+                <ul class="mdui-list mdui-list-dense">
+                    <li class="mdui-list-item mdui-ripple">
+                        <i class="mdui-list-item-icon mdui-icon material-icons">chat</i>
+                      <div class="mdui-list-item-content">所有讨论</div>
+                    </li>
+                    <li class="mdui-list-item mdui-ripple">
+                        <i class="mdui-list-item-icon mdui-icon material-icons">watch_later</i>
+                      <div class="mdui-list-item-content">参与的</div>
+                    </li>
+                    <li class="mdui-list-item mdui-ripple">
+                        <i class="mdui-list-item-icon mdui-icon material-icons">notifications</i>
+                      <div class="mdui-list-item-content">关于的</div>
+                    </li>
+                    <li class="mdui-divider"></li>
+                    {% for i in tagslist %}
+                    <li class="mdui-list-item mdui-ripple">
+                      <i class="mdui-list-item-icon mdui-icon material-icons">{{ i.icon }}</i>
+                      <div class="mdui-list-item-content">{{ i.name }}</div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                
+                    
+                
+
+            </div>
+
+        </div>
+        <div class="mdui-col-xs-10">
+            <ul class="mdui-list">
+                <li class="mdui-list-item mdui-ripple">
+                  <div class="mdui-list-item-avatar"><img src="avatar1.jpg"/></div>
+                  <div class="mdui-list-item-content">Brendan Lim</div>
+                  <i class="mdui-list-item-icon mdui-icon material-icons">chat_bubble</i>
+                </li>
+                <li class="mdui-list-item mdui-ripple">
+                  <div class="mdui-list-item-avatar"><img src="avatar2.jpg"/></div>
+                  <div class="mdui-list-item-content">me, Scott, Jennifer</div>
+                  <i class="mdui-list-item-icon mdui-icon material-icons">chat_bubble</i>
+                </li>
+                <li class="mdui-list-item mdui-ripple">
+                  <div class="mdui-list-item-avatar"><img src="avatar3.jpg"/></div>
+                  <div class="mdui-list-item-content">Grace Ng</div>
+                  <i class="mdui-list-item-icon mdui-icon material-icons">chat_bubble</i>
+                </li>
+                <li class="mdui-list-item mdui-ripple">
+                  <div class="mdui-list-item-avatar"><img src="avatar4.jpg"/></div>
+                  <div class="mdui-list-item-content">Kerem Suer</div>
+                  <i class="mdui-list-item-icon mdui-icon material-icons">chat_bubble</i>
+                </li>
+              </ul>
+        </div>
+    </div>
+</div>

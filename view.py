@@ -1,5 +1,6 @@
 import jinja2
 import random
+import time
 
 
 # Get Configs File
@@ -16,7 +17,8 @@ def getTemplates(
         body='',
         title='',
         userObj='',
-        auth=False):
+        auth=False,
+        base2=False):
     if auth:
         nav = jinja2.Template(
             open(
@@ -34,7 +36,21 @@ def getTemplates(
                 encoding="utf-8").read()).render(
             title=serverconf['stuoe_name'],
             webtitle=serverconf['stuoe_name'])
-    return jinja2.Template(
+    if base2:
+        return jinja2.Template(
+        open(
+            'storage/templates/base2.html',
+            'r',
+            encoding="utf-8").read()).render(
+        title=serverconf['stuoe_name'],
+        nav=nav,
+        body=body,
+        colorPrimary=serverconf['colorPrimary'],
+        colorText=serverconf['colorText'],
+        per='admin',
+        webtitle=serverconf['stuoe_name'])
+    else:
+        return jinja2.Template(
         open(
             'storage/templates/base.html',
             'r',
@@ -48,8 +64,10 @@ def getTemplates(
         webtitle=serverconf['stuoe_name'])
 
 
-def gethome(auth=True, userObj=''):
-    return getTemplates(auth=auth, title='', userObj=userObj)
+def gethome(auth=True, userObj='',tagslist=''):
+    body = jinja2.Template(open('storage/templates/index.html',
+                                'r', encoding="utf-8").read()).render(webtitle=serverconf['stuoe_name'],des=serverconf['stuoe_des'],userObj=userObj,tagslist=tagslist)
+    return getTemplates(auth=auth, title='',body=body, userObj=userObj,base2=True)
 
 
 def getMSG(msg, auth=False, userObj=''):

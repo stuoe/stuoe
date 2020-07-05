@@ -1,22 +1,26 @@
 # Stuoe Start or Installing
 
-from flask import *
-from flask_sqlalchemy import SQLAlchemy
-import view
-import flask_mail
-import flask_oauthlib
 import os
 import time
-import jinja2
-import hashlib
-import re
 import random
 import threading
 
+
+import hashlib
+import re
+
+from flask import *
+from flask_sqlalchemy import SQLAlchemy
+import flask_mail
+import flask_oauthlib
+import jinja2
+
+import view
+
+
 # Global Var
 verify_registered_email = list()
-online_user = list()
-avater = open
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 # Get Configs File
 serverconf = dict(eval(open('server.conf', 'rb').read()))
@@ -32,6 +36,7 @@ app.config['MAIL_PASSWORD'] = serverconf['stuoe_smtp_password']
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_DEFAULT_SENDER'] = serverconf['stuoe_smtp_email']
 app.config['SECRET_KEY'] = os.urandom(20)
+
 
 # Init View
 Viewrender = view
@@ -84,6 +89,7 @@ class File(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(3000))
     file = db.Column(db.LargeBinary())
+    fileurl = db.Column(db.String(4000))
 
 
 class Post(db.Model):
@@ -306,11 +312,11 @@ def installing_step():
 def send_index():
 
     if get_session() == False:
-        return Viewrender.gethome(auth=False)
+        return Viewrender.gethome(auth=False,tagslist=Tags.query.filter_by().all())
     else:
         get_session('obj').verify_email = True
         db.session.commit()
-        return Viewrender.gethome(auth=True, userObj=get_session('obj'))
+        return Viewrender.gethome(auth=True, userObj=get_session('obj'),tagslist=Tags.query.filter_by().all())
 
 
 @app.route('/logout')
@@ -419,15 +425,6 @@ def user_changsettings_email():
     return redirect('/settings/check')
 
 
-@app.route('/settings/avater', methods=['POST'])
-def uploader_avater():
-    user = get_session('obj')
-    if not user:
-        return abort(403)
-    file = request.files['file'].read()
-    file_name = form.name.data
-
-
 @app.route('/settings/check', methods=['GET', 'POST'])
 def user_changsettings_checkemail():
     user = get_session('obj')
@@ -448,6 +445,11 @@ def user_changsettings_checkemail():
                 return Viewrender.getMSG("验证码不正确", auth=True, userObj=user)
     return Viewrender.getMSG('该用户并未发起更改邮件事务,找不到对象', auth=True, userObj=user)
 
+
+@app.route('/settings/avater', methods=['POST'])
+def uploader_avater():
+    if not 'avater' in request.files:
+        return Viewrender.getMSG('点击设置中的头像，上传文件')
 
 # Staticfile
 
@@ -575,6 +577,15 @@ def make_Reply(pid):
 def send_mail(msg):
     with app.app_context():
         mail.send(msg)
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+
+def get_license():
+    return open('LICENSE', 'r', encoding="utf-8").read()
 
 
 app.run(host='0.0.0.0', port=3000)
