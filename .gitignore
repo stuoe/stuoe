@@ -8,6 +8,8 @@ __pycache__
 # node包(自行npm install)
 node_modules
 # server.conf(包括重要信息）
-server.conf
+*.conf
 # Sqlite3 数据
 sqlite3.db
+# Gitpod 设置
+/.theia/
