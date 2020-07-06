@@ -99,7 +99,7 @@ class Post(db.Model):
     title = db.Column(db.String(50))
     body = db.Column(db.String(2000000))
     pushingtime = db.Column(db.Integer)
-    tags = db.Column(db.String(40), db.ForeignKey('Tags.id'))
+    tags = db.Column(db.Integer, db.ForeignKey('Tags.id'))
     lock = db.Column(db.Boolean, server_default='False')
     reply = db.relationship("Reply", backref="Post")
 
@@ -314,8 +314,6 @@ def send_index():
     if get_session() == False:
         return Viewrender.gethome(auth=False,tagslist=Tags.query.filter_by().all(),postlist=reversed(Post.query.filter_by().all()[:8]))
     else:
-        get_session('obj').verify_email = True
-        db.session.commit()
         return Viewrender.gethome(auth=True, userObj=get_session('obj'),tagslist=Tags.query.filter_by().all(),postlist=reversed(Post.query.filter_by().all()[:8]))
 
 
@@ -364,6 +362,16 @@ def post_pages(pid):
             Tags=postTags,
             userObj=user,
             replyList=replyList)
+
+@app.route('/t/<tid>')
+def get_tags(tid):
+    if Tags.query.filter_by(id=tid).first() == None:
+        return abort(404)
+    tagsname = Tags.query.filter_by(id=tid).first().name
+    if get_session() == False:
+        return Viewrender.gethome(auth=False,tagslist=Tags.query.filter_by().all(),postlist=reversed(Post.query.filter_by(tags=tagsname).all()[:8]))
+    else:
+        return Viewrender.gethome(auth=True, userObj=get_session('obj'),tagslist=Tags.query.filter_by().all(),postlist=reversed(Post.query.filter_by(tags=tagsname).all()[:8]))
 
 
 @app.route('/write')
