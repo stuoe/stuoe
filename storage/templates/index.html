@@ -34,7 +34,7 @@
                         <div class="mdui-list-item-content"><a href="/">所有讨论</a></div>
                     </li>
                     <li class="mdui-list-item mdui-ripple">
-                        <i class="mdui-list-item-icon mdui-icon material-icons">watch_later</i>
+                        <i class="mdui-list-item-icon mdui-icon material-icons">stars</i>
                         <div class="mdui-list-item-content"><a href="/relation">参与的</a></div>
                     </li>
                     <li class="mdui-list-item mdui-ripple">
@@ -48,6 +48,7 @@
                         <div class="mdui-list-item-content"><a href="/t/{{ i.id }}">{{ i.name }}</a></div>
                     </li>
                     {% endfor %}
+
                 </ul>
 
 
@@ -60,7 +61,7 @@
             <ul class="mdui-list">
                 {% for post in postlist %}
                 <li class="mdui-list-item mdui-ripple">
-                    
+
                     <div class="mdui-list-item-avatar"><img
                             src="https://avatars0.githubusercontent.com/u/60885817?s=88&u=c9ec341e3c458f25e36a87457c6ec6a4efae0170&v=4" />
                     </div>
@@ -68,6 +69,12 @@
                     <i class="mdui-list-item-icon mdui-icon material-icons">chat_bubble_outline</i>
                 </li>
                 {% endfor %}
+                {% if postlist == [] or postlist == '' %}
+                <br><br><br><br><br><br><br>
+                <div class="mdui-typo" align="center">
+                    <p><strong>这里看起来什么都没有</strong></p>
+                </div>
+                {% endif %}
             </ul>
         </div>
     </div>

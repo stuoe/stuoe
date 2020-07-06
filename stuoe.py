@@ -312,9 +312,9 @@ def installing_step():
 def send_index():
 
     if get_session() == False:
-        return Viewrender.gethome(auth=False,tagslist=Tags.query.filter_by().all(),postlist=reversed(Post.query.filter_by().all()[:8]))
+        return Viewrender.gethome(auth=False, tagslist=Tags.query.filter_by().all(), postlist=reversed(Post.query.filter_by().all()[:8]))
     else:
-        return Viewrender.gethome(auth=True, userObj=get_session('obj'),tagslist=Tags.query.filter_by().all(),postlist=reversed(Post.query.filter_by().all()[:8]))
+        return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by().all(), postlist=reversed(Post.query.filter_by().all()[:8]))
 
 
 @app.route('/logout')
@@ -363,15 +363,32 @@ def post_pages(pid):
             userObj=user,
             replyList=replyList)
 
+
 @app.route('/t/<tid>')
 def get_tags(tid):
     if Tags.query.filter_by(id=tid).first() == None:
         return abort(404)
     tagsname = Tags.query.filter_by(id=tid).first().name
     if get_session() == False:
-        return Viewrender.gethome(auth=False,tagslist=Tags.query.filter_by().all(),postlist=reversed(Post.query.filter_by(tags=tagsname).all()[:8]))
+        return Viewrender.gethome(auth=False, tagslist=Tags.query.filter_by().all(), postlist=reversed(Post.query.filter_by(tags=tagsname).all()[:8]))
     else:
-        return Viewrender.gethome(auth=True, userObj=get_session('obj'),tagslist=Tags.query.filter_by().all(),postlist=reversed(Post.query.filter_by(tags=tagsname).all()[:8]))
+        return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by().all(), postlist=reversed(Post.query.filter_by(tags=tagsname).all()[:8]))
+
+
+@app.route('/relation')
+def show_relation():
+    if get_session() == False:
+        return abort(403)
+    else:
+        relationPost = list()
+        nowUserId = get_session('id')
+        for i in Reply.query.filter_by(pusher=nowUserId).all():
+            obj = Post.query.filter_by(id=i.father).first()
+            if not obj == None:
+                relationPost.append(obj)
+        for i in Post.query.filter_by(pusher=nowUserId).all():
+            relationPost.append(i)
+        return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by().all(), postlist=relationPost)
 
 
 @app.route('/write')
@@ -458,6 +475,9 @@ def user_changsettings_checkemail():
 def uploader_avater():
     if not 'avater' in request.files:
         return Viewrender.getMSG('点击设置中的头像，上传文件')
+    avater = request.files['avater']
+    return ''
+
 
 # Staticfile
 

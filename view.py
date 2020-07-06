@@ -66,7 +66,7 @@ def getTemplates(
 
 def gethome(auth=True, userObj='',tagslist='',postlist=''):
     body = jinja2.Template(open('storage/templates/index.html',
-                                'r', encoding="utf-8").read()).render(webtitle=serverconf['stuoe_name'],des=serverconf['stuoe_des'],userObj=userObj,tagslist=tagslist,postlist=postlist)
+                                'r', encoding="utf-8").read()).render(webtitle=serverconf['stuoe_name'],des=serverconf['stuoe_des'],userObj=userObj,tagslist=tagslist,postlist=list(postlist))
     return getTemplates(auth=auth, title='',body=body, userObj=userObj,base2=True)
 
 
