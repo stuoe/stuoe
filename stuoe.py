@@ -314,9 +314,9 @@ def installing_step():
 def send_index():
 
     if get_session() == False:
-        return Viewrender.gethome(auth=False, tagslist=Tags.query.filter_by().all(), postlist=reversed(Post.query.filter_by().all()[:8]))
+        return Viewrender.gethome(auth=False, tagslist=Tags.query.filter_by().all(), postlist=reversed(Post.query.filter_by().all()[:8]),get_avater=get_avater)
     else:
-        return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by().all(), postlist=reversed(Post.query.filter_by().all()[:8]))
+        return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by().all(), postlist=reversed(Post.query.filter_by().all()[:8]),get_avater=get_avater)
 
 
 @app.route('/logout')
@@ -372,9 +372,9 @@ def get_tags(tid):
         return abort(404)
     tagsname = Tags.query.filter_by(id=tid).first().name
     if get_session() == False:
-        return Viewrender.gethome(auth=False, tagslist=Tags.query.filter_by().all(), postlist=reversed(Post.query.filter_by(tags=tagsname).all()[:8]))
+        return Viewrender.gethome(auth=False, tagslist=Tags.query.filter_by().all(), postlist=reversed(Post.query.filter_by(tags=tagsname).all()[:8]),get_avater=get_avater)
     else:
-        return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by().all(), postlist=reversed(Post.query.filter_by(tags=tagsname).all()[:8]))
+        return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by().all(), postlist=reversed(Post.query.filter_by(tags=tagsname).all()[:8]),get_avater=get_avater)
 
 
 @app.route('/relation')
@@ -390,7 +390,7 @@ def show_relation():
                 relationPost.append(obj)
         for i in Post.query.filter_by(pusher=nowUserId).all():
             relationPost.append(i)
-        return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by().all(), postlist=relationPost)
+        return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by().all(), postlist=relationPost,get_avater=get_avater)
 
 
 @app.route('/write')
@@ -642,6 +642,12 @@ def get_license():
 
 def get_fileUrl(fileObj,id):
     return '/dynamic/{}/{}'.format(id, fileObj.filename)
+
+def get_avater(userId):
+    obj = User.query.filter_by(id=userId).first()
+    if obj == None:
+        return 'None'
+    return obj.avater
 
 
 app.run(host='0.0.0.0', port=3000)
