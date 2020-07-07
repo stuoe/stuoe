@@ -33,6 +33,7 @@
                         <i class="mdui-list-item-icon mdui-icon material-icons">chat</i>
                         <div class="mdui-list-item-content"><a href="/">所有讨论</a></div>
                     </li>
+                    {% if not userObj == '' %}
                     <li class="mdui-list-item mdui-ripple">
                         <i class="mdui-list-item-icon mdui-icon material-icons">stars</i>
                         <div class="mdui-list-item-content"><a href="/relation">参与的</a></div>
@@ -41,6 +42,7 @@
                         <i class="mdui-list-item-icon mdui-icon material-icons">notifications</i>
                         <div class="mdui-list-item-content"><a href="/notifications">通知</a></div>
                     </li>
+                    {% endif %}
                     <li class="mdui-divider"></li>
                     {% for i in tagslist %}
                     <li class="mdui-list-item mdui-ripple">

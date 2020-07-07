@@ -4,6 +4,7 @@ import os
 import time
 import random
 import threading
+import platform
 
 
 import hashlib
@@ -12,6 +13,7 @@ import re
 from flask import *
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
+from flask import __version__
 import flask_mail
 import flask_oauthlib
 import jinja2
@@ -22,6 +24,7 @@ import view
 # Global Var
 verify_registered_email = list()
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+Release = 'v0.1.0 Release'
 
 # Get Configs File
 serverconf = dict(eval(open('server.conf', 'rb').read()))
@@ -296,9 +299,9 @@ def installing_step():
         serverconf['stuoe_smtp_host'] = stuoe_smtp_host
         serverconf['stuoe_smtp_port'] = stuoe_smtp_port
         serverconf['stuoe_smtp_email'] = stuoe_smtp_email
-        serverconf['stuoe_smtp_password'] = "Action"
+        serverconf['stuoe_smtp_password'] = stuoe_smtp_password
         serverconf['stuoe_admin_mail'] = stuoe_admin_mail
-        serverconf['stuoe_admin_password'] = stuoe_admin_password
+        serverconf['stuoe_admin_password'] = "Action"
         serverconf['init'] = True
 
         db_create_user(stuoe_admin_mail, stuoe_admin_password, 'Admin', '管理员')
@@ -493,6 +496,35 @@ def uploader_avater():
     db.session.flush()
     db.session.commit()
     return redirect('/settings')
+
+@app.route('/admin')
+def adminPages():
+    user = get_session('obj')
+    if not user:
+        return abort(403)
+    if user.user_group == '管理员':
+        return redirect('/admin/preview')
+    else:
+        return abort(403)
+
+@app.route('/admin/<pages>')
+def adminSettings(pages):
+    user = get_session('obj')
+    if not user:
+        return abort(403)
+    if not user.user_group == '管理员':
+        return abort(403)
+    if not pages in ['preview','profile','tags','data','extension']:
+        return abort(404)
+    if pages == 'preview':
+        replyList = list()
+        for i in Reply.query.filter_by().all()[:7]:
+            replyList.append(replyObj(user=db_getuserByid(i.pusher), reply=i))
+        adminlist = open('storage/templates/admin/list.html','r',encoding="utf-8").read()
+        body = jinja2.Template(open('storage/templates/admin/preview.html','r',encoding="utf-8").read()).render(adminList=adminlist,pv = platform.python_version(),fv=__version__,sv=Release,postlist = list(reversed(Post.query.filter_by().all()[:7])),get_avater=get_avater,replyList=replyList)
+        return Viewrender.getTemplates(title='管理界面',auth=True,base2=True,body=body,userObj=user) 
+        
+
 
 
 # Staticfile
