@@ -13,6 +13,12 @@ m1 = jinja2.Template(
     '<h1>账号邮箱变动</h1><br>原先的邮箱：{{ oldemail}} 将停用，改用 {{ newemail }} 作为新的邮箱<br><code>验证码:{{ code }}')
 
 
+def c():
+    # Get Configs File
+    serverconf = dict(eval(open('server.conf', 'rb').read()))
+    serverurl = serverconf['url']
+
+
 def getTemplates(
         body='',
         title='',
@@ -64,9 +70,9 @@ def getTemplates(
             webtitle=serverconf['stuoe_name'])
 
 
-def gethome(auth=True, userObj='', tagslist='', postlist='',get_avater=''):
+def gethome(auth=True, userObj='', tagslist='', postlist='', get_avater=''):
     body = jinja2.Template(open('storage/templates/index.html',
-                                'r', encoding="utf-8").read()).render(webtitle=serverconf['stuoe_name'], des=serverconf['stuoe_des'], userObj=userObj, tagslist=tagslist, postlist=list(postlist),get_avater=get_avater)
+                                'r', encoding="utf-8").read()).render(webtitle=serverconf['stuoe_name'], des=serverconf['stuoe_des'], userObj=userObj, tagslist=tagslist, postlist=list(postlist), get_avater=get_avater)
     return getTemplates(auth=auth, title='', body=body, userObj=userObj, base2=True)
 
 

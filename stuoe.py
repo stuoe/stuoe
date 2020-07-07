@@ -523,7 +523,28 @@ def adminSettings(pages):
         adminlist = open('storage/templates/admin/list.html','r',encoding="utf-8").read()
         body = jinja2.Template(open('storage/templates/admin/preview.html','r',encoding="utf-8").read()).render(adminList=adminlist,pv = platform.python_version(),fv=__version__,sv=Release,postlist = list(reversed(Post.query.filter_by().all()[:7])),get_avater=get_avater,replyList=replyList)
         return Viewrender.getTemplates(title='管理界面',auth=True,base2=True,body=body,userObj=user) 
-        
+    if pages == 'profile':
+        adminlist = open('storage/templates/admin/list.html','r',encoding="utf-8").read()
+        body = jinja2.Template(open('storage/templates/admin/profile.html','r',encoding="utf-8").read()).render(adminList=adminlist,serverconf=serverconf)
+        return Viewrender.getTemplates(title='管理界面',auth=True,base2=True,body=body,userObj=user)
+    
+@app.route('/adminwait/profile',methods=['POST'])
+def adminWait():
+    global serverconf
+    user = get_session('obj')
+    if not user:
+        return abort(403)
+    if not user.user_group == '管理员':
+        return abort(403)
+    request.form['stuoe_name']
+    request.form['stuoe_des']
+    serverconf['stuoe_name'] = request.form['stuoe_name']
+    serverconf['stuoe_des'] == request.form['stuoe_des']
+    open('server.conf', 'wb+').write(str(serverconf).encode('utf-8'))
+    serverconf = dict(eval(open('server.conf', 'rb').read()))
+    Viewrender.c()
+    return redirect('/admin/profile')
+
 
 
 
