@@ -89,7 +89,6 @@ def getUserSpace(auth=False, lookuserObj='', userObj=''):
 
 
 def getWrite(auth=False, userObj='', Tags=''):
-    print(Tags)
     body = jinja2.Template(open(
         'storage/templates/write.html',
         'r',
