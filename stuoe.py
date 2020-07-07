@@ -11,6 +11,7 @@ import re
 
 from flask import *
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.utils import secure_filename
 import flask_mail
 import flask_oauthlib
 import jinja2
@@ -67,6 +68,7 @@ class User(db.Model):
     pushingPost = db.relationship("Post", backref="User")
     MessageToMailbox = db.Column(db.Boolean, server_default='True')
     UserMessageMainbox = db.relationship("Messages", backref="User")
+    avater = db.Column(db.String(50), server_default='None')
 
     def __repr__(self):
         return {'id': self.id, 'email': self.email, 'user_des': self.user_des}
@@ -87,9 +89,8 @@ class Group(db.Model):
 class File(db.Model):
     __tablename__ = 'File'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(3000))
-    file = db.Column(db.LargeBinary())
-    fileurl = db.Column(db.String(4000))
+    fileData = db.Column(db.LargeBinary())
+    filename = db.Column(db.String(420))
 
 
 class Post(db.Model):
@@ -213,7 +214,8 @@ def db_create_user(email, password, nickname, user_group):
         user_ban=False,
         user_dirty=False,
         registertime=time.time(),
-        MessageToMailbox=True)
+        MessageToMailbox=True,
+        avater='/static/avater.jpg')
     db.session.add(new_user)
     db.session.flush()
     db.session.commit()
@@ -473,13 +475,35 @@ def user_changsettings_checkemail():
 
 @app.route('/settings/avater', methods=['POST'])
 def uploader_avater():
-    if not 'avater' in request.files:
-        return Viewrender.getMSG('点击设置中的头像，上传文件')
+    user = get_session('obj')
+    if not user:
+        return abort(403)
     avater = request.files['avater']
-    return ''
+    basepath = os.path.dirname(__file__)
+    upload_path = os.path.join(
+        basepath, r'public\uploads', secure_filename(avater.filename))
+    avater.save(upload_path)
+    avaterData = open(upload_path, 'rb').read()
+    avaterFilename = os.path.basename(upload_path)
+    newFile = File(fileData=avaterData, filename=avaterFilename)
+    db.session.add(newFile)
+    db.session.flush()
+    db.session.commit()
+    user.avater = get_fileUrl(newFile,newFile.id)
+    db.session.flush()
+    db.session.commit()
+    return redirect('/settings')
 
 
 # Staticfile
+
+
+@app.route('/dynamic/<fid>/<obj>')
+def send_dynamice(fid, obj):
+    fileObj = File.query.filter_by(id=fid).first()
+    if fileObj == None:
+        return abort(404)
+    return fileObj.fileData
 
 # None  Other StaticFile
 
@@ -614,6 +638,10 @@ def allowed_file(filename):
 
 def get_license():
     return open('LICENSE', 'r', encoding="utf-8").read()
+
+
+def get_fileUrl(fileObj,id):
+    return '/dynamic/{}/{}'.format(id, fileObj.filename)
 
 
 app.run(host='0.0.0.0', port=3000)

@@ -11,14 +11,14 @@
     <!-- Body and Reply-->
     <div class="mdui-col-xs-11">
       <div class="mdui-chip mdui-ripple"><a href="/u/{{ user.id }}"><img class="mdui-chip-icon"
-            src="https://avatar.csdnimg.cn/5/D/3/3_weixin_45771836_1591890019.jpg" /></a><span
+            src="{{ user.avater }}" /></a><span
           class="mdui-chip-title">{{user.nickname}}</span></div>
       <div class="mdui-shadow-0">
         <div class="mdui-typo">{{post.body}}</div>
       </div>
       <div class="mdui-divider"></div><br><br>{%for a in ReplyList%}<div class="mdui-chip mdui-ripple"><a
           href="/u/{{ user.id }}"><img class="mdui-chip-icon"
-            src="https://avatar.csdnimg.cn/5/D/3/3_weixin_45771836_1591890019.jpg" /></a><span
+            src="{{ user.avater }}" /></a><span
           class="mdui-chip-title">{{a.user.nickname}}</span></div>
       <div class="mdui-chip mdui-ripple"><a href="/t/{{ tags.id }}"><span class="mdui-chip-icon">F</span></a><span
           class="mdui-chip-title">回复</span></div>
