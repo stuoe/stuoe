@@ -514,7 +514,7 @@ def adminSettings(pages):
         return abort(403)
     if not user.user_group == '管理员':
         return abort(403)
-    if not pages in ['preview','profile','tags','data','extension']:
+    if not pages in ['preview','profile','tags','style','extension']:
         return abort(404)
     if pages == 'preview':
         replyList = list()
@@ -527,9 +527,13 @@ def adminSettings(pages):
         adminlist = open('storage/templates/admin/list.html','r',encoding="utf-8").read()
         body = jinja2.Template(open('storage/templates/admin/profile.html','r',encoding="utf-8").read()).render(adminList=adminlist,serverconf=serverconf)
         return Viewrender.getTemplates(title='管理界面',auth=True,base2=True,body=body,userObj=user)
+    if pages == 'style':
+        adminlist = open('storage/templates/admin/list.html','r',encoding="utf-8").read()
+        body = jinja2.Template(open('storage/templates/admin/style.html','r',encoding="utf-8").read()).render(adminList=adminlist,serverconf=serverconf)
+        return Viewrender.getTemplates(title='管理界面',auth=True,base2=True,body=body,userObj=user)
     
 @app.route('/adminwait/profile',methods=['POST'])
-def adminWait():
+def adminWait_profile():
     global serverconf
     user = get_session('obj')
     if not user:
@@ -544,6 +548,25 @@ def adminWait():
     serverconf = dict(eval(open('server.conf', 'rb').read()))
     Viewrender.serverconf = serverconf
     return redirect('/admin/profile')
+
+@app.route('/adminwait/style',methods=['POST'])
+def adminWait_style():
+    global serverconf
+    user = get_session('obj')
+    if not user:
+        return abort(403)
+    if not user.user_group == '管理员':
+        return abort(403)
+    request.form['colorPrimary']
+    request.form['robots.txt']
+    request.form['js']
+    serverconf['colorPrimary'] = request.form['colorPrimary']
+    serverconf['robots.txt'] = request.form['robots.txt']
+    serverconf['js'] = request.form['js']
+    open('server.conf', 'w+',encoding="utf-8").write(str(serverconf))
+    serverconf = dict(eval(open('server.conf', 'rb').read()))
+    Viewrender.serverconf = serverconf
+    return redirect('/admin/style')
 
 
 
@@ -701,6 +724,12 @@ def get_avater(userId):
     if obj == None:
         return 'None'
     return obj.avater
+
+
+
+@app.route('/robots.txt')
+def robotsTxt():
+    return serverconf['robots.txt']
 
 
 app.run(host='0.0.0.0', port=3000)
