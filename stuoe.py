@@ -539,10 +539,10 @@ def adminWait():
     request.form['stuoe_name']
     request.form['stuoe_des']
     serverconf['stuoe_name'] = request.form['stuoe_name']
-    serverconf['stuoe_des'] == request.form['stuoe_des']
-    open('server.conf', 'wb+').write(str(serverconf).encode('utf-8'))
+    serverconf['stuoe_des'] = request.form['stuoe_des']
+    open('server.conf', 'w+',encoding="utf-8").write(str(serverconf))
     serverconf = dict(eval(open('server.conf', 'rb').read()))
-    Viewrender.c()
+    Viewrender.serverconf = serverconf
     return redirect('/admin/profile')
 
 
