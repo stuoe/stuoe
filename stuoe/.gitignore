@@ -1,0 +1,15 @@
+# 不需要同步的文件
+
+
+# python二进制缓存
+__pycache__ 
+# vscode个人设置
+.vscode
+# node包(自行npm install)
+node_modules
+# server.conf(包括重要信息）
+*.conf
+# Sqlite3 数据
+sqlite3.db
+# Gitpod 设置
+/.theia/
