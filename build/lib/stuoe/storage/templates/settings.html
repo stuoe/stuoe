@@ -1,0 +1,59 @@
+
+
+<div class="mdui-typo-headline">修改公开资料</div>
+<br>
+<br>
+<form action="/settings/profile" method="POST">
+    <div class="mdui-textfield">
+        <i class="mdui-icon material-icons">account_circle</i>
+        <label class="mdui-textfield-label">昵称</label>
+        <input name="nickname" class="mdui-textfield-input" type="nickname" value="{{ UserObj.nickname }}"
+            maxlength="15" />
+        <p class="help"></p>
+    </div>
+    <div class="mdui-textfield">
+        <i class="mdui-icon material-icons">textsms</i>
+        <label class="mdui-textfield-label">介绍</label>
+        <textarea name="user_des" class="mdui-textfield-input" placeholder="简单的介绍下自己吧"
+            maxlength="2000">{{ UserObj.user_des }}</textarea>
+    </div>
+    <div class="mdui-textfield">
+        <i class="mdui-icon material-icons">domain</i>
+        <label class="mdui-textfield-label">个人主页域名</label>
+        <input name="url" class="mdui-textfield-input" placeholder="自己的博客，Github地址" value="{{ UserObj.url }}"></input>
+    </div>
+
+    <br>
+    <button type="submit" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">更新个人资料</button>
+</form>
+<br>
+<br>
+<div class="mdui-typo-headline">更改社交头像</div>
+<form action="/settings/avater" method="POST" enctype="multipart/form-data">
+    <div class="mdui-textfield">
+        <input style="position:absolute;opacity:0;" type="file" name="avater">
+        <img mdui-tooltip="{content: '上传头像'}" style="width: 30px;height: 30px;" class="mdui-img-circle" src="{{ UserObj.avater }}" /><br><br>
+        <input class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"type="submit" value="上传">
+    </div>
+</form>
+<br><br>
+
+<div class="mdui-typo-headline">账号安全</div>
+<br><br>
+<form action="/settings/email" method="POST">
+    <label class="mdui-textfield-label">选择事务</label>
+    <select class="mdui-select" mdui-select="{position: 'bottom'}" name="tags" maxlength="300000">
+
+        <option value="验证邮箱或更改"> 验证邮箱或更改</option>
+        <option value="重置账号密码"> 重置账号密码</option>
+        <option value="开启双因素验证"> 开启双因素验证</option>
+
+    </select>
+    <div class="mdui-textfield">
+        <label class="mdui-textfield-label">确认邮箱</label>
+        <input name="email" class="mdui-textfield-input" type="nickname" value="{{ UserObj.email }}" />
+    </div>
+    <br>
+    <button type="submit" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">请求并验证</button>
+</form>
+<br>

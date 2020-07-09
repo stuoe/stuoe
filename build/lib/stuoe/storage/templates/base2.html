@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>{{ title }} - {{ webtitle }}</title>
+  <link rel="stylesheet" href="/static/mdui/css/mdui.min.css" />
+  <link rel="stylesheet" href="/static/stuoe.css" />
+  <script src="/static/mdui/js/mdui.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/static/simditor/styles/simditor.css" />
+  <script type="text/javascript" src="/static/simditor-2.3.28/site/assets/scripts
+/jquery.min.js"></script>
+  <script type="text/javascript" src="/static/simditor-2.3.28/site/assets/scripts
+/module.js"></script>
+  <script type="text/javascript" src="/static/simditor-2.3.28/site/assets/scripts
+/hotkeys.js"></script>
+  <script type="text/javascript" src="/static/simditor-2.3.28/site/assets/scripts
+/uploader.js"></script>
+  <script type="text/javascript" src="/static/simditor-2.3.28/site/assets/scripts
+/simditor.js"></script>
+</head>
+<script>
+  {{ js }}
+</script>
+<noscript>
+  <div class="Alert">
+      <div class="container">
+          This site is best viewed in a modern browser with JavaScript enabled.
+      </div>
+  </div>
+</noscript>
+<body class="mdui-color-theme-{{ colorPrimary }} mdui-theme-accent-{{ colorPrimary }}">
+  <div class="mdui-container mdui-color-theme-theme">
+    
+        {{ nav }}
+        <br />
+        <br /> {{ body}}
+      </div>
+  <!-- Build For Stuoe Framework! https://github.com/stuoe/stuoe-->
+</body>
+
+</html>
+<!-- Google Analytics -->
+<!-- End Google Analytics -->

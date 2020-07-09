@@ -1,0 +1,25 @@
+{
+  "name": "simple-uploader",
+  "version": "3.0.0",
+  "homepage": "https://github.com/mycolorway/simple-uploader",
+  "authors": [
+    "farthinker <farthinker@gmail.com>"
+  ],
+  "description": "A HTML5 upload component without UI",
+  "main": "dist/simple-uploader.js",
+  "keywords": [
+    "upload"
+  ],
+  "license": "MIT",
+  "ignore": [
+     "**/.*",
+    "test",
+    "build",
+    "gulpfile.coffee",
+    "package.json"
+  ],
+  "dependencies": {
+    "jquery": "~3.1.0",
+    "simple-module": "~3.0.0"
+  }
+}

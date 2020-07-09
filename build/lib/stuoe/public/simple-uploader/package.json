@@ -1,0 +1,100 @@
+{
+  "_from": "simple-uploader@^3.0.0",
+  "_id": "simple-uploader@3.0.0",
+  "_inBundle": false,
+  "_integrity": "sha1-wJ9wbxz8vqH+eA41dZpoOxM21NE=",
+  "_location": "/simple-uploader",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "simple-uploader@^3.0.0",
+    "name": "simple-uploader",
+    "escapedName": "simple-uploader",
+    "rawSpec": "^3.0.0",
+    "saveSpec": null,
+    "fetchSpec": "^3.0.0"
+  },
+  "_requiredBy": [
+    "/simditor"
+  ],
+  "_resolved": "https://registry.npmjs.org/simple-uploader/-/simple-uploader-3.0.0.tgz",
+  "_shasum": "c09f706f1cfcbea1fe780e35759a683b1336d4d1",
+  "_spec": "simple-uploader@^3.0.0",
+  "_where": "C:\\Users\\Administrator\\stuoe\\node_modules\\simditor",
+  "author": {
+    "name": "farthinker"
+  },
+  "bugs": {
+    "url": "https://github.com/mycolorway/simple-uploader/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "jquery": "~3.1.0",
+    "simple-module": "~3.0.0"
+  },
+  "deprecated": false,
+  "description": "A HTML5 upload component without UI",
+  "devDependencies": {
+    "browserify": "^13.0.0",
+    "browserify-coffee-coverage": "^1.1.1",
+    "chai": "^3.5.0",
+    "coffee-script": "^1.10.0",
+    "coffeelint": "^1.15.0",
+    "coveralls": "^2.11.8",
+    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-util": "^3.0.7",
+    "istanbul": "^0.4.2",
+    "karma": "^1.1.1",
+    "karma-browserify": "^5.0.5",
+    "karma-chai": "^0.1.0",
+    "karma-coffee-coverage": "^1.1.2",
+    "karma-coverage": "^1.0.0",
+    "karma-mocha": "^1.0.1",
+    "karma-mocha-reporter": "^2.0.4",
+    "karma-phantomjs-launcher": "^1.0.0",
+    "karma-sinon": "^1.0.5",
+    "lodash": "^4.13.1",
+    "mocha": "^2.5.3",
+    "node-sass": "^3.8.0",
+    "phantomjs-prebuilt": "^2.1.7",
+    "sinon": "^1.17.5",
+    "through2": "^2.0.1",
+    "uglify-js": "^2.6.2",
+    "watchify": "^3.7.0"
+  },
+  "githubOwner": "mycolorway",
+  "homepage": "https://github.com/mycolorway/simple-uploader",
+  "keywords": [
+    "upload"
+  ],
+  "license": "MIT",
+  "main": "dist/simple-uploader.js",
+  "name": "simple-uploader",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/mycolorway/simple-uploader.git"
+  },
+  "scripts": {
+    "start": "gulp",
+    "test": "gulp test"
+  },
+  "umd": {
+    "name": "SimpleUploader",
+    "dependencies": {
+      "cjs": [
+        "jquery",
+        "simple-module"
+      ],
+      "global": [
+        "jQuery",
+        "SimpleModule"
+      ],
+      "params": [
+        "$",
+        "SimpleModule"
+      ]
+    }
+  },
+  "version": "3.0.0"
+}
