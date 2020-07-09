@@ -558,10 +558,10 @@ def adminWait_style():
     if not user.user_group == '管理员':
         return abort(403)
     request.form['colorPrimary']
-    request.form['robots.txt']
+    request.form['robotstxt']
     request.form['js']
     serverconf['colorPrimary'] = request.form['colorPrimary']
-    serverconf['robots.txt'] = request.form['robots.txt']
+    serverconf['robots.txt'] = request.form['robotstxt']
     serverconf['js'] = request.form['js']
     open('server.conf', 'w+',encoding="utf-8").write(str(serverconf))
     serverconf = dict(eval(open('server.conf', 'rb').read()))

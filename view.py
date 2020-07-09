@@ -33,7 +33,8 @@ def getTemplates(
                 encoding="utf-8").read()).render(
             title=title,
             userObj=userObj,
-            webtitle=serverconf['stuoe_name'])
+            webtitle=serverconf['stuoe_name'],
+            js=serverconf['js'])
     else:
         nav = jinja2.Template(
             open(
@@ -41,7 +42,8 @@ def getTemplates(
                 'r',
                 encoding="utf-8").read()).render(
             title=serverconf['stuoe_name'],
-            webtitle=serverconf['stuoe_name'])
+            webtitle=serverconf['stuoe_name'],
+            js=serverconf['js'])
     if base2:
         return jinja2.Template(
             open(
@@ -54,7 +56,8 @@ def getTemplates(
             colorPrimary=serverconf['colorPrimary'],
             colorText=serverconf['colorText'],
             per='admin',
-            webtitle=serverconf['stuoe_name'])
+            webtitle=serverconf['stuoe_name'],
+            js=serverconf['js'])
     else:
         return jinja2.Template(
             open(
@@ -67,7 +70,8 @@ def getTemplates(
             colorPrimary=serverconf['colorPrimary'],
             colorText=serverconf['colorText'],
             per='admin',
-            webtitle=serverconf['stuoe_name'])
+            webtitle=serverconf['stuoe_name'],
+            js=serverconf['js'])
 
 
 def gethome(auth=True, userObj='', tagslist='', postlist='', get_avater=''):
