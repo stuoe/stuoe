@@ -531,6 +531,10 @@ def adminSettings(pages):
         adminlist = open('storage/templates/admin/list.html','r',encoding="utf-8").read()
         body = jinja2.Template(open('storage/templates/admin/style.html','r',encoding="utf-8").read()).render(adminList=adminlist,serverconf=serverconf)
         return Viewrender.getTemplates(title='管理界面',auth=True,base2=True,body=body,userObj=user)
+    if pages == 'tags':
+        adminlist = open('storage/templates/admin/list.html','r',encoding="utf-8").read()
+        body = jinja2.Template(open('storage/templates/admin/tags.html','r',encoding="utf-8").read()).render(adminList=adminlist,serverconf=serverconf)
+        return Viewrender.getTemplates(title='管理界面',auth=True,base2=True,body=body,userObj=user)
     
 @app.route('/adminwait/profile',methods=['POST'])
 def adminWait_profile():
