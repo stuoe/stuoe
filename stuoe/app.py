@@ -362,11 +362,12 @@ def user_space(uid):
     if user is None:
         return abort(404)
     lastedPost = Reply.query.filter_by(pusher=user.id).all()[:3] + Post.query.filter_by(pusher=user.id).all()[:3]
-    if not user:
-        return Viewrender.getUserSpace(auth=False, lookuserObj=user,lastedPost=lastedPost)
+    lookuser = get_session('obj')
+    if not lookuser:
+        return Viewrender.getUserSpace(auth=False, lastedPost=lastedPost,lookuserObj=user)
     else:
         return Viewrender.getUserSpace(
-            auth=True, lookuserObj=user, userObj=user,lastedPost=lastedPost)
+            auth=True, lookuserObj=user, userObj=lookuser,lastedPost=lastedPost)
 
 
 @app.route('/p/<pid>')
