@@ -18,7 +18,7 @@
   <div class="mdui-row mdui-row-gapless"> 
    <!-- Body and Reply--> 
    <div class="mdui-col-xs-11"> 
-    <li class="mdui-list-item mdui-ripple"> 
+    <li class="mdui-list-item"> 
      <div class="mdui-list-item-content"> 
       <div class="mdui-list-item-avatar">
        <a href="/u/{{ user.id }}"><img width="200" height="200" class="mdui-img-circle" src="{{ user.avater }}" /></a>
@@ -35,7 +35,7 @@
     <br /> 
     <ul class="mdui-list">
       {%for a in ReplyList%} 
-     <li class="mdui-list-item mdui-ripple"> 
+     <li class="mdui-list-item"> 
       <div class="mdui-list-item-content"> 
        <div class="mdui-list-item-avatar">
         <a href="/u/{{ a.user.id }}"><img width="200" height="200" class="mdui-img-circle" src="{{ a.user.avater }}" /></a>
