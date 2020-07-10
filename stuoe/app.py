@@ -358,15 +358,15 @@ def user_logout():
 
 @app.route('/u/<uid>')
 def user_space(uid):
-    obj = db_getuserByid(uid)
-    if obj is None:
+    user = db_getuserByid(uid)
+    if user is None:
         return abort(404)
-    user = get_session('obj')
+    lastedPost = Reply.query.filter_by(pusher=user.id).all()[:3] + Post.query.filter_by(pusher=user.id).all()[:3]
     if not user:
-        return Viewrender.getUserSpace(auth=False, lookuserObj=obj)
+        return Viewrender.getUserSpace(auth=False, lookuserObj=user,lastedPost=lastedPost)
     else:
         return Viewrender.getUserSpace(
-            auth=True, lookuserObj=obj, userObj=user)
+            auth=True, lookuserObj=user, userObj=user,lastedPost=lastedPost)
 
 
 @app.route('/p/<pid>')

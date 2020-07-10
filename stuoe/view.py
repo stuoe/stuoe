@@ -18,8 +18,12 @@ def c():
     serverconf = dict(eval(open('server.conf', 'rb').read()))
     serverurl = serverconf['url']
 
-def getTimer(timetime):
-    return time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(int(timetime)))
+
+def getTimer(timetime, simple=False):
+    if simple:
+        return time.strftime("%Y-%m-%d", time.localtime(int(timetime)))
+    else:
+        return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(timetime)))
 
 
 def getTemplates(
@@ -91,15 +95,14 @@ def getMSG(msg, auth=False, userObj=''):
         userObj=userObj)
 
 
-def getUserSpace(auth=False, lookuserObj='', userObj=''):
+def getUserSpace(auth=False, lookuserObj='', userObj='', lastedPost=''):
     body = jinja2.Template(open('storage/templates/user.html',
-                                'r', encoding="utf-8").read()).render(userObj=lookuserObj)
+                                'r', encoding="utf-8").read()).render(userObj=lookuserObj, getTimer=getTimer, lastedPost=lastedPost)
     return getTemplates(
         body=body,
         auth=auth,
         userObj=userObj,
-        title=lookuserObj.nickname,
-        getTimer=getTimer)
+        title=lookuserObj.nickname)
 
 
 def getWrite(auth=False, userObj='', Tags=''):
