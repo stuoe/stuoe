@@ -19,11 +19,11 @@
             <div class="mdui-col">
                 {% if userObj == '' %}
                 <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">
-                    <div class="mdui-text-color-white" style="font-weight:700;"> 登入或注册账号以讨论 </div>
+                    <div mdui-tooltip="{content: '注册/登入'}"  mdui-menu="{target: '#account-op'}"class="mdui-text-color-white" style="font-weight:700;"> 注册/登入</div>
                 </button>
                 {% else %}
                 <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">
-                    <div class="mdui-text-color-white" style="font-weight:700;"> 开始一个新的讨论 </div>
+                    <div class="mdui-text-color-white" style="font-weight:700;"><a class="mdui-text-color-white" href="/write"> 开始一个新的讨论 </a></div>
                 </button>
                 {% endif %}
                 <br>

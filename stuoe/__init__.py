@@ -52,7 +52,6 @@ def run(port):
 @click.option("--name", default='Dafault', help="Start A New Project", type=str)
 def startproject(name):
     if not os.path.exists(startworkpath + name):
-        os.makedirs(startworkpath + name)
         click.echo('Create  ' + startworkpath + name)
     if not os.listdir(startworkpath + name) == []:
         click.echo('目录为' + startworkpath + name + '的文件夹并不为空，无法创建新的工程')
@@ -60,6 +59,20 @@ def startproject(name):
     click.echo('Creating Project: ' + name + '  ....')
     copy_Templates_to_newproject(pastpath=startworkpath + name + '/')
     click.echo('项目已经成功创建 ')
+    exit()
+
+@click.command()
+@click.option("--name", default='Dafault', help="A Update", type=str)
+def update(name):
+    if not os.path.exists(startworkpath + name):
+        try:
+            os.makedirs(startworkpath + name)
+            click.echo('Create  ' + startworkpath + name)
+        except:
+            pass
+    click.echo('Update Project: ' + name + '  ....')
+    copy_Templates_to_newproject(pastpath=startworkpath + name + '/')
+    click.echo('项目已经成功更新 ')
     exit()
 
 '''
@@ -80,9 +93,12 @@ def runserver(host,port,debug):
 '''
 def copy_Templates_to_newproject(copypath=os.getcwd(), pastpath=os.getcwd() + '/paster/'):
     for i in os.listdir(copypath):
-        if not i == '__init__.py':
+        if not (i == '__init__.py' or i == 'server.conf' or i == 'sqlite3.db'):
             if os.path.isdir(copypath + '/' + i):
-                os.makedirs(pastpath + '/' + i)
+                try:
+                    os.makedirs(pastpath + '/' + i)
+                except:
+                    pass
                 copy_Templates_to_newproject(
                     copypath=copypath + '/'+i, pastpath=pastpath + '/' + i)
             else:
@@ -94,4 +110,4 @@ def copy_Templates_to_newproject(copypath=os.getcwd(), pastpath=os.getcwd() + '/
 
 cli.add_command(run)
 cli.add_command(startproject)
-# cli.add_command(runserver)
+cli.add_command(update)

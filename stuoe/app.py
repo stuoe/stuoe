@@ -28,7 +28,6 @@ import threading
 import platform
 import click
 
-os.chdir(__file__)
 
 
 
@@ -143,6 +142,7 @@ class Tags(db.Model):
     post = db.relationship("Post", backref="Tags")
     lock = db.Column(db.Boolean, server_default='False')
     icon = db.Column(db.String(30), server_defalt='message')
+
 
 
 class Reply(db.Model):

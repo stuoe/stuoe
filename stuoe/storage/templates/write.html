@@ -1,4 +1,3 @@
-w
 
 
 
@@ -12,7 +11,7 @@ w
       <br>
       <select class="mdui-select" mdui-select="{position: 'bottom'}" name="tags" maxlength="300000">
         {% for tags in Tags %}
-          <option value="{{ tags.name }}"> 主题 - {{ tags.name }}</option>
+          <option value="{{ tags.name }}"> {{ tags.icon }}</i> - {{ tags.name }}</option>
         {% endfor %}
       </select>
       <br><br>
