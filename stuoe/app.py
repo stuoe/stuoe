@@ -41,7 +41,7 @@ except:
 # Global Var
 verify_registered_email = list()
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
-Release = 'v0.1.2.4 Release'
+Release = 'v0.1.2.7 Release'
 
 
 # Get Configs File
@@ -572,7 +572,7 @@ def adminSettings(pages):
         adminlist = open('storage/templates/admin/list.html',
                          'r', encoding="utf-8").read()
         body = jinja2.Template(open('storage/templates/admin/tags.html', 'r',
-                                    encoding="utf-8").read()).render(adminList=adminlist, serverconf=serverconf)
+                                    encoding="utf-8").read()).render(adminList=adminlist, serverconf=serverconf,tagslist=Tags.query.filter_by().all())
         return Viewrender.getTemplates(title='管理界面', auth=True, base2=True, body=body, userObj=user)
 
 
@@ -612,6 +612,35 @@ def adminWait_style():
     serverconf = dict(eval(open('server.conf', 'rb').read()))
     Viewrender.serverconf = serverconf
     return redirect('/admin/style')
+
+@app.route('/adminwait/tags/<tid>',methods=['POST'])
+def adminWait_tid(tid):
+    global serverconf
+    request.form['tagsname']
+    request.form['tagsicon']
+    user = get_session('obj')
+    if not user:
+        return abort(403)
+    if not user.user_group == '管理员':
+        return abort(403)
+    tagsObj = Tags.query.filter_by(id=tid).first()
+    if not tagsObj:
+        if tid == 'new':
+            if not Tags.query.filter_by(name=request.form['tagsname']).first() == None:
+                return Viewrender.getMSG(msg='名称重复',auth=True,userObj=user)
+            newTags = Tags(name=request.form['tagsname'],icon=request.form['tagsicon'],lock=False)
+            db.session.add(newTags)
+            db.session.flush()
+            db.session.commit()
+            return redirect('/admin/tags')
+        else:
+            return Viewrender.getMSG(msg='操作的标签对象不存在',auth=True,userObj=user)
+    tagsObj.name = request.form['tagsname']
+    tagsObj.icon = request.form['tagsicon']
+    db.session.flush()
+    db.session.commit()
+    return redirect('/admin/tags')
+
 
 
 # Staticfile
