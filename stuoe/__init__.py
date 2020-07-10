@@ -20,8 +20,10 @@ startworkpath = os.getcwd() + '/'
 
 os.chdir(os.path.dirname(__file__))
 
+__version__ = '0.1.2.4'
 
-click.echo('Welcome to Stuoe v0.1.1')
+
+click.echo('Welcome to Stuoe ' + __version__) 
 click.echo('Worker in ' + os.getcwd())
 click.echo('')
 
@@ -92,4 +94,4 @@ def copy_Templates_to_newproject(copypath=os.getcwd(), pastpath=os.getcwd() + '/
 
 cli.add_command(run)
 cli.add_command(startproject)
-cli.add_command(runserver)
+# cli.add_command(runserver)

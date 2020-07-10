@@ -5,6 +5,8 @@ from setuptools import setup, find_packages
 import sys
 import os
 
+__version__ = '0.1.2.4'
+
 # or
 # from distutils.core import setup
 
@@ -21,7 +23,7 @@ except:
 
 setup(
     name='stuoe',
-    version='0.1.2',
+    version='0.1.2.4',
     description='Lightweight forum, simple interface, easy to install',
     author='snbck',
     author_email='snbckcode@gmail.com',

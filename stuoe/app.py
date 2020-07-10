@@ -42,7 +42,8 @@ except:
 # Global Var
 verify_registered_email = list()
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
-Release = 'v0.1.0 Release'
+Release = 'v0.1.2.4 Release'
+
 
 # Get Configs File
 serverconf = dict(eval(open('server.conf', 'rb').read()))

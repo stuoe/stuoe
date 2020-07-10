@@ -13,3 +13,6 @@ node_modules
 sqlite3.db
 # Gitpod 设置
 /.theia/
+# Pypi dist
+/dist/
+/stuoe.egg-info/
