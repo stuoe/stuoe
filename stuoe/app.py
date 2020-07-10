@@ -338,6 +338,15 @@ def send_index():
     if get_session() == False:
         return Viewrender.gethome(auth=False, tagslist=Tags.query.filter_by().all(), postlist=reversed(Post.query.filter_by().all()[:8]), get_avater=get_avater)
     else:
+        try:
+            serverconf['open_email']
+        except:
+            serverconf['open_email'] = False
+            open('server.conf','w+',encoding='utf-8').write(str(serverconf))
+        if not serverconf['open_email']:
+            get_session('obj').verify_email = True
+            db.session.flush()
+            db.session.commit()
         return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by().all(), postlist=reversed(Post.query.filter_by().all()[:8]), get_avater=get_avater)
 
 
