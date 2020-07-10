@@ -23,7 +23,7 @@ except:
 
 setup(
     name='stuoe',
-    version='0.1.2.5',
+    version='0.1.2.6',
     description='Lightweight forum, simple interface, easy to install',
     author='snbck',
     author_email='snbckcode@gmail.com',
