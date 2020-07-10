@@ -1,3 +1,4 @@
+'''
 /*!
  * mdui v0.4.3 (https://mdui.org)
  * Copyright 2016-2019 zdhxiong
@@ -51162,3 +51163,4 @@ body.mdui-loaded .mdui-drawer {
 .mdui-theme-layout-dark .mdui-menu-item-more {
   background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M7%2010l5%205%205-5z%22%20transform%3D%22rotate(-90%2012%2C12.5)%22%20fill%3D%22%23FFFFFF%22%2F%3E%3C%2Fsvg%3E%0A");
 }
+'''
