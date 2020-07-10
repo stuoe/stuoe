@@ -6,6 +6,7 @@
    <div class="mdui-typo-display-1" align="left">
     {{post.title}}
    </div>
+   <br>
    <div class="mdui-chip">
     <a href="/t/{{ tags.id }}"><span class="mdui-chip-icon"><i class="mdui-icon material-icons">{{tags.icon}}</i></span></a>
     <span class="mdui-chip-title">{{tags.name}}</span>
@@ -24,7 +25,7 @@
        <a href="/u/{{ user.id }}"><img width="200" height="200" class="mdui-img-circle" src="{{ user.avater }}" /></a>
       </div> 
       <div class="mdui-list-item-title mdui-typo">
-       <kbd>{{ user.nickname }}</kbd>
+       <kbd>{{ user.nickname }}</kbd> <kbd>{{ getTimer(post.pushingtime) }}</kbd>
       </div> 
       <div class="mdui-typo">
        {{post.body}}
@@ -41,7 +42,7 @@
         <a href="/u/{{ a.user.id }}"><img width="200" height="200" class="mdui-img-circle" src="{{ a.user.avater }}" /></a>
        </div> 
        <div class="mdui-list-item-title mdui-typo">
-        <kbd>{{ a.user.nickname }}</kbd>
+        <kbd>{{ a.user.nickname }}</kbd> <kbd>{{ getTimer(a.reply.pushingtime) }}</kbd>
        </div> 
        <div class="mdui-typo">
         {{a.reply.body}}

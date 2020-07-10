@@ -52,6 +52,7 @@ def run(port):
 @click.option("--name", default='Dafault', help="Start A New Project", type=str)
 def startproject(name):
     if not os.path.exists(startworkpath + name):
+        os.makedirs(startworkpath + name)
         click.echo('Create  ' + startworkpath + name)
     if not os.listdir(startworkpath + name) == []:
         click.echo('目录为' + startworkpath + name + '的文件夹并不为空，无法创建新的工程')

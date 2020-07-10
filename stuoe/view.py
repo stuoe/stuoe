@@ -18,6 +18,9 @@ def c():
     serverconf = dict(eval(open('server.conf', 'rb').read()))
     serverurl = serverconf['url']
 
+def getTimer(timetime):
+    return time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(int(timetime)))
+
 
 def getTemplates(
         body='',
@@ -95,7 +98,8 @@ def getUserSpace(auth=False, lookuserObj='', userObj=''):
         body=body,
         auth=auth,
         userObj=userObj,
-        title=lookuserObj.nickname)
+        title=lookuserObj.nickname,
+        getTimer=getTimer)
 
 
 def getWrite(auth=False, userObj='', Tags=''):
@@ -148,7 +152,8 @@ def getPost(
         post=Post,
         tags=Tags,
         ReplyList=replyList,
-        list=list)
+        list=list,
+        getTimer=getTimer)
     return getTemplates(
         body=body,
         auth=auth,
