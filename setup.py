@@ -34,7 +34,7 @@ setup(
                 'stuoe=stuoe:cli'
             ]},
     install_requires=['easygui==0.98.1', 'Flask==1.1.2', 'Flask-Avatars==0.2.2', 'Flask-Dropzone==1.5.4', 'Flask-Login==0.5.0', 'Flask-Mail==0.9.1',
-                      'Flask-Moment==0.9.0', 'Flask-OAuthlib==0.9.5', 'Flask-SQLAlchemy==2.4.1', 'flask-whooshee==0.7.0', 'Flask-WTF==0.14.3', 'gunicorn==20.0.4', 'gevent==20.6.2'],
+                      'Flask-Moment==0.9.0', 'Flask-SQLAlchemy==2.4.1', 'flask-whooshee==0.7.0', 'Flask-WTF==0.14.3', 'gunicorn==20.0.4', 'gevent==20.6.2'],
     include_package_data=True,
     zip_safe=False,
     long_description_content_type="text/markdown",

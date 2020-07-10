@@ -28,6 +28,8 @@ import threading
 import platform
 import click
 
+os.chdir(__file__)
+
 
 
 

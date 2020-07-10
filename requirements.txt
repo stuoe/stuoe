@@ -5,7 +5,6 @@ Flask-Dropzone==1.5.4
 Flask-Login==0.5.0
 Flask-Mail==0.9.1
 Flask-Moment==0.9.0
-Flask-OAuthlib==0.9.5
 Flask-SQLAlchemy==2.4.1
 flask-whooshee==0.7.0
 Flask-WTF==0.14.3
