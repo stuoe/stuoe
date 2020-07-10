@@ -42,3 +42,4 @@ Apach License
 
 开发者论坛 https://stuoe.pythonanywhere.com/p/1
 
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/stuoe/stuoe)
