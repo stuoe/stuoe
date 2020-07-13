@@ -23,7 +23,7 @@ os.chdir(os.path.dirname(__file__))
 __version__ = '0.1.2.7'
 
 
-click.echo('Welcome to Stuoe ' + __version__) 
+click.echo('Welcome to Stuoe ' + __version__)
 click.echo('Worker in ' + os.getcwd())
 click.echo('')
 
@@ -62,6 +62,7 @@ def startproject(name):
     click.echo('项目已经成功创建 ')
     exit()
 
+
 @click.command()
 @click.option("--name", default='Dafault', help="A Update", type=str)
 def update(name):
@@ -75,6 +76,7 @@ def update(name):
     copy_Templates_to_newproject(pastpath=startworkpath + name + '/')
     click.echo('项目已经成功更新 ')
     exit()
+
 
 '''
 @click.command()
@@ -92,6 +94,8 @@ def runserver(host,port,debug):
     app.app.run(host=host,port=port,debug=debug)
 
 '''
+
+
 def copy_Templates_to_newproject(copypath=os.getcwd(), pastpath=os.getcwd() + '/paster/'):
     for i in os.listdir(copypath):
         if not (i == '__init__.py' or i == 'server.conf' or i == 'sqlite3.db'):
@@ -112,3 +116,24 @@ def copy_Templates_to_newproject(copypath=os.getcwd(), pastpath=os.getcwd() + '/
 cli.add_command(run)
 cli.add_command(startproject)
 cli.add_command(update)
+
+
+# EXTENSIONS COMPENMENT
+class EXTENSIONS(object):
+    '''
+    父类EXTENSIONS覆盖了编写插件的大部分工作
+    '''
+
+    def __init__(self, NAME, URL, VERISON, DESCRIBE, AUTHOR,MAIN=''):
+        self.NAME = NAME
+        self.URL = URL
+        self.VERSION = VERISON
+        self.DESCRIBE = DESCRIBE
+        self.AUTHOR = AUTHOR
+        
+
+    def register_for_app(self, APP):
+        self.app = app
+
+    def add_url_rule(self, URL, RULE):
+        self.APP.add_url_rule(URL, view_func=RULE)

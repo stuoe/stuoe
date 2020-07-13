@@ -1,0 +1,31 @@
+<div align="center">
+    <div class="mdui-row mdui-row-gapless">
+        <div class="mdui-col-xs-3"></div>
+        <div class="mdui-col-xs-6">
+            <div class="mdui-typo-headline">搜索</div>
+            <br>
+            <br>
+            <form action="/search" method="POST">
+                <div class="mdui-textfield mdui-textfield-expandable">
+                    <button type="reset" class="mdui-textfield-icon mdui-btn mdui-btn-icon">
+                        <i class="mdui-icon material-icons">search</i></button>
+                    <input class="mdui-textfield-input" type="text" placeholder="搜素其实很简单" name="SearchText" />
+                    
+                </div><br>
+            </form>
+            <ul class="mdui-list">
+                {% for Searchlist in SearchList %}
+                <li class="mdui-list-item mdui-ripple">
+
+                    <div class="mdui-list-item-avatar"><img
+                            src="{{ Searchlist.avater }}" />
+                    </div>
+                    <div class="mdui-list-item-content" align="center"><a href="/p/{{ Searchlist.url }}">{{ Searchlist.name }}</a></div>
+                    <i class="mdui-list-item-icon mdui-icon material-icons">chat_bubble_outline</i>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="mdui-col-xs-3"></div>
+    </div>
+</div>

@@ -7,10 +7,6 @@
 '''
 
 
-
-
-
-
 import jinja2
 import flask_oauthlib
 import flask_mail
@@ -29,9 +25,6 @@ import platform
 import click
 
 
-
-
-
 try:
     import view
 except:
@@ -41,7 +34,7 @@ except:
 # Global Var
 verify_registered_email = list()
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
-Release = 'v0.1.2.7 Release'
+Release = 'v0.1.2.8 Release'
 
 
 # Get Configs File
@@ -144,7 +137,6 @@ class Tags(db.Model):
     icon = db.Column(db.String(30), server_defalt='message')
 
 
-
 class Reply(db.Model):
     __tablename__ = 'Reply'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -237,7 +229,7 @@ def db_create_user(email, password, nickname, user_group):
         user_dirty=False,
         registertime=time.time(),
         MessageToMailbox=True,
-        avater='/static/avater.jpg')
+        avater='http://identicon.relucks.org/' + str(random.randint(200,999)) + '?size=120')
     db.session.add(new_user)
     db.session.flush()
     db.session.commit()
@@ -342,7 +334,7 @@ def send_index():
             serverconf['open_email']
         except:
             serverconf['open_email'] = False
-            open('server.conf','w+',encoding='utf-8').write(str(serverconf))
+            open('server.conf', 'w+', encoding='utf-8').write(str(serverconf))
         if not serverconf['open_email']:
             get_session('obj').verify_email = True
             db.session.flush()
@@ -361,13 +353,14 @@ def user_space(uid):
     user = db_getuserByid(uid)
     if user is None:
         return abort(404)
-    lastedPost = Reply.query.filter_by(pusher=user.id).all()[:3] + Post.query.filter_by(pusher=user.id).all()[:3]
+    lastedPost = Reply.query.filter_by(pusher=user.id).all(
+    )[:3] + Post.query.filter_by(pusher=user.id).all()[:3]
     lookuser = get_session('obj')
     if not lookuser:
-        return Viewrender.getUserSpace(auth=False, lastedPost=lastedPost,lookuserObj=user)
+        return Viewrender.getUserSpace(auth=False, lastedPost=lastedPost, lookuserObj=user)
     else:
         return Viewrender.getUserSpace(
-            auth=True, lookuserObj=user, userObj=lookuser,lastedPost=lastedPost)
+            auth=True, lookuserObj=user, userObj=lookuser, lastedPost=lastedPost)
 
 
 @app.route('/p/<pid>')
@@ -572,7 +565,13 @@ def adminSettings(pages):
         adminlist = open('storage/templates/admin/list.html',
                          'r', encoding="utf-8").read()
         body = jinja2.Template(open('storage/templates/admin/tags.html', 'r',
-                                    encoding="utf-8").read()).render(adminList=adminlist, serverconf=serverconf,tagslist=Tags.query.filter_by().all())
+                                    encoding="utf-8").read()).render(adminList=adminlist, serverconf=serverconf, tagslist=Tags.query.filter_by().all())
+        return Viewrender.getTemplates(title='管理界面', auth=True, base2=True, body=body, userObj=user)
+    if pages == 'extension':
+        adminlist = open('storage/templates/admin/list.html',
+                         'r', encoding="utf-8").read()
+        body = jinja2.Template(open('storage/templates/admin/ext.html', 'r',
+                                    encoding="utf-8").read()).render(adminList=adminlist, serverconf=serverconf, tagslist=Tags.query.filter_by().all())
         return Viewrender.getTemplates(title='管理界面', auth=True, base2=True, body=body, userObj=user)
 
 
@@ -613,7 +612,8 @@ def adminWait_style():
     Viewrender.serverconf = serverconf
     return redirect('/admin/style')
 
-@app.route('/adminwait/tags/<tid>',methods=['POST'])
+
+@app.route('/adminwait/tags/<tid>', methods=['POST'])
 def adminWait_tid(tid):
     global serverconf
     request.form['tagsname']
@@ -627,20 +627,55 @@ def adminWait_tid(tid):
     if not tagsObj:
         if tid == 'new':
             if not Tags.query.filter_by(name=request.form['tagsname']).first() == None:
-                return Viewrender.getMSG(msg='名称重复',auth=True,userObj=user)
-            newTags = Tags(name=request.form['tagsname'],icon=request.form['tagsicon'],lock=False)
+                return Viewrender.getMSG(msg='名称重复', auth=True, userObj=user)
+            newTags = Tags(
+                name=request.form['tagsname'], icon=request.form['tagsicon'], lock=False)
             db.session.add(newTags)
             db.session.flush()
             db.session.commit()
             return redirect('/admin/tags')
         else:
-            return Viewrender.getMSG(msg='操作的标签对象不存在',auth=True,userObj=user)
+            return Viewrender.getMSG(msg='操作的标签对象不存在', auth=True, userObj=user)
     tagsObj.name = request.form['tagsname']
     tagsObj.icon = request.form['tagsicon']
     db.session.flush()
     db.session.commit()
     return redirect('/admin/tags')
 
+
+class SearchObj():
+    def __init__(self, avater, url, name):
+        self.avater = avater
+        self.url = url
+        self.name = name
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def getSearch():
+    user = get_session('obj')
+    auth = not (user == None)
+    if request.method == 'POST':
+        SearchList = []
+        SearchText = request.form['SearchText']
+        for i in User.query.filter_by().all():
+            if (SearchText in i.nickname) or (SearchText == i.id) or (SearchText in i.user_des):
+                SearchList.append(
+                    SearchObj(avater=i.avater, name="用户: " + str(i.nickname), url="/u/" + str(i.id)))
+        for i in Post.query.filter_by().all():
+            if (SearchText in i.title) or (SearchText in i.body):
+                SearchList.append(SearchObj(avater=get_avater(
+                    i.pusher), name="讨论: " + i.title, url="/p/" + str(i.id)))
+        user = get_session('obj')
+        body = jinja2.Template(
+            open('storage/templates/search.html', 'r', encoding="utf-8").read()).render(SearchList=SearchList)
+
+        return Viewrender.getTemplates(auth=auth, userObj=user, title='搜索', body=body)
+    else:
+
+        body = jinja2.Template(
+            open('storage/templates/search.html', 'r', encoding="utf-8").read()).render()
+
+        return Viewrender.getTemplates(auth=auth, userObj=user, title='搜索', body=body)
 
 
 # Staticfile

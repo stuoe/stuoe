@@ -7,8 +7,6 @@ __pycache__
 .vscode
 # node包(自行npm install)
 node_modules
-# server.conf(包括重要信息）
-*.conf
 # Sqlite3 数据
 sqlite3.db
 # Gitpod 设置
