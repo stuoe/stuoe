@@ -61,6 +61,13 @@ Viewrender = view
 db = SQLAlchemy(app)
 mail = flask_mail.Mail(app)
 
+star_for = db.Table('star_for',
+                    db.Column('star_user', db.Integer, db.ForeignKey(
+                        'User.id'), primary_key=True),
+                    db.Column('stared_post', db.Integer,
+                              db.ForeignKey('Post.id'), primary_key=True)
+                    )
+
 
 class User(db.Model):
     __tablename__ = 'User'
@@ -117,6 +124,8 @@ class Post(db.Model):
     tags = db.Column(db.Integer, db.ForeignKey('Tags.id'))
     lock = db.Column(db.Boolean, server_default='False')
     reply = db.relationship("Reply", backref="Post")
+    star_user_list = db.relationship(
+        'User', secondary=star_for, backref=db.backref('Post'))
 
 
 class Messages(db.Model):
@@ -163,16 +172,17 @@ if Group.query.filter_by(Group_name='管理员').first() is None:
         Highest_authority_group=True)
     db.session.add(AdminGourp)
     db.session.commit()
-if Tags.query.filter_by(name="新鲜事").first() is None:
-    goodnewsTags = Tags(name='新鲜事', lock=False, icon='message')
-    db.session.add(goodnewsTags)
-    db.session.flush()
-    db.session.commit()
-if Tags.query.filter_by(name="咕咚事").first() is None:
-    goodnewsTags = Tags(name='咕咚事', lock=False, icon='child_care')
-    db.session.add(goodnewsTags)
-    db.session.flush()
-    db.session.commit()
+if Tags.query.filter_by().first() == None:
+    if Tags.query.filter_by(name="新鲜事").first() is None:
+        goodnewsTags = Tags(name='新鲜事', lock=False, icon='message')
+        db.session.add(goodnewsTags)
+        db.session.flush()
+        db.session.commit()
+    if Tags.query.filter_by(name="咕咚事").first() is None:
+        goodnewsTags = Tags(name='咕咚事', lock=False, icon='child_care')
+        db.session.add(goodnewsTags)
+        db.session.flush()
+        db.session.commit()
 
 
 class replyObj():
@@ -229,7 +239,7 @@ def db_create_user(email, password, nickname, user_group):
         user_dirty=False,
         registertime=time.time(),
         MessageToMailbox=True,
-        avater='http://identicon.relucks.org/' + str(random.randint(200,999)) + '?size=120')
+        avater='http://identicon.relucks.org/' + str(random.randint(200, 999)) + '?size=120')
     db.session.add(new_user)
     db.session.flush()
     db.session.commit()
@@ -390,6 +400,22 @@ def post_pages(pid):
             userObj=user,
             replyList=replyList)
 
+
+@app.route('/stared/<pid>')
+def post_stared(pid):
+    obj = db_getpostByid(pid)
+    if obj is None:
+        return abort(404)
+    user = get_session('obj')
+    if not user:
+        return abort(403)
+    for i in obj.star_user_list:
+        if i.id == user.id:
+            return redirect('/p/' + str(pid))
+    obj.star_user_list.append(user)
+    db.session.flush()
+    db.session.commit()
+    return redirect('/p/' + str(pid))
 
 @app.route('/t/<tid>')
 def get_tags(tid):

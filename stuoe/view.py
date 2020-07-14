@@ -156,7 +156,8 @@ def getPost(
         tags=Tags,
         ReplyList=replyList,
         list=list,
-        getTimer=getTimer)
+        getTimer=getTimer,
+        len=len)
     return getTemplates(
         body=body,
         auth=auth,

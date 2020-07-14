@@ -1,75 +1,62 @@
-<div class="mdui-container"> 
-  <!--Title And Tags--> 
-  <div align="left"> 
-   <br />
-   <br /> 
-   <div class="mdui-typo-display-1" align="left">
-    {{post.title}}
-   </div>
-   <br>
-   <div class="mdui-chip">
-    <a href="/t/{{ tags.id }}"><span class="mdui-chip-icon"><i class="mdui-icon material-icons">{{tags.icon}}</i></span></a>
-    <span class="mdui-chip-title">{{tags.name}}</span>
-   </div>
-   <br />
-   <br />
-   <br /> 
-  </div> 
-  <!--End Title And Tags--> 
-  <div class="mdui-row mdui-row-gapless"> 
-   <!-- Body and Reply--> 
-   <div class="mdui-col-xs-11"> 
-    <li class="mdui-list-item"> 
-     <div class="mdui-list-item-content"> 
-      <div class="mdui-list-item-avatar">
-       <a href="/u/{{ user.id }}"><img width="200" height="200" class="mdui-img-circle" src="{{ user.avater }}" /></a>
-      </div> 
-      <div class="mdui-list-item-title mdui-typo">
-       <kbd>{{ user.nickname }}</kbd> <kbd>{{ getTimer(post.pushingtime) }}</kbd>
-      </div> 
-      <div class="mdui-typo">
-       {{post.body}}
-      </div> 
-     </div><br /> </li>
-    <li class="mdui-divider-inset mdui-m-y-0"></li> 
+<div class="mdui-container">
+  <!--Title And Tags-->
+  <div align="left"><br /><br />
+    <div class="mdui-typo-display-1" align="left">{{post.title}}</div><br>
+    <div class="mdui-chip"><a href="/t/{{ tags.id }}"><span class="mdui-chip-icon"><i
+            class="mdui-icon material-icons">{{tags.icon}}</i></span></a><span
+        class="mdui-chip-title">{{tags.name}}</span></div><br /><br /><br />
+  </div>
+  <!--End Title And Tags-->
+  <div class="mdui-row mdui-row-gapless">
+    <!--Body and Reply-->
+    <div class="mdui-col-xs-11">
+      <li class="mdui-list-item">
+        <div class="mdui-list-item-content">
+          <div class="mdui-list-item-avatar"><a href="/u/{{ user.id }}"><img width="200" height="200"
+                class="mdui-img-circle" src="{{ user.avater }}" /></a></div>
+          <div class="mdui-list-item-title mdui-typo">
+            <kbd>{{user.nickname}}</kbd><kbd>{{getTimer(post.pushingtime)}}</kbd></div>
+          <div class="mdui-typo">{{post.body}}</div>
+          <ul class="mdui-menu" id="postop">{%if user in post.star_user_list%}<li class="mdui-menu-item" disabled><a
+                class="mdui-ripple" href=""><i
+                  class="mdui-menu-item-icon mdui-icon material-icons">star_border</i>设为星标</a></li>{%else%}<li
+              class="mdui-menu-item"><a class="mdui-ripple" href="/stared/{{ post.id }}"><i
+                  class="mdui-menu-item-icon mdui-icon material-icons">stars</i>设为星标</a></li>{%endif%}<li
+              class="mdui-menu-item"><a class="mdui-ripple" href="#reply"><i
+                  class="mdui-menu-item-icon mdui-icon material-icons">chat_bubble</i>回复</a></li>
+            <li class="mdui-divider"></li>
+            <li class="mdui-menu-item"><a class="mdui-ripple" href="/rmpost/{{ post.id }}"><i
+                  class="mdui-menu-item-icon mdui-icon material-icons">delete</i>删除</a></li>
+          </ul><button align="right" class="mdui-btn mdui-color-theme-accent"
+            mdui-menu="{target: '#postop'}">更多</button>
+        </div><br />
+      </li>
+      <li class="mdui-divider-inset mdui-m-y-0"></li>
+      <p><u>
+          {% for i in post.star_user_list[:13] %} {{ i.nickname }} {% endfor %}等{{ len(list(post.star_user_list)) }}人将帖子设为星标
+        </u></p><br /><br />
+      <ul class="mdui-list">{%for a in ReplyList%}<li class="mdui-list-item">
+          <div class="mdui-list-item-content">
+            <div class="mdui-list-item-avatar"><a href="/u/{{ a.user.id }}"><img width="200" height="200"
+                  class="mdui-img-circle" src="{{ a.user.avater }}" /></a></div>
+            <div class="mdui-list-item-title mdui-typo">
+              <kbd>{{a.user.nickname}}</kbd><kbd>{{getTimer(a.reply.pushingtime)}}</kbd></div>
+            <div class="mdui-typo">{{a.reply.body}}</div>
+          </div><br />
+        </li>
+        <li class="mdui-divider-inset mdui-m-y-0"></li>{%endfor%}
+      </ul>
+      <!--Wrie Reply-->
+      <div id="reply">
+        <form method="POST" action="/postreply/{{ post.id }}"><br /><br /><br /><textarea name="body" id="editor"
+            placeholder="有什么补充的？尽情讨论吧!" autofocus=""></textarea>
+          <script>var editor = new Simditor({ toolbar: ['title', 'bold', 'italic', 'underline', 'strikethrough', 'fontScale', 'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|', 'link', 'image', 'hr', '|', 'alignment'], textarea: '#editor', placeholder: '有什么补充的？尽情讨论吧!', imageButton: ['upload'], upload: { url: '', params: null, fileKey: 'upload_file', connectionCount: 3, leaveConfirm: 'Uploading is in progress, are you sure to leave this page?' } });</script>
+          <br /><br /><br /><button class="mdui-btn mdui-color-theme-accent ">回复</button><br /></form>
+      </div>
+    </div>
+    <!--End Write Reply-->
+
     <br />
-    <br /> 
-    <ul class="mdui-list">
-      {%for a in ReplyList%} 
-     <li class="mdui-list-item"> 
-      <div class="mdui-list-item-content"> 
-       <div class="mdui-list-item-avatar">
-        <a href="/u/{{ a.user.id }}"><img width="200" height="200" class="mdui-img-circle" src="{{ a.user.avater }}" /></a>
-       </div> 
-       <div class="mdui-list-item-title mdui-typo">
-        <kbd>{{ a.user.nickname }}</kbd> <kbd>{{ getTimer(a.reply.pushingtime) }}</kbd>
-       </div> 
-       <div class="mdui-typo">
-        {{a.reply.body}}
-       </div> 
-      </div><br /> </li> 
-     <li class="mdui-divider-inset mdui-m-y-0"></li> {%endfor%} 
-    </ul> 
-    <!-- Wrie Reply--> 
-    <div id="reply"> 
-     <form method="POST" action="/postreply/{{ post.id }}"> 
-      <br />
-      <br />
-      <br />
-      <textarea name="body" id="editor" placeholder="有什么补充的？尽情讨论吧!" autofocus="">&lt;div class=&quot;mdui-typo&quot;&gt;&lt;/div&lt;/div</textarea>
-      <br />
-      <br />
-      <br />
-      <button class="mdui-btn mdui-color-theme-accent ">回复</button>
-      <br />
-     </form> 
-    </div> 
-   </div> 
-   <!-- End Write Reply--> 
-   <script>
-       var editor = new Simditor({ toolbar: ['title', 'bold', 'italic', 'underline', 'strikethrough', 'fontScale', 'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|', 'link', 'image', 'hr', '|', 'alignment'], textarea: '#editor', placeholder: '有什么补充的？尽情讨论吧!', imageButton: ['upload'], upload: { url: '', params: null, fileKey: 'upload_file', connectionCount: 3, leaveConfirm: 'Uploading is in progress, are you sure to leave this page?' } });
-     </script> 
-   <br /> 
-  </div> 
- </div> 
- <!--End Body and Reply-->
+  </div>
+</div>
+<!--End Body and Reply-->
