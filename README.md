@@ -1,45 +1,39 @@
-# Stuoe Framework 0.1.2预览版
+# Stuoe
 
-Stuoe Framework是一个面向于想要快速构建论坛的新手和开发者的论坛框架。本身基于Python，界面使用MDUI，使用Jinja2来加速渲染界面。最基本的标签，回复，提到，富文本编辑器，等等功能都能胜任。拥有丰富的api进行开发，以及个性化主题.
+[![license](https://img.shields.io/github/license/stuoe/stuoe.svg)](LICENSE)
+[![Flask](https://img.shields.io/badge/%20power-Flask-blue.svg?style=flat-square)](https://github.com/pallets/flask)
+![PyPI - Python](https://img.shields.io/badge/%20PYPI-stuoe-orange.svg?style=flat-square)
 
-* 使用Python，因此他很容易安装。使用Sqlite3，不用安装数据库环境
-* 界面美观，不臃肿.Jinja2渲染，快速
-* 开源，数据透明。开源协议：[Apach License](http://www.apache.org/licenses/)
+stuoe是一个轻量的论坛软件，为想要快速构建论坛的人准备的，即使是一个完全不懂技术的人也可以轻松的部署。不用配置数据库环境，因为他使用[Sqlite3]()。拥有丰富的扩展api.
 
+Stuoe is a lightweight forum software for people who want to build a forum quickly. Even a person who doesn't know technology can easily deploy it. There is no need to configure the database environment because it uses [SQLite3](). It has rich extension API
 
-> Stuoe目前正在预览版中，有太多的功能没有实现，所以并不代表最终品质
+## Installing
+使用[pip](https://pypi.org)用于安装和更新
 
->如果你愿意与我们一起开发Stuoe，可以发邮件到snbckcode@gmail.com
+Use [pip](https://pypi.org)  For installation and updates
 
-## Usage
-使用pip安装命令行工具
 ``` bash
-pip install stuoe
+pip install -U stuoe
 ```
-或者使用easy_install
+## Fastest build
+*(nonproductive)*
+
 ``` bash
-easy_install install stuoe
-```
-新建一个项目工程
-``` bash
-stuoe startproject --name demobbs
-cd demobbs
-```
-运行它
-``` bash
+stuoe startproject demo
+cd demo
 flask run
 ```
 
-更多资料:stuoe.cn（开发中）
-
-## License
-
-Apach License
-
+``` bash
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+```
 ## Link
-
-官网 https://stuoe.cn
-
-开发者论坛 https://stuoe.pythonanywhere.com/p/1
-
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/stuoe/stuoe)
+* Web:  [https://stuoe.cn](https://stuoe.cn)
+* Start: [https://stuoe.cn/docs/start.html](https://stuoe.cn/docs/start.html)
+* Version : [https://pypi.org/project/stuoe](https://pypi.org/project/stuoe)
+* discuss : [https://stuoe.pythonanywhere.com/](https://stuoe.pythonanywhere.com/)
