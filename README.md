@@ -1,8 +1,12 @@
 # Stuoe
+<div align="center">
+<img src="https://cdn.jsdelivr.net/gh/stuoe/stuoe.github.io@master/static/Stuoe.png" width="300" height="300">
+
 
 [![license](https://img.shields.io/github/license/stuoe/stuoe.svg)](LICENSE)
 [![Flask](https://img.shields.io/badge/%20power-Flask-blue.svg?style=flat-square)](https://github.com/pallets/flask)
 ![PyPI - Python](https://img.shields.io/badge/%20PYPI-stuoe-orange.svg?style=flat-square)
+</div>
 
 stuoe是一个轻量的论坛软件，为想要快速构建论坛的人准备的，即使是一个完全不懂技术的人也可以轻松的部署。不用配置数据库环境，因为他使用[Sqlite3]()。拥有丰富的扩展api.
 
