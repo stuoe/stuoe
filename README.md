@@ -1,4 +1,3 @@
-# Stuoe
 <div align="center">
 <img src="https://cdn.jsdelivr.net/gh/stuoe/stuoe.github.io@master/static/Stuoe.png" width="300" height="300">
 
