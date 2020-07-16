@@ -1,6 +1,6 @@
 
 
-''' 
+'''
 -----------------------------
     Start APP
 -----------------------------
@@ -134,7 +134,9 @@ class Messages(db.Model):
     subject = db.Column(db.String(50))
     body = db.Column(db.String(3000))
     PostTime = db.Column(db.Integer)
+    "Postman指的是接收者"
     Postman = db.Column(db.String(40), db.ForeignKey('User.id'))
+    avater = db.Column(db.String(40))
 
 
 class Tags(db.Model):
@@ -416,6 +418,7 @@ def post_stared(pid):
     db.session.flush()
     db.session.commit()
     return redirect('/p/' + str(pid))
+
 
 @app.route('/t/<tid>')
 def get_tags(tid):
@@ -852,7 +855,6 @@ def get_license():
 def get_fileUrl(fileObj, id):
     return '/dynamic/{}/{}'.format(id, fileObj.filename)
 
-
 def get_avater(userId):
     obj = User.query.filter_by(id=userId).first()
     if obj == None:
@@ -860,6 +862,20 @@ def get_avater(userId):
     return obj.avater
 
 
-@app.route('/robots.txt')
+def postNotice(userId, title, body, user):
+    newNotice = Messages(subject=title, body=body, PostTime=time.time(), Postman=userId,
+                         avater='http://identicon.relucks.org/' + str(random.randint(200, 999)) + '?size=120')
+    msg = flask_mail.Message(recipients=db_getuserByid(userId).email,
+                             html = body,
+                             subject = '网站通知:' + title,)
+    threading._start_new_thread(send_mail, (msg,))
+    current_app.logger.info(
+        "向" + db_getuserByid(userId).email + "发送了一个通知 标题:" + title + " 内容:" + body)
+
+    return redirect('/settings/check')
+
+
+
+@ app.route('/robots.txt')
 def robotsTxt():
     return serverconf['robots.txt']

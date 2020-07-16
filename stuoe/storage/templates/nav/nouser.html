@@ -1,59 +1,60 @@
-<div class="mdui-toolbar "> 
-  <span class="mdui-typo-title"><a href="/">{{ webtitle }}</a></span> 
-  <div class="mdui-toolbar-spacer"></div> 
-  <a href="/search" mdui-tooltip="{content: '搜索'}" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a> 
-  <a mdui-tooltip="{content: '注册/登入'}" class="mdui-btn  " mdui-menu="{target: '#account-op'}">注册/登入</a> 
-  <a mdui-tooltip="{content: '公告'}" class="mdui-btn  " mdui-menu="{target: '#account-op'}"><i class="mdui-icon material-icons">announcement</i></a> 
-  <ul class="mdui-menu" id="account-op"> 
-   <li class="mdui-menu-item"> <a class="mdui-ripple" mdui-dialog="{target: '#register-op'}">注册</a> </li> 
-   <li class="mdui-menu-item"> <a class="mdui-ripple" mdui-dialog="{target: '#login-op'}">登入</a> </li> 
-   <li class="mdui-divider"></li> 
-   <li class="mdui-menu-item"> <a href="javascript:;" class="mdui-ripple">帮助/反馈</a> </li> 
-  </ul> 
-  <div class="mdui-dialog   mdui-color-theme-theme" id="register-op"> 
-   <div class="mdui-dialog-title">
-    进行注册
-   </div> 
-   <div class="mdui-dialog-content"> 
-    <form action="/api/register" method="POST"> 
-     <div class="mdui-container"> 
-      <div class="mdui-textfield"> 
-       <label class="mdui-textfield-label">昵称</label> 
-       <input class="mdui-textfield-input" type="text" name="nickname" maxlength="15"/> 
-      </div> 
-      <div class="mdui-textfield"> 
-       <label class="mdui-textfield-label">电子邮箱</label> 
-       <input class="mdui-textfield-input" type="email" name="email" /> 
-      </div> 
-      <div class="mdui-textfield"> 
-       <label class="mdui-textfield-label">密码</label> 
-       <input class="mdui-textfield-input" type="password" name="password" maxlength="20"/> 
-      </div>
-      <br /> 
-      <button type="submit" class="mdui-btn mdui-btn-raised mdui-ripple  ">注册</button> 
-     </div> 
-    </form> 
-   </div> 
-  </div> 
-  <div class="mdui-dialog   mdui-color-theme-theme" id="login-op"> 
-   <div class="mdui-dialog-title">
-    进行登入
-   </div> 
-   <div class="mdui-dialog-content"> 
-    <form action="/api/login" method="POST"> 
-     <div class="mdui-container"> 
-      <div class="mdui-textfield"> 
-       <label class="mdui-textfield-label">电子邮箱</label> 
-       <input class="mdui-textfield-input" type="email" name="email" /> 
-      </div> 
-      <div class="mdui-textfield"> 
-       <label class="mdui-textfield-label">密码</label> 
-       <input class="mdui-textfield-input" type="password" name="password" /> 
-      </div>
-      <br /> 
-      <button type="submit" class="mdui-btn mdui-btn-raised mdui-ripple  ">登入</button> 
-     </div> 
-    </form> 
-   </div> 
-  </div> 
- </div>
+<div class="mdui-toolbar ">
+  <span class="mdui-typo-title"><a href="/"
+      style="text-decoration: none;font-weight: 300;color:#0c0d0e;">{{ webtitle }}</a></span>
+  <div class="mdui-toolbar-spacer"></div>
+  <a href="/search" mdui-tooltip="{content: '搜索'}" class="mdui-btn mdui-btn-icon"><i
+      class="mdui-icon material-icons">search</i></a>
+  <a mdui-tooltip="{content: '注册/登入'}" class="mdui-btn  " mdui-menu="{target: '#account-op'}">注册/登入</a>
+  <ul class="mdui-menu" id="account-op">
+    <li class="mdui-menu-item"> <a class="mdui-ripple" mdui-dialog="{target: '#register-op'}">注册</a> </li>
+    <li class="mdui-menu-item"> <a class="mdui-ripple" mdui-dialog="{target: '#login-op'}">登入</a> </li>
+    <li class="mdui-divider"></li>
+    <li class="mdui-menu-item"> <a href="javascript:;" class="mdui-ripple">帮助/反馈</a> </li>
+  </ul>
+  <div class="mdui-dialog   mdui-color-theme-theme" id="register-op">
+    <div class="mdui-dialog-title">
+      进行注册
+    </div>
+    <div class="mdui-dialog-content">
+      <form action="/api/register" method="POST">
+        <div class="mdui-container">
+          <div class="mdui-textfield">
+            <label class="mdui-textfield-label">昵称</label>
+            <input class="mdui-textfield-input" type="text" name="nickname" maxlength="15" />
+          </div>
+          <div class="mdui-textfield">
+            <label class="mdui-textfield-label">电子邮箱</label>
+            <input class="mdui-textfield-input" type="email" name="email" />
+          </div>
+          <div class="mdui-textfield">
+            <label class="mdui-textfield-label">密码</label>
+            <input class="mdui-textfield-input" type="password" name="password" maxlength="20" />
+          </div>
+          <br />
+          <button type="submit" class="mdui-btn mdui-btn-raised mdui-ripple  ">注册</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="mdui-dialog   mdui-color-theme-theme" id="login-op">
+    <div class="mdui-dialog-title">
+      进行登入
+    </div>
+    <div class="mdui-dialog-content">
+      <form action="/api/login" method="POST">
+        <div class="mdui-container">
+          <div class="mdui-textfield">
+            <label class="mdui-textfield-label">电子邮箱</label>
+            <input class="mdui-textfield-input" type="email" name="email" />
+          </div>
+          <div class="mdui-textfield">
+            <label class="mdui-textfield-label">密码</label>
+            <input class="mdui-textfield-input" type="password" name="password" />
+          </div>
+          <br />
+          <button type="submit" class="mdui-btn mdui-btn-raised mdui-ripple  ">登入</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
