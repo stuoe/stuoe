@@ -1,5 +1,5 @@
 <div align="center">
-<img src="https://cdn.jsdelivr.net/gh/stuoe/stuoe.github.io@master/static/Stuoe.png" width="300" height="300">
+<img src="https://raw.githubusercontent.com/snbck/stuoe.github.io/master/static/Stuoe.png" width="300" height="300">
 
 
 [![license](https://img.shields.io/github/license/stuoe/stuoe.svg)](LICENSE)
