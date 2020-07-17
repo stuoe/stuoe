@@ -26,6 +26,7 @@ def getTimer(timetime, simple=False):
         return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(timetime)))
 
 
+
 def getTemplates(
         body='',
         title='',
@@ -88,7 +89,7 @@ def getTemplates(
 
 def gethome(auth=True, userObj='', tagslist='', postlist='', get_avater=''):
     body = jinja2.Template(open('storage/templates/index.html',
-                                'r', encoding="utf-8").read()).render(webtitle=serverconf['stuoe_name'], des=serverconf['stuoe_des'], userObj=userObj, tagslist=tagslist, postlist=list(postlist), get_avater=get_avater)
+                                'r', encoding="utf-8").read()).render(webtitle=serverconf['stuoe_name'], des=serverconf['stuoe_des'], userObj=userObj, tagslist=tagslist, postlist=list(postlist), get_avater=get_avater,auth=auth)
     return getTemplates(auth=auth, title='', body=body, userObj=userObj, base2=True)
 
 

@@ -13,8 +13,8 @@ import flask_mail
 from flask import __version__
 from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate,MigrateCommand
-from flask_script import Manager,Shell
+from flask_migrate import Migrate, MigrateCommand
+from flask_script import Manager, Shell
 from flask import *
 import re
 import hashlib
@@ -64,9 +64,7 @@ Viewrender = view
 manager = Manager(app)
 db = SQLAlchemy(app)
 mail = flask_mail.Mail(app)
-migrate = Migrate(app,db)
-
-
+migrate = Migrate(app, db)
 
 
 star_for = db.Table('star_for',
@@ -169,8 +167,6 @@ class Reply(db.Model):
 db.create_all()
 
 
-
-
 # Check whether two groups are created
 
 if Group.query.filter_by(Group_name='注册用户').first() is None:
@@ -258,7 +254,6 @@ def db_create_user(email, password, nickname, user_group):
     db.session.flush()
     db.session.commit()
     db_set_user_session(new_user.id)
-    
 
 
 def db_set_user_session(id):
@@ -293,6 +288,22 @@ def get_session(type='nickname'):
     else:
         session.clear()
 
+
+def getPost_list(tags='', num=30):
+    returnPost_list = []
+    if tags == '':
+        for i in Post.query.filter_by().all()[:num]:
+            if i.top:
+                returnPost_list.insert(0, i)
+            else:
+                returnPost_list.append(i)
+    else:
+        for i in Post.query.filter_by(tags=tags).all()[:num]:
+            if i.top:
+                returnPost_list.insert(0, i)
+            else:
+                returnPost_list.append(i)
+    return returnPost_list
 
 # Install
 
@@ -353,7 +364,7 @@ def installing_step():
 def send_index():
 
     if get_session() == False:
-        return Viewrender.gethome(auth=False, tagslist=Tags.query.filter_by().all(), postlist=reversed(Post.query.filter_by().all()[:8]), get_avater=get_avater)
+        return Viewrender.gethome(auth=False, tagslist=Tags.query.filter_by().all(), postlist=getPost_list(), get_avater=get_avater)
     else:
         try:
             serverconf['open_email']
@@ -364,7 +375,7 @@ def send_index():
             get_session('obj').verify_email = True
             db.session.flush()
             db.session.commit()
-        return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by().all(), postlist=reversed(Post.query.filter_by().all()[:8]), get_avater=get_avater)
+        return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by().all(), postlist=getPost_list(), get_avater=get_avater)
 
 
 @app.route('/logout')
@@ -439,9 +450,9 @@ def get_tags(tid):
         return abort(404)
     tagsname = Tags.query.filter_by(id=tid).first().name
     if get_session() == False:
-        return Viewrender.gethome(auth=False, tagslist=Tags.query.filter_by().all(), postlist=reversed(Post.query.filter_by(tags=tagsname).all()[:8]), get_avater=get_avater)
+        return Viewrender.gethome(auth=False, tagslist=Tags.query.filter_by().all(), postlist=getPost_list(tags=tid), get_avater=get_avater)
     else:
-        return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by().all(), postlist=reversed(Post.query.filter_by(tags=tagsname).all()[:8]), get_avater=get_avater)
+        return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by().all(), postlist=getPost_list(tags=tid), get_avater=get_avater)
 
 
 @app.route('/relation')
@@ -684,6 +695,7 @@ def adminWait_tid(tid):
     db.session.commit()
     return redirect('/admin/tags')
 
+
 @app.route('/rmpost/<pid>')
 def rmpost(pid):
     user = get_session('obj')
@@ -693,13 +705,14 @@ def rmpost(pid):
         return abort(403)
     post = Post.query.filter_by(id=pid).first()
     if post == None:
-        return Viewrender.getMSG(auth=True,userObj=user,msg='帖子不存在')
+        return Viewrender.getMSG(auth=True, userObj=user, msg='帖子不存在')
     for i in Reply.query.filter_by(father=pid).all():
         db.session.delete(i)
     db.session.delete(post)
     db.session.flush()
     db.session.commit()
     return redirect('/')
+
 
 @app.route('/lock/<pid>')
 def lock(pid):
@@ -710,11 +723,12 @@ def lock(pid):
         return abort(403)
     post = Post.query.filter_by(id=pid).first()
     if post == None:
-        return Viewrender.getMSG(auth=True,userObj=user,msg='帖子不存在')
+        return Viewrender.getMSG(auth=True, userObj=user, msg='帖子不存在')
     post.lock = True
     db.session.flush()
     db.session.commit()
     return redirect('/p/' + str(pid))
+
 
 @app.route('/unlock/<pid>')
 def unlock(pid):
@@ -725,11 +739,12 @@ def unlock(pid):
         return abort(403)
     post = Post.query.filter_by(id=pid).first()
     if post == None:
-        return Viewrender.getMSG(auth=True,userObj=user,msg='帖子不存在')
+        return Viewrender.getMSG(auth=True, userObj=user, msg='帖子不存在')
     post.lock = False
     db.session.flush()
     db.session.commit()
     return redirect('/p/' + str(pid))
+
 
 @app.route('/top/<pid>')
 def top(pid):
@@ -740,11 +755,12 @@ def top(pid):
         return abort(403)
     post = Post.query.filter_by(id=pid).first()
     if post == None:
-        return Viewrender.getMSG(auth=True,userObj=user,msg='帖子不存在')
+        return Viewrender.getMSG(auth=True, userObj=user, msg='帖子不存在')
     post.top = True
     db.session.flush()
     db.session.commit()
     return redirect('/p/' + str(pid))
+
 
 @app.route('/untop/<pid>')
 def untop(pid):
@@ -755,12 +771,11 @@ def untop(pid):
         return abort(403)
     post = Post.query.filter_by(id=pid).first()
     if post == None:
-        return Viewrender.getMSG(auth=True,userObj=user,msg='帖子不存在')
+        return Viewrender.getMSG(auth=True, userObj=user, msg='帖子不存在')
     post.top = False
     db.session.flush()
     db.session.commit()
     return redirect('/p/' + str(pid))
-
 
 
 class SearchObj():
@@ -896,7 +911,8 @@ def pushing_post():
         body=request.form['body'],
         pushingtime=time.time(),
         tags=request.form['tags'],
-        lock=False)
+        lock=False,
+        top=False)
     db.session.add(newPost)
     db.session.flush()
     db.session.commit()
@@ -946,6 +962,7 @@ def get_license():
 def get_fileUrl(fileObj, id):
     return '/dynamic/{}/{}'.format(id, fileObj.filename)
 
+
 def get_avater(userId):
     obj = User.query.filter_by(id=userId).first()
     if obj == None:
@@ -957,14 +974,13 @@ def postNotice(userId, title, body, user):
     newNotice = Messages(subject=title, body=body, PostTime=time.time(), Postman=userId,
                          avater='http://identicon.relucks.org/' + str(random.randint(200, 999)) + '?size=120')
     msg = flask_mail.Message(recipients=db_getuserByid(userId).email,
-                             html = body,
-                             subject = '网站通知:' + title,)
+                             html=body,
+                             subject='网站通知:' + title,)
     threading._start_new_thread(send_mail, (msg,))
     current_app.logger.info(
         "向" + db_getuserByid(userId).email + "发送了一个通知 标题:" + title + " 内容:" + body)
 
     return redirect('/settings/check')
-
 
 
 @ app.route('/robots.txt')

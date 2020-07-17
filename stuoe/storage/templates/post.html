@@ -26,7 +26,7 @@
   </div>
   <div class="mdui-row mdui-row-gapless">
     <div class="mdui-col-xs-11"></div>
-    <div class="mdui-col-xs-1"><i class="mdui-icon material-icons" mdui-menu="{target: '#post-op'}">more</i>
+    <div class="mdui-col-xs-1"><i class="mdui-icon material-icons" mdui-menu="{target: '#post-op'}">more_vert</i>
       <ul class="mdui-menu" id="post-op">
         <li class="mdui-menu-item">{%if userObj in post.star_user_list and auth %}{%else%}<a class="mdui-ripple"
             href="/stared/{{ post.id }}"><i class="mdui-menu-item-icon mdui-icon material-icons">star_border</i>
@@ -37,10 +37,14 @@
               class="mdui-menu-item-icon mdui-icon material-icons">chat_bubble</i> 回复</a></li>
 
 
-        {% if userObj.user_group == '管理员' and auth  %}
+        {% if userObj.user_group == '管理员' and auth and not post.top %}
         <li class="mdui-menu-item">
           <a class="mdui-ripple" href="/top/{{post.id}}"><i
-              class="mdui-menu-item-icon mdui-icon material-icons">pin_drop</i> 顶置</a></li>{% endif %}
+              class="mdui-menu-item-icon mdui-icon material-icons">pin_drop</i> 设为顶置</a></li>{% endif %}
+        {% if userObj.user_group == '管理员' and auth and post.top %}
+              <li class="mdui-menu-item">
+                <a class="mdui-ripple" href="/untop/{{post.id}}"><i
+                    class="mdui-menu-item-icon mdui-icon material-icons">pin_drop</i> 取消顶置</a></li>{% endif %}
         {% if post.lock == False and userObj.user_group == '管理员' and auth  %}
         <li class="mdui-menu-item">
           <a class="mdui-ripple" href="/lock/{{post.id}}"><i
