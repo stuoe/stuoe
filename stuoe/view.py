@@ -50,7 +50,7 @@ def getTemplates(
                 'storage/templates/nav/nouser.html',
                 'r',
                 encoding="utf-8").read()).render(
-            title=serverconf['stuoe_name'],
+            title=title,
             webtitle=serverconf['stuoe_name'],
             js=serverconf['js'],
             userObj=userObj,
@@ -61,7 +61,7 @@ def getTemplates(
                 'storage/templates/base2.html',
                 'r',
                 encoding="utf-8").read()).render(
-            title=serverconf['stuoe_name'],
+            title=title,
             nav=nav,
             body=body,
             colorPrimary=serverconf['colorPrimary'],
@@ -76,7 +76,7 @@ def getTemplates(
                 'storage/templates/base.html',
                 'r',
                 encoding="utf-8").read()).render(
-            title=serverconf['stuoe_name'],
+            title=title,
             nav=nav,
             body=body,
             colorPrimary=serverconf['colorPrimary'],
@@ -87,10 +87,10 @@ def getTemplates(
             auth=auth)
 
 
-def gethome(auth=True, userObj='', tagslist='', postlist='', get_avater=''):
+def gethome(auth=True, userObj='', tagslist='', postlist='', get_avater='',title=''):
     body = jinja2.Template(open('storage/templates/index.html',
                                 'r', encoding="utf-8").read()).render(webtitle=serverconf['stuoe_name'], des=serverconf['stuoe_des'], userObj=userObj, tagslist=tagslist, postlist=list(postlist), get_avater=get_avater,auth=auth)
-    return getTemplates(auth=auth, title='', body=body, userObj=userObj, base2=True)
+    return getTemplates(auth=auth, title=title, body=body, userObj=userObj, base2=True)
 
 
 def getMSG(msg, auth=False, userObj=''):

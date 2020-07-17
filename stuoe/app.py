@@ -364,7 +364,7 @@ def installing_step():
 def send_index():
 
     if get_session() == False:
-        return Viewrender.gethome(auth=False, tagslist=Tags.query.filter_by().all(), postlist=getPost_list(), get_avater=get_avater)
+        return Viewrender.gethome(auth=False, tagslist=Tags.query.filter_by().all(), postlist=getPost_list(), get_avater=get_avater,title="首页")
     else:
         try:
             serverconf['open_email']
@@ -375,7 +375,7 @@ def send_index():
             get_session('obj').verify_email = True
             db.session.flush()
             db.session.commit()
-        return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by().all(), postlist=getPost_list(), get_avater=get_avater)
+        return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by().all(), postlist=getPost_list(), get_avater=get_avater,title="首页")
 
 
 @app.route('/logout')
@@ -450,9 +450,9 @@ def get_tags(tid):
         return abort(404)
     tagsname = Tags.query.filter_by(id=tid).first().name
     if get_session() == False:
-        return Viewrender.gethome(auth=False, tagslist=Tags.query.filter_by().all(), postlist=getPost_list(tags=tid), get_avater=get_avater)
+        return Viewrender.gethome(auth=False, tagslist=Tags.query.filter_by().all(), postlist=getPost_list(tags=tid), get_avater=get_avater,title=tagsname)
     else:
-        return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by().all(), postlist=getPost_list(tags=tid), get_avater=get_avater)
+        return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by().all(), postlist=getPost_list(tags=tid), get_avater=get_avater,title=tagsname)
 
 
 @app.route('/relation')
@@ -462,13 +462,13 @@ def show_relation():
     else:
         relationPost = list()
         nowUserId = get_session('id')
-        for i in Reply.query.filter_by(pusher=nowUserId).all():
-            obj = Post.query.filter_by(id=i.father).first()
-            if not obj == None:
-                relationPost.append(obj)
-        for i in Post.query.filter_by(pusher=nowUserId).all():
-            relationPost.append(i)
-        return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by().all(), postlist=relationPost, get_avater=get_avater)
+        for i in Post.query.filter_by().all():
+            if i.pusher == nowUserId:
+                relationPost.append(i)
+            else:
+                for i in Reply.query.filter_by(father=i.id,pusher=nowUserId).all():
+                    relationPost.append(i)
+        return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by().all(), postlist=relationPost, get_avater=get_avater,title="与我有关")
 
 
 @app.route('/write')
@@ -558,8 +558,7 @@ def uploader_avater():
         return abort(403)
     avater = request.files['avater']
     basepath = os.path.dirname(__file__)
-    upload_path = os.path.join(
-        basepath, r'public\uploads', secure_filename(avater.filename))
+    upload_path = os.getcwd() + '/CacheFile/' + str(random.randint(100000,9999999)) + "__file__" + secure_filename(avater.filename)
     avater.save(upload_path)
     avaterData = open(upload_path, 'rb').read()
     avaterFilename = os.path.basename(upload_path)

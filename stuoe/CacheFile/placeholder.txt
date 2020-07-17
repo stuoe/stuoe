@@ -1,0 +1,9 @@
+========================    placeolder.txt   =============================
+
+
+
+
+Here is the declaration of the cache file.
+If you are a forum administrator, you need to clear the cache files regularly.
+
+Most of the uploaded files are stored, but the data will be stored in the database, which is useless to store locally
