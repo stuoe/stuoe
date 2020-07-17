@@ -1,5 +1,5 @@
 <div class="mdui-row mdui-row-gapless">
-    <div class="mdui-col-xs-3"> {{ adminList }}</div>
+    <div class="mdui-col-xs-3">{{adminList}}</div>
     <div class="mdui-col-xs-1"></div>
     <div class="mdui-col-xs-7">
         <div class="mdui-row mdui-row-gapless">
@@ -9,12 +9,12 @@
             <div class="mdui-col-xs-6"></div>
             <div class="mdui-col-xs-3"></div>
         </div>
-        <ul class="mdui-list"> {% for i in tagslist %}<li class="mdui-list-item mdui-ripple"><i
-                    class="mdui-list-item-icon mdui-icon material-icons">{{ i.icon }}</i>
-                <div class="mdui-list-item-content"><a href="/t/{{ i.id }}">{{ i.name }}</a></div><i
+        <ul class="mdui-list">{%for i in tagslist%}<li class="mdui-list-item mdui-ripple"><i
+                    class="mdui-list-item-icon mdui-icon material-icons">{{i.icon}}</i>
+                <div class="mdui-list-item-content"><a href="/t/{{ i.id }}">{{i.name}}</a></div><i
                     class="mdui-list-item-icon mdui-icon material-icons"
                     mdui-dialog="{target: '#stuoeTags-{{ i.id }}'}">settings</i>
-            </li> {% endfor %}</ul> {% for i in tagslist %}<div class="mdui-dialog" id="stuoeTags-{{ i.id }}">
+            </li>{%endfor%}</ul>{%for i in tagslist%}<div class="mdui-dialog" id="stuoeTags-{{ i.id }}">
             <div class="mdui-dialog-title">管理标签</div>
             <div class="mdui-dialog-content">
                 <form action="/adminwait/tags/{{ i.id }}" method="POST">
@@ -24,12 +24,12 @@
                     <div class="mdui-textfield"><label class="mdui-textfield-label">Material Icon</label><input
                             class="mdui-textfield-input" type="text" maxlength="20" name="tagsicon"
                             value="{{ i.icon }}" /><a href="https://www.mdui.org/docs/material_icon">Material Icon</a>
-                    </div><button class="mdui-btn mdui-color-theme-accent mdui-ripple" type="submit">提交</button><br><br><a
-                        href="/adminwait/rmtags/{{ i.id }}"
+                    </div><button class="mdui-btn mdui-color-theme-accent mdui-ripple"
+                        type="submit">提交</button><br><br><a href="/adminwait/rmtags/{{ i.id }}"
                         class="mdui-btn mdui-color-theme-accent mdui-ripple">删除标签和帖子</a>
                 </form>
             </div>
-        </div> {% endfor %}<br><button class="mdui-btn mdui-color-theme-accent mdui-ripple"
+        </div>{%endfor%}<br><button class="mdui-btn mdui-color-theme-accent mdui-ripple"
             mdui-dialog="{target: '#stuoeTags-new'}">新建</button>
     </div>
 </div>

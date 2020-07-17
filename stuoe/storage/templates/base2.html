@@ -18,24 +18,26 @@
 /uploader.js"></script>
   <script type="text/javascript" src="/static/simditor-2.3.28/site/assets/scripts
 /simditor.js"></script>
+  <script>
+    { { js } }
+  </script>
 </head>
-<script>
-  {{ js }}
-</script>
 <noscript>
   <div class="Alert">
-      <div class="container">
-          This site is best viewed in a modern browser with JavaScript enabled.
-      </div>
+    <div class="container">
+      This site is best viewed in a modern browser with JavaScript enabled.
+    </div>
   </div>
 </noscript>
+
 <body class="mdui-color-theme-{{ colorPrimary }} mdui-theme-accent-{{ colorPrimary }}">
   <div class="mdui-container mdui-color-theme-theme">
-    
-        {{ nav }}
-        <br />
-        <br /> {{ body}}
-      </div>
+    <div class="mdui-container mdui-container">
+      {{ nav }}
+      <br />
+      <br/> {{ body}}
+    </div>
+  </div>
   <!-- Build For Stuoe Framework! https://github.com/stuoe/stuoe-->
 </body>
 

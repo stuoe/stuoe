@@ -3,74 +3,54 @@
 
 <head>
   <meta charset="utf-8">
-  <title>欢迎使用 安装Stuoe</title>
+  <title>欢迎使用安装Stuoe</title>
   <link rel="stylesheet" href="/static/mdui/css/mdui.min.css" />
   <link rel="stylesheet" href="/static/stuoe.css" />
   <script src="/static/mdui/js/mdui.min.js"></script>
 </head>
 
 <body>
-  <div class="mdui-toolbar" aria-setsize="20">
-    <a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a>
-    <span class="mdui-typo-title">安装Stuoe</span>
-    <div class="mdui-toolbar-spacer"></div>
-    <a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>
-    <a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">refresh</i></a>
-    <a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">more_vert</i></a>
+  <div class="mdui-toolbar" aria-setsize="20"><a href="javascript:;" class="mdui-btn mdui-btn-icon"><i
+        class="mdui-icon material-icons">menu</i></a><span class="mdui-typo-title">安装Stuoe</span>
+    <div class="mdui-toolbar-spacer"></div><a href="javascript:;" class="mdui-btn mdui-btn-icon"><i
+        class="mdui-icon material-icons">search</i></a><a href="javascript:;" class="mdui-btn mdui-btn-icon"><i
+        class="mdui-icon material-icons">refresh</i></a><a href="javascript:;" class="mdui-btn mdui-btn-icon"><i
+        class="mdui-icon material-icons">more_vert</i></a>
   </div>
   <div class="mdui-container">
     <form action="/install/start" method="POST">
-      <div class="mdui-textfield">
-        <i class="mdui-icon material-icons">title</i>
-        <input name="stuoe_name" value="{{ name }}" type="text" class="mdui-textfield-input" placeholder="论坛标题" />
+      <div class="mdui-textfield"><i class="mdui-icon material-icons">title</i><input name="stuoe_name"
+          value="{{ name }}" type="text" class="mdui-textfield-input" placeholder="论坛标题" />
         <div class="mdui-textfield-helper">取个好名字吧</div>
       </div>
-      <div class="mdui-textfield">
-        <i class="mdui-icon material-icons">domain</i>
-        <input name="stuoe_smtp_host" value="{{ smtp_host }}" type="text" class="mdui-textfield-input"
-          placeholder="Smtp邮箱服务器" />
+      <div class="mdui-textfield"><i class="mdui-icon material-icons">domain</i><input name="stuoe_smtp_host"
+          value="{{ smtp_host }}" type="text" class="mdui-textfield-input" placeholder="Smtp邮箱服务器" />
         <div class="mdui-textfield-helper">Smtp服务器地址</div>
       </div>
-      <div class="mdui-textfield">
-        <i class="mdui-icon material-icons">control_point</i>
-        <input name="stuoe_smtp_port" value="{{ smtp_port }}" type="number" class="mdui-textfield-input"
-          placeholder="Smtp邮箱端口" />
+      <div class="mdui-textfield"><i class="mdui-icon material-icons">control_point</i><input name="stuoe_smtp_port"
+          value="{{ smtp_port }}" type="number" class="mdui-textfield-input" placeholder="Smtp邮箱端口" />
         <div class="mdui-textfield-helper">Smtp服务器端口</div>
       </div>
-      <div class="mdui-textfield">
-        <i class="mdui-icon material-icons">email</i>
-        <input name="stuoe_smtp_email" value="{{ smtp_email }}" type="email" class="mdui-textfield-input"
-          placeholder="Smtp邮箱用户" />
+      <div class="mdui-textfield"><i class="mdui-icon material-icons">email</i><input name="stuoe_smtp_email"
+          value="{{ smtp_email }}" type="email" class="mdui-textfield-input" placeholder="Smtp邮箱用户" />
         <div class="mdui-textfield-helper">Smtp服务器用户(邮箱）</div>
       </div>
-      <div class="mdui-textfield">
-        <i class="mdui-icon material-icons">vpn_key</i>
-        <input name="stuoe_smtp_password" value="{{ smtp_password }}" type="password" class="mdui-textfield-input"
-          placeholder="Smtp邮箱密码/授权码" />
+      <div class="mdui-textfield"><i class="mdui-icon material-icons">vpn_key</i><input name="stuoe_smtp_password"
+          value="{{ smtp_password }}" type="password" class="mdui-textfield-input" placeholder="Smtp邮箱密码/授权码" />
         <div class="mdui-textfield-helper">Smtp邮箱密码/授权码</div>
       </div>
-      <div class="mdui-textfield">
-        <i class="mdui-icon material-icons">email</i>
-        <input name="stuoe_admin_mail" value="{{ admin_mail }}" type="email" class="mdui-textfield-input"
-          placeholder="管理员邮箱" />
+      <div class="mdui-textfield"><i class="mdui-icon material-icons">email</i><input name="stuoe_admin_mail"
+          value="{{ admin_mail }}" type="email" class="mdui-textfield-input" placeholder="管理员邮箱" />
         <div class="mdui-textfield-helper">管理员邮箱，会进行验证</div>
-
       </div>
-      <div class="mdui-textfield">
-        <i class="mdui-icon material-icons">keyboard</i>
-        <input name="stuoe_admin_password" value="{{ admin_password }}" type="password" class="mdui-textfield-input"
-          placeholder="管理员密码" />
+      <div class="mdui-textfield"><i class="mdui-icon material-icons">keyboard</i><input name="stuoe_admin_password"
+          value="{{ admin_password }}" type="password" class="mdui-textfield-input" placeholder="管理员密码" />
         <div class="mdui-textfield-helper">只能通过邮箱找回，请谨慎填写</div>
-      </div>
-      <button class="mdui-btn mdui-btn-raised">保存并安装</button><br><br>
-      
-
-  
-  </form>
-  <div class="mdui-divider-inset"></div>
-  <p>Stuoe 框架遵循apache开源协议，详情:<a href="http://www.apache.org/licenses/">apache.org</a></p><br><br>
+      </div><button class="mdui-btn mdui-btn-raised">保存并安装</button><br><br>
+    </form>
+    <div class="mdui-divider-inset"></div>
+    <p>Stuoe框架遵循apache开源协议，详情:<a href="http://www.apache.org/licenses/">apache.org</a></p><br><br>
   </div>
-
 </body>
 
 </html>

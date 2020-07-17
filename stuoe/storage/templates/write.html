@@ -1,43 +1,11 @@
-
-
-
-  <div class="mdui-container">
-    
-    <form method="POST" action='/postwrite'>
-      <div class="mdui-textfield">
-        <label class="mdui-textfield-label">标题</label>
-        <input class="mdui-textfield-input" type="text" name="title" maxlength="20"/>
-      </div>
-      <br>
-      <select class="mdui-select" mdui-select="{position: 'bottom'}" name="tags" maxlength="300000">
-        {% for tags in Tags %}
-          <option value="{{ tags.name }}">标签 - {{ tags.name }}</option>
-        {% endfor %}
-      </select>
-      <br><br>
-      <textarea name="body" id="editor" placeholder="友善交流，拒绝祖安...." autofocus><div class="mdui-typo"></div></div></textarea>
-      <br>
-      <br><br>
-      <button class="mdui-btn mdui-btn-raised mdui-ripple">发布</button>
-      <br>
-    </form>
-
-    <script>
-      var editor = new Simditor({
-        toolbar: [
-          'title', 'bold', 'italic', 'underline', 'strikethrough', 'fontScale',
-          'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|', 'link',
-          'image', 'hr', '|', 'alignment'
-        ],
-        textarea: '#editor',
-        placeholder: '有什么补充的？尽情讨论吧!',
-        imageButton: ['upload'],
-        upload:{
-          url: '',
-        params: null,
-        fileKey: 'upload_file',
-        connectionCount: 3,
-        leaveConfirm: 'Uploading is in progress, are you sure to leave this page?'}
-          });
-    </script>
-  </div>
+<div class="mdui-container">
+  <form method="POST" action='/postwrite'>
+    <div class="mdui-textfield"><label class="mdui-textfield-label">标题</label><input class="mdui-textfield-input"
+        type="text" name="title" maxlength="20" /></div><br><select class="mdui-select"
+      mdui-select="{position: 'bottom'}" name="tags" maxlength="300000">{%for tags in Tags%}<option
+        value="{{ tags.name }}">标签-{{tags.name}}</option>{%endfor%}</select><br><br><textarea name="body" id="editor"
+      placeholder="友善交流，拒绝祖安...." autofocus><div class="mdui-typo"></div></div></textarea><br><br><br><button
+      class="mdui-btn mdui-btn-raised mdui-ripple">发布</button><br>
+  </form>
+  <script>var editor = new Simditor({ toolbar: ['title', 'bold', 'italic', 'underline', 'strikethrough', 'fontScale', 'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|', 'link', 'image', 'hr', '|', 'alignment'], textarea: '#editor', placeholder: '有什么补充的？尽情讨论吧!', imageButton: ['upload'], upload: { url: '', params: null, fileKey: 'upload_file', connectionCount: 3, leaveConfirm: 'Uploading is in progress, are you sure to leave this page?' } });</script>
+</div>
