@@ -13,3 +13,4 @@ node_modules
 sqlite3.db
 # Gitpod 设置
 /.theia/
+/.idea

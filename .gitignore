@@ -14,3 +14,7 @@ sqlite3.db
 # Pypi dist
 /dist/
 /stuoe.egg-info/
+
+
+# Flask-Migrate
+stuoe/stuoe/migrations/
