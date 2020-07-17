@@ -35,7 +35,7 @@ flask run
  * Debug mode: off
  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
 ```
-*Add / admin on the route to initialize the forum*
+*Add / start on the route to initialize the forum*
 
 ## Update Setup
 *When the version is updated*
