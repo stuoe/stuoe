@@ -1,7 +1,14 @@
 <div class="mdui-container">
   <!--Title And Tags-->
+
   <!--End Title And Tags-->
-  <h1 style="font-weight: 400;">{{post.title}}</h1>
+  <h1 style="font-weight: 400;">{% if post.lock %}
+    <i class="mdui-icon material-icons" mdui-tooltip="{content: '讨论已被锁定'}">lock</i>
+    {% endif %}{% if post.top %}
+    <i class="mdui-icon material-icons" mdui-tooltip="{content: '讨论已被顶置'}">assistant_photo</i>
+    {% endif %}{% if user.user_group == '管理员' %}
+    <i class="mdui-icon material-icons" mdui-tooltip="{content: '由管理员发布'}">assignment_turned_in</i>
+    {% endif %}{{post.title}}</h1>
   <p style="font-weight:100;"><i class="mdui-icon material-icons">{{ tags.icon }}</i><a class="mdui-ripple"
       href="/t/{{ tags.id }}" style="text-decoration: none;color:#0c0d0e;font-weight:100;">{{post.tags}}</a> > <a
       class="mdui-ripple" href="/p/{{ post.id }}"
@@ -21,17 +28,32 @@
     <div class="mdui-col-xs-11"></div>
     <div class="mdui-col-xs-1"><i class="mdui-icon material-icons" mdui-menu="{target: '#post-op'}">more</i>
       <ul class="mdui-menu" id="post-op">
-        <li class="mdui-menu-item">{%if user in post.star_user_list%}{%else%}<a class="mdui-ripple"
-            href="/stared/{{ post.id }}"><i
-              class="mdui-menu-item-icon mdui-icon material-icons">star_border</i>设为星标</a>{%endif%}
+        <li class="mdui-menu-item">{%if userObj in post.star_user_list and auth %}{%else%}<a class="mdui-ripple"
+            href="/stared/{{ post.id }}"><i class="mdui-menu-item-icon mdui-icon material-icons">star_border</i>
+            设为星标</a>
+        <li class="mdui-divider"></li>{%endif%}
+
         <li class="mdui-menu-item"><a class="mdui-ripple" href="#reply" style="text-decoration: none;color:#0c0d0e;"><i
-              class="mdui-menu-item-icon mdui-icon material-icons">chat_bubble</i>回复</a></li>
-        <li class="mdui-divider"></li>
-        <li class="mdui-menu-item"><a class="mdui-ripple" href="/report/p/{{ post.id }}""><i class=" mdui-menu-item-icon
-            mdui-icon material-icons">assistant_photo</i> 举报</a></li>
+              class="mdui-menu-item-icon mdui-icon material-icons">chat_bubble</i> 回复</a></li>
+
+
+        {% if userObj.user_group == '管理员' and auth  %}
+        <li class="mdui-menu-item">
+          <a class="mdui-ripple" href="/top/{{post.id}}"><i
+              class="mdui-menu-item-icon mdui-icon material-icons">pin_drop</i> 顶置</a></li>{% endif %}
+        {% if post.lock == False and userObj.user_group == '管理员' and auth  %}
+        <li class="mdui-menu-item">
+          <a class="mdui-ripple" href="/lock/{{post.id}}"><i
+              class="mdui-menu-item-icon mdui-icon material-icons">lock</i> 锁定</a></li>{% endif %}
+        {% if post.lock  and userObj.user_group == '管理员' and auth   %}
+        <li class="mdui-menu-item">
+          <a class="mdui-ripple" href="/unlock/{{post.id}}"><i
+              class="mdui-menu-item-icon mdui-icon material-icons">lock_open</i> 取消锁定</a></li>{% endif %}
+        {% if userObj.user_group == '管理员' and auth  %}
         <li class="mdui-menu-item">
           <a class="mdui-ripple" href="/rmpost/{{post.id}}"><i
-              class="mdui-menu-item-icon mdui-icon material-icons">delete</i> 删除</a></li>
+              class="mdui-menu-item-icon mdui-icon material-icons">delete</i> 删除</a></li>{% endif %}
+
       </ul>
     </div>
   </div>
@@ -57,14 +79,16 @@
   <div class="mdui-row mdui-row-gapless">
     <div class="mdui-col-xs-11"></div>
     <div class="mdui-col-xs-1">
-      <i class="mdui-icon material-icons" mdui-menu="{target:'#post-op{{ a.reply.id }}'}">more</i><br><br><br>
+
+      {% if userObj.user_group == '管理员' %}<i class="mdui-icon material-icons"
+        mdui-menu="{target:'#post-op{{ a.reply.id }}'}">more</i><br><br><br>
       <ul class="mdui-menu" id="post-op{{a.reply.id}}">
-        <li class="mdui-menu-item">
-          <a class="mdui-ripple" href="/report/r/{{a.reply.id}}""><i class=" mdui-menu-item-icon mdui-icon
-            material-icons ">assistant_photo</i>举报</a></li><li class=" mdui-menu-item"><a class="mdui-ripple"
-              href="/rmreply/{{ a.reply.id }}"><i class="mdui-menu-item-icon mdui-icon material-icons">delete</i>删除</a>
+        <li class="
+            mdui-menu-item"><a class="mdui-ripple" href="/rmreply/{{ a.reply.id }}"><i
+              class="mdui-menu-item-icon mdui-icon material-icons">delete</i>删除</a>
         </li>
-      </ul>
+      </ul>{% endif %}
+
     </div>
   </div>
   </ul>{%endfor%}
@@ -73,7 +97,10 @@
     <form method="POST" action="/postreply/{{ post.id }}"><br /><br /><br /><textarea name="body" id="editor"
         placeholder="编辑回复(默认参与讨论组并订阅)" autofocus=""></textarea>
       <script>var editor = new Simditor({ toolbar: ['title', 'bold', 'italic', 'underline', 'strikethrough', 'fontScale', 'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|', 'link', 'image', 'hr', '|', 'alignment'], textarea: '#editor', placeholder: '编辑回复(默认参与讨论组并订阅)', imageButton: ['upload'], upload: { url: '', params: null, fileKey: 'upload_file', connectionCount: 3, leaveConfirm: 'Uploading is in progress, are you sure to leave this page?' } });</script>
-      <br /><br /><br /><button class="mdui-btn mdui-color-theme-accent ">回复</button><br /></form>
+      <br /><br /><br />{% if auth and (not post.lock) %}<button
+        class="mdui-btn mdui-color-theme-accent ">回复</button>{% elif not auth %}<button
+        class="mdui-btn mdui-color-theme-accent " disabled>登入后回复</button>{% else %}<button
+        class="mdui-btn mdui-color-theme-accent " disabled>讨论被锁定</button>{% endif %}<br /></form>
   </div>
 </div>
 <!--End Write Reply--><br /></div>

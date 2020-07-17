@@ -13,6 +13,8 @@ import flask_mail
 from flask import __version__
 from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate,MigrateCommand
+from flask_script import Manager,Shell
 from flask import *
 import re
 import hashlib
@@ -43,7 +45,8 @@ serverurl = serverconf['url']
 # Init Flask
 app = Flask(__name__, static_url_path='/static', static_folder='public')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sqlite3.db'
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
 app.config['MAIL_SERVER'] = serverconf['stuoe_smtp_host']
 app.config['MAIL_PORT'] = int(serverconf['stuoe_smtp_port'])
 app.config['MAIL_USERNAME'] = serverconf['stuoe_smtp_email']
@@ -58,8 +61,13 @@ Viewrender = view
 
 
 # Init DatabaseTable , Email , function
+manager = Manager(app)
 db = SQLAlchemy(app)
 mail = flask_mail.Mail(app)
+migrate = Migrate(app,db)
+
+
+
 
 star_for = db.Table('star_for',
                     db.Column('star_user', db.Integer, db.ForeignKey(
@@ -123,6 +131,7 @@ class Post(db.Model):
     pushingtime = db.Column(db.Integer)
     tags = db.Column(db.Integer, db.ForeignKey('Tags.id'))
     lock = db.Column(db.Boolean, server_default='False')
+    top = db.Column(db.Boolean, server_default='False')
     reply = db.relationship("Reply", backref="Post")
     star_user_list = db.relationship(
         'User', secondary=star_for, backref=db.backref('Post'))
@@ -158,6 +167,9 @@ class Reply(db.Model):
 
 
 db.create_all()
+
+
+
 
 # Check whether two groups are created
 
@@ -246,6 +258,7 @@ def db_create_user(email, password, nickname, user_group):
     db.session.flush()
     db.session.commit()
     db_set_user_session(new_user.id)
+    
 
 
 def db_set_user_session(id):
@@ -670,6 +683,84 @@ def adminWait_tid(tid):
     db.session.flush()
     db.session.commit()
     return redirect('/admin/tags')
+
+@app.route('/rmpost/<pid>')
+def rmpost(pid):
+    user = get_session('obj')
+    if not user:
+        return abort(403)
+    if not user.user_group == '管理员':
+        return abort(403)
+    post = Post.query.filter_by(id=pid).first()
+    if post == None:
+        return Viewrender.getMSG(auth=True,userObj=user,msg='帖子不存在')
+    for i in Reply.query.filter_by(father=pid).all():
+        db.session.delete(i)
+    db.session.delete(post)
+    db.session.flush()
+    db.session.commit()
+    return redirect('/')
+
+@app.route('/lock/<pid>')
+def lock(pid):
+    user = get_session('obj')
+    if not user:
+        return abort(403)
+    if not user.user_group == '管理员':
+        return abort(403)
+    post = Post.query.filter_by(id=pid).first()
+    if post == None:
+        return Viewrender.getMSG(auth=True,userObj=user,msg='帖子不存在')
+    post.lock = True
+    db.session.flush()
+    db.session.commit()
+    return redirect('/p/' + str(pid))
+
+@app.route('/unlock/<pid>')
+def unlock(pid):
+    user = get_session('obj')
+    if not user:
+        return abort(403)
+    if not user.user_group == '管理员':
+        return abort(403)
+    post = Post.query.filter_by(id=pid).first()
+    if post == None:
+        return Viewrender.getMSG(auth=True,userObj=user,msg='帖子不存在')
+    post.lock = False
+    db.session.flush()
+    db.session.commit()
+    return redirect('/p/' + str(pid))
+
+@app.route('/top/<pid>')
+def top(pid):
+    user = get_session('obj')
+    if not user:
+        return abort(403)
+    if not user.user_group == '管理员':
+        return abort(403)
+    post = Post.query.filter_by(id=pid).first()
+    if post == None:
+        return Viewrender.getMSG(auth=True,userObj=user,msg='帖子不存在')
+    post.top = True
+    db.session.flush()
+    db.session.commit()
+    return redirect('/p/' + str(pid))
+
+@app.route('/untop/<pid>')
+def untop(pid):
+    user = get_session('obj')
+    if not user:
+        return abort(403)
+    if not user.user_group == '管理员':
+        return abort(403)
+    post = Post.query.filter_by(id=pid).first()
+    if post == None:
+        return Viewrender.getMSG(auth=True,userObj=user,msg='帖子不存在')
+    post.top = False
+    db.session.flush()
+    db.session.commit()
+    return redirect('/p/' + str(pid))
+
 
 
 class SearchObj():
