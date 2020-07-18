@@ -30,10 +30,12 @@
   </div>
 </noscript>
 
-<body class="mdui-color-theme-{{ colorPrimary }} mdui-theme-accent-{{ colorPrimary }}" style="text-decoration: none;font-weight: 300;color:#0c0d0e;">
-  <div class="mdui-container mdui-color-theme-theme" style="text-decoration: none;font-weight: 300;color:#0c0d0e;">
-    <div class="mdui-container mdui-container">
-      {{ nav }}
+<body class="mdui-color-theme-{{ colorPrimary }} mdui-theme-accent-{{ colorPrimary }}" >
+
+  <div class="mdui-color-theme-theme" style="text-decoration: none;font-weight: 300;color:#0c0d0e;">
+    <header class="mdui-shadow-1">{{ nav }}</header>
+    <div class="mdui-container">
+
       <br />
       <br/> {{ body}}
     </div>
