@@ -24,6 +24,7 @@ pip install -U stuoe
 ``` bash
 stuoe startproject demo
 cd demo
+pip uninstall stuoe
 flask run
 ```
 
@@ -44,6 +45,7 @@ pip install -U stuoe
 stuoe update --name demo
 cd demo
 flask db upgrade
+pip uninstall stuoe
 flask run
 ```
 
