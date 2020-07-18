@@ -7,7 +7,7 @@ import os
 import io
 
 
-__version__ = '0.1.3'
+__version__ = '0.1.3.1'
 
 # or
 # from distutils.core import setup
@@ -29,7 +29,7 @@ except:
 
 setup(
     name='stuoe',
-    version='0.1.3',
+    version='0.1.3.1',
     description='Lightweight forum, simple interface, easy to install',
     author='snbck',
     author_email='snbckcode@gmail.com',

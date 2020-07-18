@@ -3,12 +3,12 @@
     Stuoe
     ~~~~~
 
-    Stuoe is a python module for beginners and developers who want to build 
+    Stuoe is a python module for beginners and developers who want to build
     forums quickly. The interface is simple and easy to install
 
     :copyright: (c) 2020 by SNBCK.
     :license: Apache License, see LICENSE for more details.
-    
+
 """
 
 
@@ -20,7 +20,7 @@ startworkpath = os.getcwd() + '/'
 
 os.chdir(os.path.dirname(__file__))
 
-__version__ = '0.1.2.7'
+__version__ = '0.1.3.1'
 
 
 click.echo('Welcome to Stuoe ' + __version__)
@@ -130,7 +130,7 @@ class EXTENSIONS(object):
         self.VERSION = VERISON
         self.DESCRIBE = DESCRIBE
         self.AUTHOR = AUTHOR
-        
+
 
     def register_for_app(self, APP):
         self.app = app
