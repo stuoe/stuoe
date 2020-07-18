@@ -353,7 +353,7 @@ def installing_step():
 
         db_create_user(stuoe_admin_mail, stuoe_admin_password, 'Admin', '管理员')
         open('server.conf', 'wb+').write(str(serverconf).encode('utf-8'))
-        return redirect('/')
+        return redirect('/admin')
     else:
         return redirect('/install')
 
