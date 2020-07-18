@@ -67,6 +67,10 @@ mail = flask_mail.Mail(app)
 migrate = Migrate(app, db)
 
 
+
+
+
+
 star_for = db.Table('star_for',
                     db.Column('star_user', db.Integer, db.ForeignKey(
                         'User.id'), primary_key=True),

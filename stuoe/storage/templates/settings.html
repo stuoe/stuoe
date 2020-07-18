@@ -16,17 +16,12 @@
 <div class="mdui-typo-headline">更改社交头像</div>
 <form action="/settings/avater" method="POST" enctype="multipart/form-data">
     <div class="mdui-textfield"><input style="position:absolute;opacity:0;" type="file" name="avater"><img
-            mdui-tooltip="{content: '上传头像'}" style="width: 30px;height: 30px;" class="mdui-img-circle"
+            mdui-tooltip="{content: '上传头像'}" style="width: 60px;height: 60px;" class="mdui-img-circle"
             src="{{ UserObj.avater }}" /><br><br><input
             class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" type="submit" value="上传"></div>
 </form><br><br>
-<div class="mdui-typo-headline">账号安全</div><br><br>
-<form action="/settings/email" method="POST"><label class="mdui-textfield-label">选择事务</label><select class="mdui-select"
-        mdui-select="{position: 'bottom'}" name="tags" maxlength="300000">
-        <option value="验证邮箱或更改">验证邮箱或更改</option>
-        <option value="重置账号密码">重置账号密码</option>
-        <option value="开启双因素验证">开启双因素验证</option>
-    </select>
+<div class="mdui-typo-headline">更改或验证邮箱</div><br><br>
+<form action="/settings/email" method="POST">
     <div class="mdui-textfield"><label class="mdui-textfield-label">确认邮箱</label><input name="email"
             class="mdui-textfield-input" type="nickname" value="{{ UserObj.email }}" /></div><br><button type="submit"
         class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">请求并验证</button>
