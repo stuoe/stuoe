@@ -1,4 +1,15 @@
 <div class="mdui-container">
+  <link rel="stylesheet" type="text/css" href="/static/simditor/styles/simditor.css" />
+  <script type="text/javascript" src="/static/simditor-2.3.28/site/assets/scripts
+/jquery.min.js"></script>
+  <script type="text/javascript" src="/static/simditor-2.3.28/site/assets/scripts
+/module.js"></script>
+  <script type="text/javascript" src="/static/simditor-2.3.28/site/assets/scripts
+/hotkeys.js"></script>
+  <script type="text/javascript" src="/static/simditor-2.3.28/site/assets/scripts
+/uploader.js"></script>
+  <script type="text/javascript" src="/static/simditor-2.3.28/site/assets/scripts
+/simditor.js"></script>
    <form method="POST" action="/postwrite">
     <div class="mdui-textfield">
      <label class="mdui-textfield-label">标题</label>
@@ -15,5 +26,6 @@
     <button class="mdui-btn mdui-btn-raised mdui-ripple">发布</button>
     <br />
    </form>
+
    <script>var editor = new Simditor({ toolbar: ['title', 'bold', 'italic', 'underline', 'strikethrough', 'fontScale', 'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|', 'link', 'image', 'hr', '|', 'alignment'], textarea: '#editor', placeholder: '有什么补充的？尽情讨论吧!', imageButton: ['upload'], upload: { url: '', params: null, fileKey: 'upload_file', connectionCount: 3, leaveConfirm: 'Uploading is in progress, are you sure to leave this page?' } });</script>
   </div>

@@ -55,7 +55,7 @@
       </ul>
      </div>
     </div>
-    <div class="mdui-col-xs-10">
+    <div class="mdui-col-xs-9">
      {%for post in postlist%}
      <li class="mdui-list-item">
       <div class="mdui-list-item-avatar">
@@ -74,17 +74,10 @@
        <li class="mdui-menu-item"><a class="mdui-ripple" href="/unlock/{{post.id}}"><i class="mdui-menu-item-icon mdui-icon material-icons">lock_open</i>取消锁定</a></li> {%endif%}{%if userObj.user_group=='管理员'and auth%}
        <li class="mdui-menu-item"><a class="mdui-ripple" href="/rmpost/{{post.id}}"><i class="mdui-menu-item-icon mdui-icon material-icons">delete</i>删除</a></li>{%endif%}
       </ul> </li>
-     <div class="mdui-divider"></div>{%endfor%}{%if postlist==[]or postlist==''%}
-     <br />
-     <br />
-     <br />
-     <br />
-     <br />
-     <br />
-     <br />
+     <div class="mdui-divider"></div>{%endfor%}{%if postlist==[]or postlist==''%}<br /><br /><br /><br /><br /><br /><br />
      <div class="mdui-typo" align="center">
       <p><strong>这里看起来什么都没有</strong></p>
      </div>{%endif%}
     </div>
    </div>
-  </div> 
+  </div>

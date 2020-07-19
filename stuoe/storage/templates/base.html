@@ -5,44 +5,25 @@
   <meta charset="utf-8" />
   <title>{{ title }} - {{ webtitle }}</title>
   <link rel="stylesheet" href="/static/mdui/css/mdui.min.css" />
-  <link rel="stylesheet" href="/static/stuoe.css" />
-  <script src="/static/mdui/js/mdui.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="/static/simditor/styles/simditor.css" />
-  <script type="text/javascript" src="/static/simditor-2.3.28/site/assets/scripts
-/jquery.min.js"></script>
-  <script type="text/javascript" src="/static/simditor-2.3.28/site/assets/scripts
-/module.js"></script>
-  <script type="text/javascript" src="/static/simditor-2.3.28/site/assets/scripts
-/hotkeys.js"></script>
-  <script type="text/javascript" src="/static/simditor-2.3.28/site/assets/scripts
-/uploader.js"></script>
-  <script type="text/javascript" src="/static/simditor-2.3.28/site/assets/scripts
-/simditor.js"></script>
-  <script>
-    { { js } }
-  </script>
+  <!-- Render for Jinja2 Building for https://github.com/stuoe/stuoe -->
 </head>
-<noscript>
-  <div class="Alert">
-    <div class="container">
-      This site is best viewed in a modern browser with JavaScript enabled.
-    </div>
-  </div>
-</noscript>
-
+<!-- Main content, definition style, occupancy percentage -->
 <body class="mdui-color-theme-{{ colorPrimary }} mdui-theme-accent-{{ colorPrimary }} mdui-bottom-nav-fixed" >
-
+  <!-- Define color theme, set text style, body in body -->
   <div class="mdui-color-theme-theme" style="text-decoration: none;font-weight: 300;color:#0c0d0e;">
-    <header class="mdui-shadow-1">{{ nav }}</header>
+    <!-- Define navigation bar -->
+    <header class="mdui-shadow-1">
+      {{ nav }}
+    </header>
+    <!-- Define the main content and adjust the percentage of occupied content -->
     <div class="mdui-container">
-
-      <br />
-      <br/> {{ body}}
+      {{ body }}
+      <!-- Loading JavaScript -->
+      <script src="/static/mdui/js/mdui.min.js"></script>
+      <script>
+      {{ js }}
+      </script>
     </div>
   </div>
-  <!-- Build For Stuoe Framework! https://github.com/stuoe/stuoe-->
 </body>
-
 </html>
-<!-- Google Analytics -->
-<!-- End Google Analytics -->
