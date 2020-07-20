@@ -101,4 +101,4 @@ flask run
 * Web:  [https://stuoe.cn](https://stuoe.cn)
 * Start: [https://stuoe.cn/docs/start.html](https://stuoe.cn/docs/start.html)
 * Version : [https://pypi.org/project/stuoe](https://pypi.org/project/stuoe)
-* discuss : [https://stuoe.pythonanywhere.com/](https://stuoe.pythonanywhere.com/)
+* discuss : [http://discuss.stuoe.cn/](http://discuss.stuoe.cn/)

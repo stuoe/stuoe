@@ -19,9 +19,9 @@ def c():
     serverurl = serverconf['url']
 
 
-def getTimer(timetime, simple=False):
+def getTimer(timetime, simple=True):
     if simple:
-        return time.strftime("%Y-%m-%d", time.localtime(int(timetime)))
+        return time.strftime("%Y/%m/%d", time.localtime(int(timetime)))
     else:
         return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(timetime)))
 

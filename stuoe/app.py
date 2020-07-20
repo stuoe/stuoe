@@ -36,7 +36,7 @@ except:
 # Global Var
 verify_registered_email = list()
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
-Release = 'v0.1.3.4 Release'
+Release = 'v0.1.3.5 Release'
 
 
 # Get Configs File
@@ -65,7 +65,7 @@ manager = Manager(app)
 db = SQLAlchemy(app)
 mail = flask_mail.Mail(app)
 migrate = Migrate(app, db)
-
+manager.add_command('db', MigrateCommand) 
 
 
 
@@ -83,23 +83,23 @@ class User(db.Model):
     __tablename__ = 'User'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(50))
-    verify_email = db.Column(db.Boolean, server_default='False')
+    verify_email = db.Column(db.Boolean, default='False')
     passhash = db.Column(db.String(50))
     nickname = db.Column(db.String(50))
     user_des = db.Column(
         db.String(50),
-        server_default='Wait....And Something Text About This User')
-    user_session = db.Column(db.String(50), server_default='None')
-    point = db.Column(db.Integer, server_default='1')
-    url = db.Column(db.String(50), server_default='not url')
+        default='Wait....And Something Text About This User')
+    user_session = db.Column(db.String(50), default='None')
+    point = db.Column(db.Integer, default='1')
+    url = db.Column(db.String(50), default='not url')
     user_group = db.Column(db.Integer, db.ForeignKey("Group.Group_name"))
-    user_ban = db.Column(db.Boolean, server_default='False')
-    user_dirty = db.Column(db.Boolean, server_default='False')
+    user_ban = db.Column(db.Boolean, default='False')
+    user_dirty = db.Column(db.Boolean, default='False')
     registertime = db.Column(db.Integer)
     pushingPost = db.relationship("Post", backref="User")
-    MessageToMailbox = db.Column(db.Boolean, server_default='True')
+    MessageToMailbox = db.Column(db.Boolean, default='True')
     UserMessageMainbox = db.relationship("Messages", backref="User")
-    avater = db.Column(db.String(50), server_default='None')
+    avater = db.Column(db.String(50), default='None')
 
     def __repr__(self):
         return {'id': self.id, 'email': self.email, 'user_des': self.user_des}
@@ -109,8 +109,8 @@ class Group(db.Model):
     # Waiting....
     __tablename__ = 'Group'
     Group_name = db.Column(db.String(30), primary_key=True)
-    Group_des = db.Column(db.String(30), server_default='此分组还没有描述')
-    Highest_authority_group = db.Column(db.Boolean, server_default='False')
+    Group_des = db.Column(db.String(30), default='此分组还没有描述')
+    Highest_authority_group = db.Column(db.Boolean, default='False')
     user = db.relationship("User", backref="Group")
 
     def __repr__(self):
@@ -132,11 +132,28 @@ class Post(db.Model):
     body = db.Column(db.String(2000000))
     pushingtime = db.Column(db.Integer)
     tags = db.Column(db.Integer, db.ForeignKey('Tags.id'))
-    lock = db.Column(db.Boolean, server_default='False')
-    top = db.Column(db.Boolean, server_default='False')
+    lock = db.Column(db.Boolean, default='False')
+    top = db.Column(db.Boolean, default='False')
     reply = db.relationship("Reply", backref="Post")
     star_user_list = db.relationship(
         'User', secondary=star_for, backref=db.backref('Post'))
+    def getReplyNumber(self):
+        return len(Reply.query.filter_by(father=self.id).all())
+
+    def state(self):
+        reply = Reply.query.filter_by(father=self.id).first()
+        if not reply == None:
+            return User.query.filter_by(id=reply.pusher).first().nickname + ' 回复于 ' + Viewrender.getTimer(timetime=reply.pushingtime)
+        else:
+            return User.query.filter_by(id=self.pusher).first().nickname + ' 发布于 ' + Viewrender.getTimer(timetime=self.pushingtime)
+
+    def read(self):
+        self.look = look + 1
+        db.session.flush()
+        db.session.commit()
+        return self.look
+
+
 
 
 class Messages(db.Model):
@@ -153,9 +170,9 @@ class Messages(db.Model):
 class Tags(db.Model):
     __tablename__ = 'Tags'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(30), server_default='Hashing')
+    name = db.Column(db.String(30), default='Hashing')
     post = db.relationship("Post", backref="Tags")
-    lock = db.Column(db.Boolean, server_default='False')
+    lock = db.Column(db.Boolean, default='False')
     icon = db.Column(db.String(30), server_defalt='message')
 
 
@@ -308,6 +325,9 @@ def getPost_list(tags='', num=30):
             else:
                 returnPost_list.append(i)
     return returnPost_list
+
+
+
 
 # Install
 
@@ -553,6 +573,33 @@ def user_changsettings_checkemail():
             else:
                 return Viewrender.getMSG("验证码不正确", auth=True, userObj=user)
     return Viewrender.getMSG('该用户并未发起更改邮件事务,找不到对象', auth=True, userObj=user)
+
+@app.route('/settings/password',methods=["POST"])
+def user_changsettings_password():
+    user = get_session('obj')
+    if not user:
+        return abort(403)
+    request.form["oldpassword"]
+    request.form["newpassword"]
+    request.form["againpassword"]
+    if request.form['newpassword'] == '':
+        return Viewrender.getMSG("密码不能为空")
+    if request.form['newpassword'] != request.form['againpassword']:
+        return Viewrender.getMSG("新的密码并不一致",auth=True,userObj=user)
+    passhash = hashlib.sha256(
+        request.form['oldpassword'].encode('utf-8')).hexdigest()
+    if not user.passhash == passhash:
+        return Viewrender.getMSG("旧密码不正确",auth=True,userObj=user)
+    passhash = hashlib.sha256(
+        request.form['newpassword'].encode('utf-8')).hexdigest()
+    user.passhash = passhash
+    db.session.flush()
+    db.session.commit()
+    return Viewrender.getMSG("设置成功",auth=True,userObj=user)
+
+
+
+
 
 
 @app.route('/settings/avater', methods=['POST'])
@@ -873,7 +920,7 @@ def send_api_register():
 def send_api_login():
     request.form['email']
     request.form['password']
-    if request.form['email'] == '' or request.form['password'] == '':
+    if request.form['email'] == '':
         return Viewrender.getMSG('请填写完整信息')
     obj = db_getuserByemail(request.form['email'])
     if obj is None:
@@ -915,6 +962,7 @@ def pushing_post():
         pushingtime=time.time(),
         tags=request.form['tags'],
         lock=False,
+        look=0,
         top=False)
     db.session.add(newPost)
     db.session.flush()
