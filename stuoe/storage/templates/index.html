@@ -85,9 +85,7 @@
 			{%if post.lock==True%}
 			<i class="mdui-icon material-icons" mdui-tooltip="{content: '讨论已被锁定'}" style="color: #1C6BF5;line-height: 0;">lock</i>{%endif%}{%if post.top%}
 			<i class="mdui-icon material-icons" mdui-tooltip="{content: '讨论已被顶置'}" style="color: #FF0000;line-height: 0;">assistant_photo</i>{%endif%}
-			<p style="font-weight: 500;">
-				<i class="mdui-icon material-icons">chat_bubble_outline</i> {{ post.getReplyNumber() }}
-			</p>
+			
 			{% if auth %}
 			<i class="mdui-icon material-icons" mdui-menu="{target: '#post-op-{{ post.id }}'}">more_vert</i>{% else %}
 			<i class="mdui-icon material-icons"></i>{% endif %}
