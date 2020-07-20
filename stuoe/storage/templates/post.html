@@ -102,19 +102,60 @@
 				</form>
 			</div>
 		</div>
+		<!--Right Column-->
 		<div class="mdui-col-xs-2">
 			<div class="mdui-container">
-      {%if userObj==''%}
+      			{%if userObj==''%}
 				<button class="mdui-btn mdui-btn-raised mdui-btn-block mdui-ripple mdui-color-grey">
-				<div mdui-tooltip="{content: '注册/登入'}" mdui-menu="{target: '#account-op'}" class="mdui-text-color-white mdui-btn-block" style="text-decoration: none;font-weight: 300;color:#0c0d0e;">
-					登入后回复
+				<div mdui-tooltip="{content: '注册/登入'}" mdui-menu="{target: '#account-op'}" class="mdui-text-color-white mdui-btn-block" style="text-decoration: none;font-weight: 300;color:#0c0d0e;margin-right: 45px;">
+					<i class="mdui-icon material-icons mdui-text-color-white">account_circle</i>   登入后回复
 				</div>
-				</button>{%else%}
+				</button>{%elif not post.lock%}
 				<button class="mdui-btn mdui-btn-raised mdui-btn-block mdui-ripple mdui-color-theme-accent">
-				<div class="mdui-text-color-white" style="font-weight:700;">
-					<a class="mdui-text-color-white" href="#reply" style="text-decoration: none;font-weight: 300;color:#0c0d0e;">回复</a>
-				</div>
-				</button>{%endif%}
+					<a href="#reply" mdui-tooltip="{content: '回复以参与'}"  class="mdui-text-color-white mdui-btn-block" style="text-decoration: none;font-weight: 300;color:#0c0d0e;margin-right: 45px;">
+						<i class="mdui-icon material-icons mdui-text-color-white">textsms</i>   回复以参与
+					</a>
+				</button>{%else%}
+				<button class="mdui-btn mdui-btn-raised mdui-btn-block mdui-ripple mdui-color-grey">
+						<a href="#" mdui-tooltip="{content: '讨论被锁定'}"  class="mdui-text-color-white mdui-btn-block" style="text-decoration: none;font-weight: 300;color:#0c0d0e;margin-right: 45px;">
+							<i class="mdui-icon material-icons mdui-text-color-white">lock</i>   讨论被锁定
+						</a>
+				</button>
+				{%endif%}<br>
+				{% if not userObj == '' %}
+				{%if not userObj in post.star_user_list and auth%}
+				<button class="mdui-btn mdui-btn-raised mdui-btn-block mdui-ripple mdui-color-amber">
+					<a href="/stared/{{ post.id }}" mdui-tooltip="{content: '设为星标'}"  class="mdui-text-color-white mdui-btn-block" style="text-decoration: none;font-weight: 300;color:#0c0d0e;margin-right: 45px;">
+						<i class="mdui-icon material-icons">stars</i>   设为星标
+					</a>
+				</button>
+					{%else%}
+					<button class="mdui-btn mdui-btn-raised mdui-btn-block mdui-ripple mdui-color-amber">
+						<a href="/unstar/{{ post.id }}" mdui-tooltip="{content: '取消星标星标'}"  class="mdui-text-color-white mdui-btn-block" style="text-decoration: none;font-weight: 300;color:#0c0d0e; margin-right: 45px;">
+							<i class="mdui-icon material-icons mdui-text-color-white">stars</i>   取消星标
+						</a>
+					</button>
+					{%endif%}
+				{%endif%}<br><br><br><br>
+				<h3><i class="mdui-icon material-icons">supervisor_account</i>  参与者</h3>
+				{% for i in post.getParticipant() %}
+				<ul class="mdui-list">
+					<a href="/u/{{ i.id }}" class="mdui-list-item">
+					  <div class="mdui-list-item-avatar"><img src="{{ i.avater }}"/></div>
+					  <div class="mdui-list-item-content">{{ i.nickname }}</div>
+					</a>
+				</ul>
+				{% endfor %}
+				<h3><i class="mdui-icon material-icons">stars</i>  关注者</h3>
+				{% for i in post.star_user_list %}
+				<ul class="mdui-list">
+					<a href="/u/{{ i.id }}" class="mdui-list-item">
+					  <div class="mdui-list-item-avatar"><img src="{{ i.avater }}"/></div>
+					  <div class="mdui-list-item-content">{{ i.nickname }}</div>
+					</a>
+				</ul>
+				{% endfor %}
+
 			</div>
 		</div>
 	</div>

@@ -139,7 +139,10 @@ class Post(db.Model):
         return len(Reply.query.filter_by(father=self.id).all())
 
     def state(self):
-        reply = Reply.query.filter_by(father=self.id).all()[-2]
+        try:
+            reply = list(reversed(Reply.query.filter_by(father=self.id).all()))[-1]
+        except:
+            reply = None
         if not reply == None:
             return User.query.filter_by(id=reply.pusher).first().nickname + ' 回复于 ' + Viewrender.getTimer(timetime=reply.pushingtime)
         else:
@@ -150,6 +153,20 @@ class Post(db.Model):
         db.session.flush()
         db.session.commit()
         return self.look
+    
+    def getParticipant(self):
+        ParticpantIdList = list()
+        Particpanter = list()
+        Particpanter.append(db_getuserByid(self.pusher))
+        ParticpantIdList.append(self.pusher)
+        for i in Reply.query.filter_by(father=self.id).all():
+            if i.pusher in ParticpantIdList:
+                pass
+            else:
+                Particpanter.append(db_getuserByid(i.pusher))
+                ParticpantIdList.append(i.pusher)
+        return Particpanter
+            
 
 
 class Messages(db.Model):
