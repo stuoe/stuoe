@@ -1,104 +1,97 @@
 <div align="center">
 <img src="https://raw.githubusercontent.com/snbck/stuoe.github.io/master/static/Stuoe.png" width="300" height="300">
 
-
-[![license](https://img.shields.io/github/license/stuoe/stuoe.svg)](LICENSE)
-[![Flask](https://img.shields.io/badge/%20power-Flask-blue.svg?style=flat-square)](https://github.com/pallets/flask)
-![PyPI - Python](https://img.shields.io/badge/%20PYPI-stuoe-orange.svg?style=flat-square)
 </div>
 
-stuoe是一个轻量的论坛软件，为想要快速构建论坛的人准备的，即使是一个完全不懂技术的人也可以轻松的部署。不用配置数据库环境，因为他使用[Sqlite3]()。拥有丰富的扩展api.
+
+## Stuoe是轻量的论坛软件
+
+* 前端使用[MDUI](https://mdui.org/)，这是一个基于 [Material Design](https://material.io/design/) 的前端框架，CSS和JS文件压缩后仅有40KB大小
+
+* 基于[Python Flask](https://github.com/pallets/flask)，运行迅速。数据库使用[Sqlite3](https://www.sqlite.org/index.html)，不用配置数据库环境，意味着可以在任何安装Python的服务器上轻松安装并运行
+
+* 每当回复或将帖子设为星标后，将被归纳到帖子的讨论组，如图群组。当讨论发生了新的事务，所有人都会接到[通知](https://baike.baidu.com/item/%E9%80%9A%E7%9F%A5/5957034)。讨论无阻碍
+
+* 使用[Simditor](https://simditor.tower.im/)富文本编辑器，胜任各种排版，使用[Base64](https://www.base64decode.org/)存储图片可以减少[Requests](https://github.com/request/request)数量，减轻服务器负载，加快界面渲染速度
 
 
 
-## Installing
-使用[pip](https://pypi.org)用于安装和更新
+## 使用
 
+#### 你需要一个安装了[Python3.8+](https://python.org/) , [nginx1.16.1](https://www.nginx.com/)的服务器
 
+从[pypi](https://pypi.org/project/stuoe)安装
 ``` bash
 pip install -U stuoe
 ```
-## Fastest build
-*在非生产环境下部署，如果在生产环境下请自行配置wsgi.py*
+或者从[Github](https://github.com/)安装
+``` bash
+git clone https://github.com/stuoe/stuoe.git
+cd stuoe
+python setup.py install
+```
+新建项目
+``` bash
+stuoe startproject --name mysite
+cd mysite
+```
+卸载脚手架（会冲突）
+``` bash
+pip uninstall stuoe
+```
+初始化数据库
+``` bash
+flask db init
+flask db migrate
+flask db update
+```
+运行在5000端口
+``` bash
+flask run --host 127.0.0.1 --port 5000
+```
+打开[127.0.0.1:5000/install](127.0.0.1:5000/install)配置论坛信息，填写论坛名称，配置smtp邮箱，设置管理员用户等
+
+
+## 生产
+
+上面的说明只做演示，如果你想在生产中使用，请阅读该部分（预览版不推荐）
+
+
+实例使用Nginx转发Flask服务，一般来讲应该用[Gunicorn](https:/gunicorn.org/)等HTTP服务器来充当Nginx与Flask服务的中间人，这里为了方便演示，就不使用HTTP服务器
+
+#### 运行Flask服务
 
 ``` bash
-stuoe startproject demo
-cd demo
-pip uninstall stuoe
-flask run
+cd mysite
+flask run --host 127.0.0.1 --port 5000
 ```
 
-``` bash
- * Environment: production
-   WARNING: This is a development server. Do not use it in a production deployment.
-   Use a production WSGI server instead.
- * Debug mode: off
- * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
-```
-*尝试访问localhost:5000/install来配置和初始化论坛，如果这并不管用，请访问127.0.0.1/install，然后访问127.0.0.1/admin来设置论坛*
+#### 配置Nginx服务
+``` conf
+server {    
+            listen 80;
+            server_name localhost;
+            
 
-## Update Setup
-*当版本更新时*
-
-```bash
-pip install -U stuoe
-stuoe update --name demo
-cd demo
-flask db upgrade
-pip uninstall stuoe
-flask run
+            location / {
+                    proxy_pass http://127.0.0.1:5000/;
+            }
+}
 ```
 
-## Components
-*已有的组件列表*
+## 赞助
+欢迎在爱发电赞助我，开发和服务器费用都是自费，任何赞助都能让我更好的开发！
+
+在[爱发电](http://afdian.net/)赞助我  [@stuoe](http://afdian.net/@stuoe)
 
 
-* 安装界面
-* 注册于登入
-* 设置论坛的欢迎标题和横幅
-* 对用户组分类
-* 支持SMTP验证用户邮箱
-* 使用富文本编辑器（支持上传图片）
-* 使用标签对帖子分类
-* 管理员对帖子顶置
-* 管理员对帖子锁定
-* 管理员发布帖子具有验证标志
-* 一键设置论坛主题色
-* 设置论坛头部js脚本
-* 设置论坛 robots.txt
-* 管理论坛标签（设置标题，图标）
-* 用户设置个人介绍
-* 用户默认哈希头像
-* 用户上传自定义头像
-* 用户对讨论加星标
+## 链接
 
-*Stuoe在预览版中，你可以等待测试版，也可以与我们一起开发*
+* 官网:  [https://stuoe.cn](https://stuoe.cn)
+* 版本 : [https://pypi.org/project/stuoe](https://pypi.org/project/stuoe)
+* 论坛 : [http://discuss.stuoe.cn/](http://discuss.stuoe.cn/)
+
+## 协议
+使用[Apache License](http://www.apache.org/licenses/)，请关注[License](https://github.com/stuoe/stuoe/blob/master/LICENSE)
 
 
-
-## Contact
-* QQ 2731510961
-* Email snbckcode@gmail.com
-* Web [stuoe.cn](https://stuoe.cn)
-* ORG [stuoe](https://github.com/stuoe)
-
-## Contributor
-*成员*
-* [snbck](https://github.com/snbck)
-
-*少数贡献者*   
-
-* [shyfcka](https://github.com/shyfcka)
-* [YDSzq](https://github.com/YDSzq)
-* [Alex-hub79](https://github.com/Alex-hub79)
-
-
-[Contributor](https://github.com/stuoe/stuoe/graphs/contributors)
-
-
-
-## Link
-* Web:  [https://stuoe.cn](https://stuoe.cn)
-* Start: [https://stuoe.cn/docs/start.html](https://stuoe.cn/docs/start.html)
-* Version : [https://pypi.org/project/stuoe](https://pypi.org/project/stuoe)
-* discuss : [http://discuss.stuoe.cn/](http://discuss.stuoe.cn/)
