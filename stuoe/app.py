@@ -36,7 +36,7 @@ except:
 # Global Var
 verify_registered_email = list()
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
-Release = 'v0.1.3.5 Release'
+Release = 'v0.1.3.5.2 Release'
 
 
 # Get Configs File
@@ -962,7 +962,6 @@ def pushing_post():
         pushingtime=time.time(),
         tags=request.form['tags'],
         lock=False,
-        look=0,
         top=False)
     db.session.add(newPost)
     db.session.flush()

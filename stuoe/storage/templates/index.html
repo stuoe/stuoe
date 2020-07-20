@@ -77,8 +77,8 @@
 				<a href="/p/{{ post.id }}" style="text-decoration: none;font-weight: 300;color:#0c0d0e;">
 				<h3 class="mdui-typo-subheading" style="line-height: 0;">{{post.title}} </h3>
 				<small style="line-height: 0;">{{ post.state() }}</small>
-				<p class="mdui-typo-body-1" style="line-height: 0;">
-					{{ post.body | striptags | upper | trim | truncate(30, True) }}
+				<p class="mdui-typo-body-1" style="line-height: 1;">
+					{{ post.body | striptags | upper | trim | truncate(180, True) }}
 				</p>
 				</a>
 			</div>

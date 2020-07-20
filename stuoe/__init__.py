@@ -20,7 +20,7 @@ startworkpath = os.getcwd() + '/'
 
 os.chdir(os.path.dirname(__file__))
 
-__version__ = '0.1.3.5'
+__version__ = '0.1.3.5.2'
 
 
 click.echo('Welcome to Stuoe ' + __version__)
