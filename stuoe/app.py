@@ -65,10 +65,7 @@ manager = Manager(app)
 db = SQLAlchemy(app)
 mail = flask_mail.Mail(app)
 migrate = Migrate(app, db)
-manager.add_command('db', MigrateCommand) 
-
-
-
+manager.add_command('db', MigrateCommand)
 
 
 star_for = db.Table('star_for',
@@ -137,11 +134,12 @@ class Post(db.Model):
     reply = db.relationship("Reply", backref="Post")
     star_user_list = db.relationship(
         'User', secondary=star_for, backref=db.backref('Post'))
+
     def getReplyNumber(self):
         return len(Reply.query.filter_by(father=self.id).all())
 
     def state(self):
-        reply = Reply.query.filter_by(father=self.id).first()
+        reply = Reply.query.filter_by(father=self.id).all()[-2]
         if not reply == None:
             return User.query.filter_by(id=reply.pusher).first().nickname + ' 回复于 ' + Viewrender.getTimer(timetime=reply.pushingtime)
         else:
@@ -152,8 +150,6 @@ class Post(db.Model):
         db.session.flush()
         db.session.commit()
         return self.look
-
-
 
 
 class Messages(db.Model):
@@ -327,8 +323,6 @@ def getPost_list(tags='', num=30):
     return returnPost_list
 
 
-
-
 # Install
 
 
@@ -388,7 +382,7 @@ def installing_step():
 def send_index():
 
     if get_session() == False:
-        return Viewrender.gethome(auth=False, tagslist=Tags.query.filter_by().all(), postlist=getPost_list(), get_avater=get_avater,title="首页")
+        return Viewrender.gethome(auth=False, tagslist=Tags.query.filter_by().all(), postlist=getPost_list(), get_avater=get_avater, title="首页")
     else:
         try:
             serverconf['open_email']
@@ -399,7 +393,7 @@ def send_index():
             get_session('obj').verify_email = True
             db.session.flush()
             db.session.commit()
-        return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by().all(), postlist=getPost_list(), get_avater=get_avater,title="首页")
+        return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by().all(), postlist=getPost_list(), get_avater=get_avater, title="首页")
 
 
 @app.route('/logout')
@@ -474,9 +468,9 @@ def get_tags(tid):
         return abort(404)
     tagsname = Tags.query.filter_by(id=tid).first().name
     if get_session() == False:
-        return Viewrender.gethome(auth=False, tagslist=Tags.query.filter_by().all(), postlist=getPost_list(tags=tid), get_avater=get_avater,title=tagsname)
+        return Viewrender.gethome(auth=False, tagslist=Tags.query.filter_by().all(), postlist=getPost_list(tags=tid), get_avater=get_avater, title=tagsname)
     else:
-        return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by().all(), postlist=getPost_list(tags=tid), get_avater=get_avater,title=tagsname)
+        return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by().all(), postlist=getPost_list(tags=tid), get_avater=get_avater, title=tagsname)
 
 
 @app.route('/relation')
@@ -490,9 +484,9 @@ def show_relation():
             if i.pusher == nowUserId:
                 relationPost.append(i)
             else:
-                for i in Reply.query.filter_by(father=i.id,pusher=nowUserId).all():
+                for i in Reply.query.filter_by(father=i.id, pusher=nowUserId).all():
                     relationPost.append(i)
-        return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by().all(), postlist=relationPost, get_avater=get_avater,title="与我有关")
+        return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by().all(), postlist=relationPost, get_avater=get_avater, title="与我有关")
 
 
 @app.route('/write')
@@ -574,7 +568,8 @@ def user_changsettings_checkemail():
                 return Viewrender.getMSG("验证码不正确", auth=True, userObj=user)
     return Viewrender.getMSG('该用户并未发起更改邮件事务,找不到对象', auth=True, userObj=user)
 
-@app.route('/settings/password',methods=["POST"])
+
+@app.route('/settings/password', methods=["POST"])
 def user_changsettings_password():
     user = get_session('obj')
     if not user:
@@ -585,21 +580,17 @@ def user_changsettings_password():
     if request.form['newpassword'] == '':
         return Viewrender.getMSG("密码不能为空")
     if request.form['newpassword'] != request.form['againpassword']:
-        return Viewrender.getMSG("新的密码并不一致",auth=True,userObj=user)
+        return Viewrender.getMSG("新的密码并不一致", auth=True, userObj=user)
     passhash = hashlib.sha256(
         request.form['oldpassword'].encode('utf-8')).hexdigest()
     if not user.passhash == passhash:
-        return Viewrender.getMSG("旧密码不正确",auth=True,userObj=user)
+        return Viewrender.getMSG("旧密码不正确", auth=True, userObj=user)
     passhash = hashlib.sha256(
         request.form['newpassword'].encode('utf-8')).hexdigest()
     user.passhash = passhash
     db.session.flush()
     db.session.commit()
-    return Viewrender.getMSG("设置成功",auth=True,userObj=user)
-
-
-
-
+    return Viewrender.getMSG("设置成功", auth=True, userObj=user)
 
 
 @app.route('/settings/avater', methods=['POST'])
@@ -609,7 +600,8 @@ def uploader_avater():
         return abort(403)
     avater = request.files['avater']
     basepath = os.path.dirname(__file__)
-    upload_path = os.getcwd() + '/CacheFile/' + str(random.randint(100000,9999999)) + "__file__" + secure_filename(avater.filename)
+    upload_path = os.getcwd() + '/CacheFile/' + str(random.randint(100000, 9999999)
+                                                    ) + "__file__" + secure_filename(avater.filename)
     avater.save(upload_path)
     avaterData = open(upload_path, 'rb').read()
     avaterFilename = os.path.basename(upload_path)
