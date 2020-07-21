@@ -1,0 +1,22 @@
+<style>
+    .window {
+        width: 400px;
+        position: absolute;
+        margin-left: -200px;
+        margin-top: -80px;
+        top: 35%;
+        left: 50%;
+        display: block;
+        z-index: 2000;
+    }
+</style>
+<div class="mdui-container window">
+    <div class="mdui-container mdui-typo">
+        <h2 align="left">500 服务器</h2>
+        <h6 style="font-weight: 300;line-height: 1.2;">你的请求在处理过程中，<a href="https://github.com/stuoe/stuoe">stuoe</a>发生了错误
+            无法完成你的请求，因此返回500.我们深感抱歉，你可以在<a href="https://github.com/stuoe/stuoe/issues">github</a>上报告bug</h6>
+        <div class="mdui-divider"></div>
+        <small>TraceBack:500 Internal Server Error</small>
+        <small>{{ error }}</small>
+    </div>
+</div>

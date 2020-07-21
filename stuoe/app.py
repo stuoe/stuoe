@@ -140,7 +140,8 @@ class Post(db.Model):
 
     def state(self):
         try:
-            reply = list(reversed(Reply.query.filter_by(father=self.id).all()))[-1]
+            reply = list(
+                reversed(Reply.query.filter_by(father=self.id).all()))[-1]
         except:
             reply = None
         if not reply == None:
@@ -153,7 +154,7 @@ class Post(db.Model):
         db.session.flush()
         db.session.commit()
         return self.look
-    
+
     def getParticipant(self):
         ParticpantIdList = list()
         Particpanter = list()
@@ -166,7 +167,6 @@ class Post(db.Model):
                 Particpanter.append(db_getuserByid(i.pusher))
                 ParticpantIdList.append(i.pusher)
         return Particpanter
-            
 
 
 class Messages(db.Model):
@@ -1002,6 +1002,52 @@ def make_Reply(pid):
     db.session.flush()
     db.session.commit()
     return redirect('/p/' + str(post.id))
+
+
+# 400,403,404,405,500 Pages For Error
+
+def get_user_something():
+    if get_session('obj') == False:
+        return False
+    return True
+
+# FlaskError默认返回响应头是200，这里需要调整
+def make_response_for_error(html,e):
+    response = make_response(html)
+    response.status = e
+    return response
+
+
+@app.errorhandler(400)
+def error_400(e):
+    auth = get_user_something()
+    return make_response_for_error(Viewrender.getTemplates(body=open("storage/templates/error/400.html", 'r', encoding="utf-8").read(), auth=auth, userObj=get_session('obj'), title="400 恶意请求"),"400")
+
+
+@app.errorhandler(403)
+def error_403(e):
+    auth = get_user_something()
+    return make_response_for_error(Viewrender.getTemplates(body=open("storage/templates/error/403.html", 'r', encoding="utf-8").read(), auth=auth, userObj=get_session('obj'), title="403 无权限访问"),"403")
+
+
+@app.errorhandler(404)
+def error_404(e):
+    auth = get_user_something()
+    return make_response_for_error(Viewrender.getTemplates(body=open("storage/templates/error/404.html", 'r', encoding="utf-8").read(), auth=auth, userObj=get_session('obj'), title="404 界面不存在"),"404")
+
+
+@app.errorhandler(405)
+def error_405(e):
+    auth = get_user_something()
+    return make_response_for_error(Viewrender.getTemplates(body=open("storage/templates/error/405.html", 'r', encoding="utf-8").read(), auth=auth, userObj=get_session('obj'), title="405 请求错误"),"405")
+
+
+@app.errorhandler(500)
+def error_500(e):
+    auth = get_user_something()
+    pages500 = jinja2.Template(open("storage/templates/error/500.html", 'r', encoding="utf-8").read()).render(error=e)
+    return make_response_for_error(Viewrender.getTemplates(body=pages500, auth=auth, userObj=get_session('obj'), title="500 服务器错误"),"405")
+
 
 
 def send_mail(msg):

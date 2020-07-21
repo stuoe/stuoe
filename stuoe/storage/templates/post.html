@@ -139,7 +139,7 @@
 				{%endif%}<br><br><br><br>
 				<h3><i class="mdui-icon material-icons">supervisor_account</i>  参与者</h3>
 				{% for i in post.getParticipant() %}
-				<ul class="mdui-list">
+				<ul class="mdui-list mdui-list-dense">
 					<a href="/u/{{ i.id }}" class="mdui-list-item">
 					  <div class="mdui-list-item-avatar"><img src="{{ i.avater }}"/></div>
 					  <div class="mdui-list-item-content">{{ i.nickname }}</div>
@@ -148,7 +148,7 @@
 				{% endfor %}
 				<h3><i class="mdui-icon material-icons">stars</i>  关注者</h3>
 				{% for i in post.star_user_list %}
-				<ul class="mdui-list">
+				<ul class="mdui-list mdui-list-dense">
 					<a href="/u/{{ i.id }}" class="mdui-list-item">
 					  <div class="mdui-list-item-avatar"><img src="{{ i.avater }}"/></div>
 					  <div class="mdui-list-item-content">{{ i.nickname }}</div>
