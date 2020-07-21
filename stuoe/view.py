@@ -87,9 +87,9 @@ def getTemplates(
             auth=auth)
 
 
-def gethome(auth=True, userObj='', tagslist='', postlist='', get_avater='',title=''):
+def gethome(auth=True, userObj='', tagslist='', postlist='', get_avater='',title='',options=''):
     body = jinja2.Template(open('storage/templates/index.html',
-                                'r', encoding="utf-8").read()).render(webtitle=serverconf['stuoe_name'], des=serverconf['stuoe_des'], userObj=userObj, tagslist=tagslist, postlist=list(postlist), get_avater=get_avater,auth=auth)
+                                'r', encoding="utf-8").read()).render(webtitle=serverconf['stuoe_name'], des=serverconf['stuoe_des'], userObj=userObj, tagslist=tagslist, postlist=list(postlist), get_avater=get_avater,auth=auth,options=options)
     return getTemplates(auth=auth, title=title, body=body, userObj=userObj, base2=True)
 
 
@@ -165,7 +165,8 @@ def getPost(
         getTimer=getTimer,
         len=len,
         auth=auth,
-        userObj=userObj)
+        userObj=userObj,
+        int=int)
     return getTemplates(
         body=body,
         auth=auth,

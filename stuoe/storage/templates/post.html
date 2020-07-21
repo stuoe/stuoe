@@ -43,7 +43,7 @@
           {%endif%}{%if post.lock and userObj.user_group=='管理员'and auth%}
 						<li class="mdui-menu-item"><a class="mdui-ripple" href="/unlock/{{post.id}}"><i class="mdui-menu-item-icon mdui-icon material-icons">lock_open</i>取消锁定</a>
 						</li>
-						{%endif%}{%if userObj.user_group=='管理员'and auth%}
+						{%endif%}{%if (userObj.user_group == '管理员') or (userObj.id == int(post.pusher))%}
 						<li class="mdui-menu-item"><a class="mdui-ripple" href="/rmpost/{{post.id}}"><i class="mdui-menu-item-icon mdui-icon material-icons">delete</i>删除</a></li>
           {%endif%}
 					</ul>
@@ -76,7 +76,7 @@
 				<div class="mdui-col-xs-11">
 				</div>
 				<div class="mdui-col-xs-1">
-					{%if userObj.user_group=='管理员'%}<i class="mdui-icon material-icons" mdui-menu="{target:'#post-op{{ a.reply.id }}'}">more_vert</i><br>
+					{%if (userObj.user_group=='管理员') or (userObj.id == int(a.reply.pusher))%}<i class="mdui-icon material-icons" mdui-menu="{target:'#post-op{{ a.reply.id }}'}">more_vert</i><br>
 					<br>
 					<br>
 					<ul class="mdui-menu" id="post-op{{a.reply.id}}">
