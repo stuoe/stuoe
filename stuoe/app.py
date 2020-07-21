@@ -144,7 +144,7 @@ class Post(db.Model):
                 reversed(Reply.query.filter_by(father=self.id).all()))[-1]
         except BaseException:
             reply = None
-        if not reply is None:
+        if reply is not None:
             return User.query.filter_by(id=reply.pusher).first(
             ).nickname + ' 回复于 ' + Viewrender.getTimer(timetime=reply.pushingtime)
         else:
@@ -401,8 +401,13 @@ def installing_step():
 def send_index():
 
     if get_session() == False:
-        return Viewrender.gethome(auth=False, tagslist=Tags.query.filter_by().all(
-        ), postlist=getPost_list(), get_avater=get_avater, title="首页", options='index')
+        return Viewrender.gethome(
+            auth=False,
+            tagslist=Tags.query.filter_by().all(),
+            postlist=getPost_list(),
+            get_avater=get_avater,
+            title="首页",
+            options='index')
     else:
         try:
             serverconf['open_email']
@@ -413,27 +418,50 @@ def send_index():
             get_session('obj').verify_email = True
             db.session.flush()
             db.session.commit()
-        return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by(
-        ).all(), postlist=getPost_list(), get_avater=get_avater, title="首页", options='index')
+        return Viewrender.gethome(
+            auth=True,
+            userObj=get_session('obj'),
+            tagslist=Tags.query.filter_by().all(),
+            postlist=getPost_list(),
+            get_avater=get_avater,
+            title="首页",
+            options='index')
 
 
 @app.route('/my')
 def my_post():
     user = get_session('obj')
-    if user == False:
+    if not user:
         return abort(403)
-    return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by().all(
-    ), postlist=Post.query.filter_by(pusher=user.id).all(), get_avater=get_avater, title="首页", options='my')
+    return Viewrender.gethome(
+        auth=True,
+        userObj=get_session('obj'),
+        tagslist=Tags.query.filter_by().all(),
+        postlist=Post.query.filter_by(
+            pusher=user.id).all(),
+        get_avater=get_avater,
+        title="首页",
+        options='my')
 
 
 @app.route('/notifications')
 def user_notifications():
     user = get_session('obj')
-    if user == False:
+    if not user:
         return abort(403)
     theUserAllMessages = Messages.query.filter_by(Postman=user.id).all()
-    renderNoticPages = jinja2.Template(open('storage/templates/box.html','r',encoding="utf-8").read()).render(msglist=theUserAllMessages,tagslist=Tags.query.filter_by().all())
-    return Viewrender.getTemplates(auth=True, userObj=user, title='通知',body=renderNoticPages)
+    renderNoticPages = jinja2.Template(
+        open(
+            'storage/templates/box.html',
+            'r',
+            encoding="utf-8").read()).render(
+        msglist=theUserAllMessages,
+        tagslist=Tags.query.filter_by().all())
+    return Viewrender.getTemplates(
+        auth=True,
+        userObj=user,
+        title='通知',
+        body=renderNoticPages)
 
 
 @app.route('/logout')
@@ -455,7 +483,10 @@ def user_space(uid):
             auth=False, lastedPost=lastedPost, lookuserObj=user)
     else:
         return Viewrender.getUserSpace(
-            auth=True, lookuserObj=user, userObj=lookuser, lastedPost=lastedPost)
+            auth=True,
+            lookuserObj=user,
+            userObj=lookuser,
+            lastedPost=lastedPost)
 
 
 @app.route('/p/<pid>')
@@ -509,11 +540,22 @@ def get_tags(tid):
         return abort(404)
     tagsname = Tags.query.filter_by(id=tid).first().name
     if get_session() == False:
-        return Viewrender.gethome(auth=False, tagslist=Tags.query.filter_by().all(
-        ), postlist=getPost_list(tags=tid), get_avater=get_avater, title=tagsname)
+        return Viewrender.gethome(
+            auth=False,
+            tagslist=Tags.query.filter_by().all(),
+            postlist=getPost_list(
+                tags=tid),
+            get_avater=get_avater,
+            title=tagsname)
     else:
-        return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by(
-        ).all(), postlist=getPost_list(tags=tid), get_avater=get_avater, title=tagsname)
+        return Viewrender.gethome(
+            auth=True,
+            userObj=get_session('obj'),
+            tagslist=Tags.query.filter_by().all(),
+            postlist=getPost_list(
+                tags=tid),
+            get_avater=get_avater,
+            title=tagsname)
 
 
 @app.route('/relation')
@@ -530,8 +572,13 @@ def show_relation():
                 for i in Reply.query.filter_by(
                         father=i.id, pusher=nowUserId).all():
                     relationPost.append(i)
-        return Viewrender.gethome(auth=True, userObj=get_session('obj'), tagslist=Tags.query.filter_by(
-        ).all(), postlist=relationPost, get_avater=get_avater, title="与我有关")
+        return Viewrender.gethome(
+            auth=True,
+            userObj=get_session('obj'),
+            tagslist=Tags.query.filter_by().all(),
+            postlist=relationPost,
+            get_avater=get_avater,
+            title="与我有关")
 
 
 @app.route('/write')
@@ -678,7 +725,7 @@ def adminSettings(pages):
         return abort(403)
     if not user.user_group == '管理员':
         return abort(403)
-    if not pages in ['preview', 'profile', 'tags', 'style', 'extension']:
+    if pages not in ['preview', 'profile', 'tags', 'style', 'extension']:
         return abort(404)
     if pages == 'preview':
         replyList = list()
@@ -686,36 +733,71 @@ def adminSettings(pages):
             replyList.append(replyObj(user=db_getuserByid(i.pusher), reply=i))
         adminlist = open('storage/templates/admin/list.html',
                          'r', encoding="utf-8").read()
-        body = jinja2.Template(open('storage/templates/admin/preview.html', 'r', encoding="utf-8").read()).render(adminList=adminlist, pv=platform.python_version(),
-                                                                                                                  fv=__version__, sv=Release, postlist=list(reversed(Post.query.filter_by().all()[:7])), get_avater=get_avater, replyList=replyList)
+        body = jinja2.Template(
+            open(
+                'storage/templates/admin/preview.html',
+                'r',
+                encoding="utf-8").read()).render(
+            adminList=adminlist,
+            pv=platform.python_version(),
+            fv=__version__,
+            sv=Release,
+            postlist=list(
+                reversed(
+                    Post.query.filter_by().all()[
+                        :7])),
+            get_avater=get_avater,
+            replyList=replyList)
         return Viewrender.getTemplates(
             title='管理界面', auth=True, base2=True, body=body, userObj=user)
     if pages == 'profile':
         adminlist = open('storage/templates/admin/list.html',
                          'r', encoding="utf-8").read()
-        body = jinja2.Template(open('storage/templates/admin/profile.html', 'r',
-                                    encoding="utf-8").read()).render(adminList=adminlist, serverconf=serverconf)
+        body = jinja2.Template(
+            open(
+                'storage/templates/admin/profile.html',
+                'r',
+                encoding="utf-8").read()).render(
+            adminList=adminlist,
+            serverconf=serverconf)
         return Viewrender.getTemplates(
             title='管理界面', auth=True, base2=True, body=body, userObj=user)
     if pages == 'style':
         adminlist = open('storage/templates/admin/list.html',
                          'r', encoding="utf-8").read()
-        body = jinja2.Template(open('storage/templates/admin/style.html', 'r',
-                                    encoding="utf-8").read()).render(adminList=adminlist, serverconf=serverconf)
+        body = jinja2.Template(
+            open(
+                'storage/templates/admin/style.html',
+                'r',
+                encoding="utf-8").read()).render(
+            adminList=adminlist,
+            serverconf=serverconf)
         return Viewrender.getTemplates(
             title='管理界面', auth=True, base2=True, body=body, userObj=user)
     if pages == 'tags':
         adminlist = open('storage/templates/admin/list.html',
                          'r', encoding="utf-8").read()
-        body = jinja2.Template(open('storage/templates/admin/tags.html', 'r',
-                                    encoding="utf-8").read()).render(adminList=adminlist, serverconf=serverconf, tagslist=Tags.query.filter_by().all())
+        body = jinja2.Template(
+            open(
+                'storage/templates/admin/tags.html',
+                'r',
+                encoding="utf-8").read()).render(
+            adminList=adminlist,
+            serverconf=serverconf,
+            tagslist=Tags.query.filter_by().all())
         return Viewrender.getTemplates(
             title='管理界面', auth=True, base2=True, body=body, userObj=user)
     if pages == 'extension':
         adminlist = open('storage/templates/admin/list.html',
                          'r', encoding="utf-8").read()
-        body = jinja2.Template(open('storage/templates/admin/ext.html', 'r',
-                                    encoding="utf-8").read()).render(adminList=adminlist, serverconf=serverconf, tagslist=Tags.query.filter_by().all())
+        body = jinja2.Template(
+            open(
+                'storage/templates/admin/ext.html',
+                'r',
+                encoding="utf-8").read()).render(
+            adminList=adminlist,
+            serverconf=serverconf,
+            tagslist=Tags.query.filter_by().all())
         return Viewrender.getTemplates(
             title='管理界面', auth=True, base2=True, body=body, userObj=user)
 
@@ -775,7 +857,9 @@ def adminWait_tid(tid):
                     name=request.form['tagsname']).first() is None:
                 return Viewrender.getMSG(msg='名称重复', auth=True, userObj=user)
             newTags = Tags(
-                name=request.form['tagsname'], icon=request.form['tagsicon'], lock=False)
+                name=request.form['tagsname'],
+                icon=request.form['tagsicon'],
+                lock=False)
             db.session.add(newTags)
             db.session.flush()
             db.session.commit()
@@ -792,7 +876,6 @@ def adminWait_tid(tid):
 # 操作区
 
 
-
 # 删除帖子
 @app.route('/rmpost/<pid>')
 def rmpost(pid):
@@ -800,7 +883,7 @@ def rmpost(pid):
     post = Post.query.filter_by(id=pid).first()
     if post is None:
         return Viewrender.getMSG(auth=True, userObj=user, msg='帖子不存在')
-    if user == None:
+    if user is None:
         return abort(403)
     if (user.id == int(post.pusher)) or (user.user_group == '管理员'):
         for i in Reply.query.filter_by(father=pid).all():
@@ -829,7 +912,7 @@ def rmreply(rid):
     db.session.flush()
     db.session.commit()
     return redirect('/p/' + str(rid.father))
-    
+
 
 # 锁定帖子
 @app.route('/lock/<pid>')
@@ -848,6 +931,8 @@ def lock(pid):
     return redirect('/p/' + str(pid))
 
 # 解除锁定帖子
+
+
 @app.route('/unlock/<pid>')
 def unlock(pid):
     user = get_session('obj')
@@ -864,6 +949,8 @@ def unlock(pid):
     return redirect('/p/' + str(pid))
 
 # 顶置帖子
+
+
 @app.route('/top/<pid>')
 def top(pid):
     user = get_session('obj')
@@ -880,6 +967,8 @@ def top(pid):
     return redirect('/p/' + str(pid))
 
 # 取消顶置帖子
+
+
 @app.route('/untop/<pid>')
 def untop(pid):
     user = get_session('obj')
@@ -896,6 +985,8 @@ def untop(pid):
     return redirect('/p/' + str(pid))
 
 # 删除消息
+
+
 @app.route('/rmmsg/<mid>')
 def rmmsg(mid):
     user = get_session('obj')
@@ -912,7 +1003,6 @@ def rmmsg(mid):
     return redirect('/notifications')
 
 
-
 # 搜索列
 class SearchObj():
     def __init__(self, avater, url, name):
@@ -921,6 +1011,8 @@ class SearchObj():
         self.name = name
 
 # 搜索
+
+
 @app.route('/search', methods=['GET', 'POST'])
 def getSearch():
     user = get_session('obj')
@@ -931,22 +1023,29 @@ def getSearch():
         for i in User.query.filter_by().all():
             if (SearchText in i.nickname) or (
                     SearchText == i.id) or (SearchText in i.user_des):
-                SearchList.append(
-                    SearchObj(avater=i.avater, name="用户: " + str(i.nickname), url="/u/" + str(i.id)))
+                SearchList.append(SearchObj(
+                    avater=i.avater, name="用户: " + str(i.nickname), url="/u/" + str(i.id)))
         for i in Post.query.filter_by().all():
             if (SearchText in i.title) or (SearchText in i.body):
                 SearchList.append(SearchObj(avater=get_avater(
                     i.pusher), name="讨论: " + i.title, url="/p/" + str(i.id)))
         user = get_session('obj')
         body = jinja2.Template(
-            open('storage/templates/search.html', 'r', encoding="utf-8").read()).render(SearchList=SearchList)
+            open(
+                'storage/templates/search.html',
+                'r',
+                encoding="utf-8").read()).render(
+            SearchList=SearchList)
 
         return Viewrender.getTemplates(
             auth=auth, userObj=user, title='搜索', body=body)
     else:
 
         body = jinja2.Template(
-            open('storage/templates/search.html', 'r', encoding="utf-8").read()).render()
+            open(
+                'storage/templates/search.html',
+                'r',
+                encoding="utf-8").read()).render()
 
         return Viewrender.getTemplates(
             auth=auth, userObj=user, title='搜索', body=body)
@@ -1081,7 +1180,12 @@ def make_Reply(pid):
     db.session.add(newReply)
     db.session.flush()
     db.session.commit()
-    makeNotice(type='newReply',info = {'postId': pid,'ReplyUserID':user.id,'newReplyId':newReply.id})
+    makeNotice(
+        type='newReply',
+        info={
+            'postId': pid,
+            'ReplyUserID': user.id,
+            'newReplyId': newReply.id})
     return redirect('/p/' + str(post.id))
 
 
@@ -1104,29 +1208,61 @@ def make_response_for_error(html, e):
 @app.errorhandler(400)
 def error_400(e):
     auth = get_user_something()
-    return make_response_for_error(Viewrender.getTemplates(body=open("storage/templates/error/400.html",
-                                                                     'r', encoding="utf-8").read(), auth=auth, userObj=get_session('obj'), title="400 恶意请求"), "400")
+    return make_response_for_error(
+        Viewrender.getTemplates(
+            body=open(
+                "storage/templates/error/400.html",
+                'r',
+                encoding="utf-8").read(),
+            auth=auth,
+            userObj=get_session('obj'),
+            title="400 恶意请求"),
+        "400")
 
 
 @app.errorhandler(403)
 def error_403(e):
     auth = get_user_something()
-    return make_response_for_error(Viewrender.getTemplates(body=open("storage/templates/error/403.html",
-                                                                     'r', encoding="utf-8").read(), auth=auth, userObj=get_session('obj'), title="403 无权限访问"), "403")
+    return make_response_for_error(
+        Viewrender.getTemplates(
+            body=open(
+                "storage/templates/error/403.html",
+                'r',
+                encoding="utf-8").read(),
+            auth=auth,
+            userObj=get_session('obj'),
+            title="403 无权限访问"),
+        "403")
 
 
 @app.errorhandler(404)
 def error_404(e):
     auth = get_user_something()
-    return make_response_for_error(Viewrender.getTemplates(body=open("storage/templates/error/404.html",
-                                                                     'r', encoding="utf-8").read(), auth=auth, userObj=get_session('obj'), title="404 界面不存在"), "404")
+    return make_response_for_error(
+        Viewrender.getTemplates(
+            body=open(
+                "storage/templates/error/404.html",
+                'r',
+                encoding="utf-8").read(),
+            auth=auth,
+            userObj=get_session('obj'),
+            title="404 界面不存在"),
+        "404")
 
 
 @app.errorhandler(405)
 def error_405(e):
     auth = get_user_something()
-    return make_response_for_error(Viewrender.getTemplates(body=open("storage/templates/error/405.html",
-                                                                     'r', encoding="utf-8").read(), auth=auth, userObj=get_session('obj'), title="405 请求错误"), "405")
+    return make_response_for_error(
+        Viewrender.getTemplates(
+            body=open(
+                "storage/templates/error/405.html",
+                'r',
+                encoding="utf-8").read(),
+            auth=auth,
+            userObj=get_session('obj'),
+            title="405 请求错误"),
+        "405")
 
 
 @app.errorhandler(500)
@@ -1134,8 +1270,13 @@ def error_500(e):
     auth = get_user_something()
     pages500 = jinja2.Template(open(
         "storage/templates/error/500.html", 'r', encoding="utf-8").read()).render(error=e)
-    return make_response_for_error(Viewrender.getTemplates(
-        body=pages500, auth=auth, userObj=get_session('obj'), title="500 服务器错误"), "405")
+    return make_response_for_error(
+        Viewrender.getTemplates(
+            body=pages500,
+            auth=auth,
+            userObj=get_session('obj'),
+            title="500 服务器错误"),
+        "405")
 
 
 def send_mail(msg):
@@ -1164,8 +1305,17 @@ def get_avater(userId):
 
 
 def postNotice(userId, title, body):
-    newNotice = Messages(subject=title, body=body, PostTime=time.time(), Postman=userId,
-                         avater='http://identicon.relucks.org/' + str(random.randint(200, 999)) + '?size=120')
+    newNotice = Messages(
+        subject=title,
+        body=body,
+        PostTime=time.time(),
+        Postman=userId,
+        avater='http://identicon.relucks.org/' +
+        str(
+            random.randint(
+                200,
+                999)) +
+        '?size=120')
     db.session.add(newNotice)
     db.session.flush()
     db.session.commit()
@@ -1193,13 +1343,18 @@ def makeNotice(type, info):
         NoticReplyUser = info['ReplyUserID']
         # 推送到所有参与者和关注者
         for i in NoticGroupId:
-            postNotice(userId=i, title=thePost.title + '中的新回复', body=Reply.query.filter_by(id=info['newReplyId']).first().body)
+            postNotice(
+                userId=i,
+                title=thePost.title + '中的新回复',
+                body=Reply.query.filter_by(
+                    id=info['newReplyId']).first().body)
 
 
 def renderNoticXML(msglist):
     xml = ''
     for i in msglist:
-        xml = xml + jinja2.Template(open('storage/templates/xml/notic.html', 'r', encoding="utf-8").read()).render(title=i.subject,body=i.body)
+        xml = xml + jinja2.Template(open('storage/templates/xml/notic.html',
+                                         'r', encoding="utf-8").read()).render(title=i.subject, body=i.body)
     return xml
 
 
