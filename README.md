@@ -47,7 +47,7 @@ flask db update
 ```
 运行在5000端口
 ``` bash
-flask run --host 127.0.0.1 --port 5000
+python app.py
 ```
 打开[127.0.0.1:5000/install](127.0.0.1:5000/install)配置论坛信息，填写论坛名称，配置smtp邮箱，设置管理员用户等
 
@@ -63,7 +63,7 @@ flask run --host 127.0.0.1 --port 5000
 
 ``` bash
 cd mysite
-flask run --host 127.0.0.1 --port 5000
+python app.py
 ```
 
 #### 配置Nginx服务
