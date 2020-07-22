@@ -902,6 +902,7 @@ def rmpost(pid):
 def rmreply(rid):
     user = get_session('obj')
     reply = Reply.query.filter_by(id=rid).first()
+    red = reply.father
     if not user:
         return abort(403)
     if reply is None:
@@ -911,7 +912,7 @@ def rmreply(rid):
     db.session.delete(reply)
     db.session.flush()
     db.session.commit()
-    return redirect('/p/' + str(rid.father))
+    return redirect('/p/' + str(red))
 
 
 # 锁定帖子

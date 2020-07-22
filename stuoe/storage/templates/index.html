@@ -19,20 +19,23 @@
 				<ul class="mdui-list mdui-list-dense">
 					{% if options == 'index'%}
 					<li class="mdui-list-item mdui-ripple"> <i
-							class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-theme-accent">chat</i>
-						<div class="mdui-list-item-content"> <a href="/" class="mdui-text-color-theme-accent">所有讨论</a> </div>
-					{% else %}
+							class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-theme-accent">forum</i>
+						<div class="mdui-list-item-content"> <a href="/" class="mdui-text-color-theme-accent">所有讨论</a>
+						</div>
+						{% else %}
 					<li class="mdui-list-item mdui-ripple"> <i
-						class="mdui-list-item-icon mdui-icon material-icons">chat</i>
-					<div class="mdui-list-item-content"> <a href="/">所有讨论</a> </div>
-					{% endif %}
-					</li> {%if not userObj==''%} {% if options == 'my'%}<li class="mdui-list-item mdui-ripple mdui-text-color-theme-accent"> <i
+							class="mdui-list-item-icon mdui-icon material-icons">chat</i>
+						<div class="mdui-list-item-content"> <a href="/">所有讨论</a> </div>
+						{% endif %}
+					</li> {%if not userObj==''%} {% if options == 'my'%}<li
+						class="mdui-list-item mdui-ripple mdui-text-color-theme-accent"> <i
 							class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-theme-accent">my_location</i>
-						<div class="mdui-list-item-content"> <a href="/my" class="mdui-text-color-theme-accent">我的帖子</a> </div>
+						<div class="mdui-list-item-content"> <a href="/my" class="mdui-text-color-theme-accent">我的帖子</a>
+						</div>
 					</li>{%else%}
 					<li class="mdui-list-item mdui-ripple"> <i
-						class="mdui-list-item-icon mdui-icon material-icons">my_location</i>
-					<div class="mdui-list-item-content"> <a href="/my">我的帖子</a> </div>{%endif%}
+							class="mdui-list-item-icon mdui-icon material-icons">my_location</i>
+						<div class="mdui-list-item-content"> <a href="/my">我的帖子</a> </div>{%endif%}
 					<li class="mdui-list-item mdui-ripple"> <i
 							class="mdui-list-item-icon mdui-icon material-icons">notifications</i>
 						<div class="mdui-list-item-content"> <a href="/notifications">通知</a> </div>
@@ -56,8 +59,9 @@
 					mdui-tooltip="{content: '讨论已被锁定'}"
 					style="color: #1C6BF5;line-height: 0;">lock</i>{%endif%}{%if post.top%} <i
 					class="mdui-icon material-icons" mdui-tooltip="{content: '讨论已被顶置'}"
-					style="color: #FF0000;line-height: 0;">assistant_photo</i>{%endif%} {% if auth %} <i
-					class="mdui-icon material-icons"
+					style="color: #FF0000;line-height: 0;">assistant_photo</i>{%endif%}{%if userObj in post.star_user_list and auth%}<i
+					class="mdui-icon material-icons" mdui-tooltip="{content: '星标讨论'}"
+					style="color:#FFC300;">stars</i>{% endif %} {% if auth %} <i class="mdui-icon material-icons mdui-btn-icon"
 					mdui-menu="{target: '#post-op-{{ post.id }}'}">more_vert</i>{% else %} <i
 					class="mdui-icon material-icons"></i>{% endif %} <br> <br> <br>
 				<ul class="mdui-menu" id="post-op-{{ post.id }}">
@@ -79,8 +83,8 @@
 					{%endif%}{%if post.lock and userObj.user_group=='管理员'and auth%} <li class="mdui-menu-item"> <a
 							class="mdui-ripple" href="/unlock/{{post.id}}"> <i
 								class="mdui-menu-item-icon mdui-icon material-icons">lock_open</i>取消锁定</a></li>
-					{%endif%}{%if (userObj.user_group=='管理员'or userObj.id == post.pusher) or auth%} <li class="mdui-menu-item"> <a class="mdui-ripple"
-							href="/rmpost/{{post.id}}"> <i
+					{%endif%}{%if (userObj.user_group=='管理员'or userObj.id == post.pusher) or auth%} <li
+						class="mdui-menu-item"> <a class="mdui-ripple" href="/rmpost/{{post.id}}"> <i
 								class="mdui-menu-item-icon mdui-icon material-icons">delete</i>删除</a></li> {%endif%}
 				</ul>
 			</li>

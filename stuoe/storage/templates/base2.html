@@ -8,11 +8,13 @@
   <!-- Render for Jinja2 Building for https://github.com/stuoe/stuoe -->
 </head>
 <!-- Main content, definition style, occupancy percentage -->
-<body class="mdui-color-theme-{{ colorPrimary }} mdui-theme-accent-{{ colorPrimary }} mdui-bottom-nav-fixed" >
+
+<body
+  class="mdui-color-theme-{{ colorPrimary }} mdui-theme-accent-{{ colorPrimary }} mdui-bottom-nav-fixed mdui-color-grey-100 mdui-color-grey">
   <!-- Define color theme, set text style, body in body -->
   <div class="mdui-color-theme-theme">
     <!-- Define navigation bar -->
-    <header class="mdui-shadow-1">
+    <header class="mdui-shadow-4">
       {{ nav }}
     </header>
     <!-- Define the main content and adjust the percentage of occupied content -->
@@ -21,9 +23,10 @@
       <!-- Loading JavaScript -->
       <script src="/static/mdui/js/mdui.min.js"></script>
       <script>
-      {{ js }}
+        { { js } }
       </script>
     </div>
   </div>
 </body>
+
 </html>
