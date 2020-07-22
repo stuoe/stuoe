@@ -27,10 +27,12 @@ import platform
 import click
 
 
-try:
-    import view
-except BaseException:
-    from stuoe import view
+
+
+import view
+
+
+
 
 
 # Global Var
@@ -341,6 +343,13 @@ def getPost_list(tags='', num=30):
                 returnPost_list.append(i)
     return returnPost_list
 
+
+# Import Extensions
+
+import extapp
+
+# 把所有扩展的路由添加到Flask对象，然后再用新的Flask对象替换掉之前的Flask对象
+app = extapp.init(app,db)
 
 # Install
 
@@ -1362,3 +1371,8 @@ def renderNoticXML(msglist):
 @ app.route('/robots.txt')
 def robotsTxt():
     return serverconf['robots.txt']
+
+
+
+
+app.run(debug=False,host="0.0.0.0",port=5000)
