@@ -25,14 +25,10 @@ import random
 import threading
 import platform
 import click
-
-
+import importlib
 
 
 import view
-
-
-
 
 
 # Global Var
@@ -344,12 +340,108 @@ def getPost_list(tags='', num=30):
     return returnPost_list
 
 
+# API Compment
+
+class Forum():
+    # init
+
+    def __init__(self):
+        self.app = app
+        self.db = db
+        self.serverconf = serverconf
+
+    # serverconf
+
+    # 得到配置文件的某个值,得到空字符串则返回整个配置文件
+    def sevrerconf_get(self, key):
+        if key == '':
+            return self.sevrerconf
+        else:
+            try:
+                return self.serverconf[key]
+            except:
+                return None
+
+    # 得到配置文件的某个值，不存在则创建为value，得到空字符串则返回整个配置文件
+    def serverconf_get_key_or_create(self, key, value):
+        if key == '':
+            return self.serverconf
+        else:
+            try:
+                return self.serverconf[key]
+            except:
+                self.serverconf[key] = value
+                return self.serverconf[key]
+
+    # 修改/创建配置文件的某个值
+    def serverconf_chang(self, key, value):
+        try:
+            self.serverconf[key] = value
+            return True
+        except:
+            return False
+
+    # database
+
+    # 得到整个db对象
+    def database_get_db(self):
+        return self.db
+
+    # 用修改的db替换掉db
+    def database_replace_database(self, db):
+        self.db = db
+
+    # 得到数据库中的所有表的immutabledict格式组
+
+    def database_get_all_table_immutabledict(self):
+        self.db.reflect(app=app)
+        return self.db.metadata.tables
+
+    # 得到指定的表，得到空字符串则返回所有的表，不存在返回None
+    def database_get_table_or_all(self, tablename):
+        if tablename == '':
+            return self.db.Model._decl_class_registry.values()
+        else:
+            try:
+                return self.db.Model._decl_class_registry.values()[tablename]
+            except:
+                return None
+
+    # App and Route
+
+    # 得到整个app对象
+
+    def app_get_app(self):
+        return self.app
+
+    # 用修改的app替换掉app
+    def app_replace_app(self, app):
+        self.app = app
+
+    # Amazing Fetch
+    def amazing_fetch(self):
+        global app
+        global serverconf
+        global db
+        app = self.app
+        serverconf = self.serverconf
+        db = self.db
+
+
+forum = Forum()
+
 # Import Extensions
+# 丢手绢！
+for i in os.listdir("extension"):
+    print("=============================")
+    print("导入模块: " + i)
+    print("=============================\n")
+    theExtensions = importlib.import_module("extension." + i + ".main")
+    forum = theExtensions.Main(forum).init(forum=forum)
 
-import extapp
 
-# 把所有扩展的路由添加到Flask对象，然后再用新的Flask对象替换掉之前的Flask对象
-app = extapp.init(app,db)
+forum.amazing_fetch()
+
 
 # Install
 
@@ -1373,6 +1465,4 @@ def robotsTxt():
     return serverconf['robots.txt']
 
 
-
-
-app.run(debug=False,host="0.0.0.0",port=5000)
+app.run(debug=False, host="0.0.0.0", port=5000)

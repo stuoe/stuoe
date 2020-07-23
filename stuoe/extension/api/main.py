@@ -21,13 +21,9 @@ header = {
 
 class Main():
     # 获取Flask对象和SQLAlchemy对象
-    def __init__(self, app, db):
-        self.app = app
-        self.db = db
+    def __init__(self, forum):
+        self.forum = forum
     # 绑定这些路由,然后再将新的Flask对象归还
 
-    def init(self):
-        @self.app.route("/exampleas")
-        def example_function_as():
-            return "A Example Route"
-        return self.app
+    def init(self,forum):
+        return self.forum
