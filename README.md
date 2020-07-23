@@ -15,7 +15,9 @@
 * 使用[Simditor](https://simditor.tower.im/)富文本编辑器，胜任各种排版，使用[Base64](https://www.base64decode.org/)存储图片可以减少[Requests](https://github.com/request/request)数量，减轻服务器负载，加快界面渲染速度
 
 ## 文档
-文档托管在[https://docs.stuoe.cn/#/](https://docs.stuoe.cn/#/),github仓库:[https://github.com/snbck/stuoe-docs](https://github.com/snbck/stuoe-docs)
+文档在 [https://docs.stuoe.cn](https://docs.stuoe.cn)
+
+github仓库 [https://github.com/snbck/stuoe-docs](https://github.com/snbck/stuoe-docs)
 
 
 ## 赞助
@@ -29,7 +31,7 @@
 * 官网:  [https://stuoe.cn](https://stuoe.cn)
 * 版本 : [https://pypi.org/project/stuoe](https://pypi.org/project/stuoe)
 * 论坛 : [http://discuss.stuoe.cn/](http://discuss.stuoe.cn/)
-* 文档 : [https://docs.stuoe.cn/#/](https://docs.stuoe.cn/#/)
+* 文档 : [https://docs.stuoe.cn/](https://docs.stuoe.cn/)
 
 ## 协议
 使用[Apache License](http://www.apache.org/licenses/)，请关注[License](https://github.com/stuoe/stuoe/blob/master/LICENSE)
