@@ -26,4 +26,20 @@ class Main():
     # 绑定这些路由,然后再将新的Flask对象归还
 
     def init(self,forum):
+
+        app = forum.app_get_app()
+
+        @app.route("/SNBCK_is_a_boy")
+        def snbck_is_a_boy():
+            return "Yes, that's right 😎"
+
+        @app.route("/Is_SNBCK_a_boy/<boll>")
+        def is_snbck_a_boy(boll):
+            if boll == "yes":
+                return "Yes, that's right 😎"
+            else:
+                return "Your answer is too bad 😒"
+
+        forum.app_replace_app(app)
+
         return self.forum

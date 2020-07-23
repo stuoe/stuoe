@@ -428,6 +428,8 @@ class Forum():
         db = self.db
 
 
+extensionlist = []
+
 forum = Forum()
 
 # Import Extensions
@@ -437,6 +439,7 @@ for i in os.listdir("extension"):
     print("导入模块: " + i)
     print("=============================\n")
     theExtensions = importlib.import_module("extension." + i + ".main")
+    extensionlist.append(theExtensions.header)
     forum = theExtensions.Main(forum).init(forum=forum)
 
 
