@@ -342,6 +342,7 @@ def getPost_list(tags='', num=30):
 
 # API Compment
 
+
 class Forum():
     # init
 
@@ -349,17 +350,28 @@ class Forum():
         self.app = app
         self.db = db
         self.serverconf = serverconf
+        self.databaseTable = {
+            "User": User,
+            "Post": Post,
+            "Tags": Tags,
+            "star_for": star_for,
+            "File": File,
+            "Group": Group,
+            "Messages": Messages,
+            "Reply": Reply
+        }
 
     # serverconf
 
     # 得到配置文件的某个值,得到空字符串则返回整个配置文件
+
     def serverconf_get(self, key):
         if key == '':
             return self.sevrerconf
         else:
             try:
                 return self.serverconf[key]
-            except:
+            except BaseException:
                 return None
 
     # 得到配置文件的某个值，不存在则创建为value，得到空字符串则返回整个配置文件
@@ -369,7 +381,7 @@ class Forum():
         else:
             try:
                 return self.serverconf[key]
-            except:
+            except BaseException:
                 self.serverconf[key] = value
                 return self.serverconf[key]
 
@@ -378,7 +390,7 @@ class Forum():
         try:
             self.serverconf[key] = value
             return True
-        except:
+        except BaseException:
             return False
 
     # database
@@ -397,15 +409,32 @@ class Forum():
         self.db.reflect(app=app)
         return self.db.metadata.tables
 
-    # 得到指定的表，得到空字符串则返回所有的表，不存在返回None
-    def database_get_table_or_all(self, tablename):
-        if tablename == '':
-            return self.db.Model._decl_class_registry.values()
-        else:
-            try:
-                return self.db.Model._decl_class_registry.values()[tablename]
-            except:
-                return None
+    # 得到数据库的表，不存在则为None
+    def database_get_table(self, tablename):
+        try:
+            return self.databaseTable[tablename]
+        except BaseException:
+            return None
+
+    # 添加模型到session
+    def database_add_to_session(self, models):
+        self.db.session.add(models)
+
+    # 添加模型到session并及时提交
+    def database_add_to_session_and_commit(self, models):
+        self.db.session.add(models)
+        self.db.session.flush()
+        self.db.session.commit()
+
+    # 删除模型
+    def database_delete_to_session(self, models):
+        self.db.session.delete(models)
+
+    # 直接提交
+
+    def database_commit(self):
+        self.db.session.flush()
+        self.db.session.commit()
 
     # App and Route
 

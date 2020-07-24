@@ -39,7 +39,6 @@ class Main():
                 return "Yes, that's right 😎"
             else:
                 return "Your answer is too bad 😒"
-
         forum.app_replace_app(app)
 
         return self.forum
