@@ -7,7 +7,7 @@ import os
 import io
 
 
-__version__ = 'v0.1.3.6'
+__version__ = 'v0.1.3.7'
 
 # or
 # from distutils.core import setup

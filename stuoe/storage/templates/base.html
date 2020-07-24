@@ -16,14 +16,14 @@
     <!-- Define navigation bar -->
     <header class="mdui-shadow-4">
       {{ nav }}
-    </header>
+    </header><br>
     <!-- Define the main content and adjust the percentage of occupied content -->
     <div class="mdui-container">
       {{ body }}
       <!-- Loading JavaScript -->
       <script src="/static/mdui/js/mdui.min.js"></script>
       <script>
-        { { js } }
+        {{ js }}
       </script>
     </div>
   </div>
