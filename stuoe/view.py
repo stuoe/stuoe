@@ -89,7 +89,7 @@ def getTemplates(
 
 def gethome(auth=True, userObj='', tagslist='', postlist='', get_avater='',title='',options=''):
     body = jinja2.Template(open('storage/templates/index.html',
-                                'r', encoding="utf-8").read()).render(webtitle=serverconf['stuoe_name'], des=serverconf['stuoe_des'], userObj=userObj, tagslist=tagslist, postlist=list(postlist), get_avater=get_avater,auth=auth,options=options)
+                                'r', encoding="utf-8").read()).render(webtitle=serverconf['stuoe_name'], des=serverconf['stuoe_des'], userObj=userObj, tagslist=tagslist, postlist=postlist, get_avater=get_avater,auth=auth,options=options)
     return getTemplates(auth=auth, title=title, body=body, userObj=userObj, base2=True)
 
 

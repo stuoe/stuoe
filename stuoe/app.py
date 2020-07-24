@@ -699,8 +699,7 @@ def get_tags(tid):
         return Viewrender.gethome(
             auth=False,
             tagslist=Tags.query.filter_by().all(),
-            postlist=getPost_list(
-                tags=tid),
+            postlist=getPost_list(tagsname,40),
             get_avater=get_avater,
             title=tagsname)
     else:
@@ -708,8 +707,7 @@ def get_tags(tid):
             auth=True,
             userObj=get_session('obj'),
             tagslist=Tags.query.filter_by().all(),
-            postlist=getPost_list(
-                tags=tid),
+            postlist=getPost_list(tagsname,40),
             get_avater=get_avater,
             title=tagsname)
 
