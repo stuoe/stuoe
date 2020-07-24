@@ -28,10 +28,12 @@ class Main():
     def init(self,forum):
 
         app = forum.app_get_app()
-
-        @app.route("/SNBCK_is_a_boy")
-        def snbck_is_a_boy():
-            return "Yes, that's right 😎"
+        @app.route("/hello")
+        def hello():
+            if forum.view_check_user('obj') == False:
+                return forum.view_templates(auth=False,userObj='',body="<h1>Hello</h1>",title="Hello Messages")
+            else:
+                return forum.view_templates(auth=True,userObj=forum.view_check_user('obj'),body="<h1>Hello</h1>",title="Hello Messages")
 
         @app.route("/Is_SNBCK_a_boy/<boll>")
         def is_snbck_a_boy(boll):
@@ -39,6 +41,8 @@ class Main():
                 return "Yes, that's right 😎"
             else:
                 return "Your answer is too bad 😒"
+        
+        
         forum.app_replace_app(app)
 
         return self.forum

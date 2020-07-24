@@ -5,8 +5,6 @@
 __pycache__ 
 # vscode个人设置
 .vscode
-# node包(自行npm install)
-node_modules
 # Sqlite3 数据
 sqlite3.db
 # Gitpod 设置

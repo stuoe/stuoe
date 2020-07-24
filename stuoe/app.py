@@ -350,6 +350,8 @@ class Forum():
         self.app = app
         self.db = db
         self.serverconf = serverconf
+        self.view = Viewrender
+        self.get_session = get_session
         self.databaseTable = {
             "User": User,
             "Post": Post,
@@ -383,12 +385,14 @@ class Forum():
                 return self.serverconf[key]
             except BaseException:
                 self.serverconf[key] = value
+                self.amazing_fetch_to_serverconf()
                 return self.serverconf[key]
 
     # 修改/创建配置文件的某个值
     def serverconf_chang(self, key, value):
         try:
             self.serverconf[key] = value
+            self.amazing_fetch_to_serverconf()
             return True
         except BaseException:
             return False
@@ -446,6 +450,20 @@ class Forum():
     # 用修改的app替换掉app
     def app_replace_app(self, app):
         self.app = app
+    
+    # view
+
+    # 发送一个标准的界面
+    def view_templates(self,auth,userObj,body,title):
+        return self.view.getTemplates(auth=auth,userObj=userObj,title=title,body=body)
+    
+    # 检查用户
+    def view_check_user(self,type):
+        return self.get_session(type)
+    
+
+
+    
 
     # Amazing Fetch
     def amazing_fetch(self):
@@ -455,6 +473,11 @@ class Forum():
         app = self.app
         serverconf = self.serverconf
         db = self.db
+    
+    def amazing_fetch_to_serverconf(self):
+        open('server.conf', 'w+', encoding="utf-8").write(str(self.serverconf))
+        self.serverconf = dict(eval(open('server.conf', 'rb').read()))
+        self.view.serverconf = self.serverconf
 
 
 extensionlist = []
