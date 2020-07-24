@@ -353,7 +353,7 @@ class Forum():
     # serverconf
 
     # 得到配置文件的某个值,得到空字符串则返回整个配置文件
-    def sevrerconf_get(self, key):
+    def serverconf_get(self, key):
         if key == '':
             return self.sevrerconf
         else:
