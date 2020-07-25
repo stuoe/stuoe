@@ -7,6 +7,8 @@ import time
 serverconf = dict(eval(open('server.conf', 'rb').read()))
 serverurl = serverconf['url']
 
+forum = None
+
 # And Base Templates
 
 m1 = jinja2.Template(
@@ -24,7 +26,6 @@ def getTimer(timetime, simple=True):
         return time.strftime("%Y/%m/%d", time.localtime(int(timetime)))
     else:
         return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(timetime)))
-
 
 
 def getTemplates(
@@ -87,9 +88,9 @@ def getTemplates(
             auth=auth)
 
 
-def gethome(auth=True, userObj='', tagslist='', postlist='', get_avater='',title='',options=''):
+def gethome(auth=True, userObj='', tagslist='', postlist='', get_avater='', title='', options=''):
     body = jinja2.Template(open('storage/templates/index.html',
-                                'r', encoding="utf-8").read()).render(webtitle=serverconf['stuoe_name'], des=serverconf['stuoe_des'], userObj=userObj, tagslist=tagslist, postlist=postlist, get_avater=get_avater,auth=auth,options=options)
+                                'r', encoding="utf-8").read()).render(webtitle=serverconf['stuoe_name'], des=serverconf['stuoe_des'], userObj=userObj, tagslist=tagslist, postlist=postlist, get_avater=get_avater, auth=auth, options=options, some_sidebar=forum.some_sidebar)
     return getTemplates(auth=auth, title=title, body=body, userObj=userObj, base2=True)
 
 
@@ -172,4 +173,3 @@ def getPost(
         auth=auth,
         userObj=userObj,
         title=Post.title)
-

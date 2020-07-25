@@ -352,6 +352,7 @@ class Forum():
         self.serverconf = serverconf
         self.view = Viewrender
         self.get_session = get_session
+        self.some_sidebar = list()
         self.databaseTable = {
             "User": User,
             "Post": Post,
@@ -461,6 +462,15 @@ class Forum():
     def view_check_user(self,type):
         return self.get_session(type)
     
+    # 增加首页侧边栏(默认登入状态下显示)
+    def view_sidebar_add(self,name,url,icon):
+        self.some_sidebar.append({
+            "name":name,
+            "icon":icon,
+            "url":url
+        })
+
+    
 
 
     
@@ -473,6 +483,7 @@ class Forum():
         app = self.app
         serverconf = self.serverconf
         db = self.db
+        Viewrender.forum = self
     
     def amazing_fetch_to_serverconf(self):
         open('server.conf', 'w+', encoding="utf-8").write(str(self.serverconf))
@@ -1156,6 +1167,24 @@ def rmmsg(mid):
     db.session.flush()
     db.session.commit()
     return redirect('/notifications')
+
+# 取消帖子星标
+@app.route("/unstar/<pid>")
+def unstar(pid):
+    obj = db_getpostByid(pid)
+    if obj is None:
+        return abort(404)
+    user = get_session('obj')
+    if not user:
+        return abort(403)
+    star_for_table = star_for.query.filter_by(star_user=user.id,stared_post=obj.id).first()
+    if star_for_table == None:
+        return abort(400)
+    else:
+        db.session.delete(star_for_table)
+        db.session.flush()
+        db.session.commit()
+        return redirect("/p/" + str(obj.id))
 
 
 # 搜索列

@@ -1,85 +1,96 @@
 <div class="mdui-container"> <br /> <br />{%if userObj==''%} <header>
-    <div class="mdui-shadow-0 mdui-text-color-theme-icon" align="center">
-        <div class="mdui-typo-headline" style="font-weight: 400;"> {{webtitle}} </div> <br />
-        <div class="mdui-typo-subheading" style="font-weight: 300;"> {{des}} </div>
-    </div> <br /> <br /> <br />
-    <div class="mdui-divider"> </div> <br />
-</header> {%endif%} <div class="mdui-row mdui-row-gapless">
-    <div class="mdui-col-xs-2">
-        <div class="mdui-col"> {%if userObj==''%} <button
-                class="mdui-btn mdui-btn-raised mdui-btn-block mdui-ripple mdui-color-grey">
-                <div mdui-tooltip="{content: '注册/登入'}" mdui-menu="{target: '#account-op'}"
-                    class="mdui-text-color-white" style="text-decoration: none;font-weight: 300;color:#0c0d0e;">
-                    需要登入 </div>
-            </button>{%else%} <button
-                class="mdui-btn mdui-btn-raised mdui-btn-block mdui-ripple mdui-color-theme-accent">
-                <div class="mdui-text-color-white" style="font-weight:700;"> <a class="mdui-text-color-white"
-                        href="/write" style="text-decoration: none;font-weight: 300;color:#0c0d0e;">开始讨论</a> </div>
-            </button>{%endif%}<br>
-            <ul class="mdui-list mdui-list-dense">
-                {% if options == 'index'%}
-                <li class="mdui-list-item mdui-ripple"> <i
-                        class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-theme-accent">forum</i>
-                    <div class="mdui-list-item-content"> <a href="/" class="mdui-text-color-theme-accent">所有讨论</a> </div>
-                {% else %}
-                <li class="mdui-list-item mdui-ripple"> <i
-                    class="mdui-list-item-icon mdui-icon material-icons">chat</i>
-                <div class="mdui-list-item-content"> <a href="/">所有讨论</a> </div>
-                {% endif %}
-                </li> {%if not userObj==''%} {% if options == 'my'%}<li class="mdui-list-item mdui-ripple mdui-text-color-theme-accent"> <i
-                        class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-theme-accent">my_location</i>
-                    <div class="mdui-list-item-content"> <a href="/my" class="mdui-text-color-theme-accent">我的帖子</a> </div>
-                </li>{%else%}
-                <li class="mdui-list-item mdui-ripple"> <i
-                    class="mdui-list-item-icon mdui-icon material-icons">my_location</i>
-                <div class="mdui-list-item-content"> <a href="/my">我的帖子</a> </div>{%endif%}
-                <li class="mdui-list-item mdui-ripple  mdui-text-color-theme-accent"> <i
-                        class="mdui-list-item-icon mdui-icon material-icons  mdui-text-color-theme-accent">notifications</i>
-                    <div class="mdui-list-item-content"> <a href="/notifications">通知</a> </div>
-                </li> {%endif%} <li class="mdui-divider"></li> {%for i in tagslist%} <li
-                    class="mdui-list-item mdui-ripple"> <i
-                        class="mdui-list-item-icon mdui-icon material-icons">{{i.icon}}</i>
-                    <div class="mdui-list-item-content"> <a href="/t/{{ i.id }}">{{i.name}}</a> </div>
-                </li> {%endfor%}
-            </ul>
-        </div>
-    </div>
-    <div class="mdui-col-xs-9"> 
-        
-        <div class="mdui-container">
-            <div class="mdui-typo-headline">通知</div><br>
-            <div class="mdui-divider"></div>
-            <br>
-            <div class="mdui-panel mdui-panel-gapless " mdui-panel>
-
-
-                {% for i in msglist %}
-                <div class="mdui-panel-item mdui-panel-gapless">
-                    <div class="mdui-panel-item-header">
-                      <div class="mdui-panel-item-title">{{ i.subject }}</div>
-                      <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                    </div>
-                    <div class="mdui-panel-item-body ">
-                        <div class=mdui-typo">
-                            {{ i.body }}
+        <div class="mdui-shadow-0 mdui-text-color-theme-icon" align="center">
+            <div class="mdui-typo-headline" style="font-weight: 400;"> {{webtitle}} </div> <br />
+            <div class="mdui-typo-subheading" style="font-weight: 300;"> {{des}} </div>
+        </div> <br /> <br /> <br />
+        <div class="mdui-divider"> </div> <br />
+    </header> {%endif%} <div class="mdui-row mdui-row-gapless">
+        <div class="mdui-col-xs-2">
+            <div class="mdui-col"> {%if userObj==''%} <button
+                    class="mdui-btn mdui-btn-raised mdui-btn-block mdui-ripple mdui-color-grey">
+                    <div mdui-tooltip="{content: '注册/登入'}" mdui-menu="{target: '#account-op'}"
+                        class="mdui-text-color-white" style="text-decoration: none;font-weight: 300;color:#0c0d0e;">
+                        需要登入 </div>
+                </button>{%else%} <button
+                    class="mdui-btn mdui-btn-raised mdui-btn-block mdui-ripple mdui-color-theme-accent">
+                    <div class="mdui-text-color-white" style="font-weight:700;"> <a class="mdui-text-color-white"
+                            href="/write" style="text-decoration: none;font-weight: 300;color:#0c0d0e;">开始讨论</a> </div>
+                </button>{%endif%}<br>
+                <ul class="mdui-list mdui-list-dense">
+                    {% if options == 'index'%}
+                    <li class="mdui-list-item mdui-ripple"> <i
+                            class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-theme-accent">forum</i>
+                        <div class="mdui-list-item-content"> <a href="/" class="mdui-text-color-theme-accent">所有讨论</a>
                         </div>
-                        <div class="mdui-panel-item-actions">
-                            <button class="mdui-btn mdui-ripple" mdui-panel-item-close><i class="mdui-icon material-icons">cancel</i> 返回</button>
-                            <a href="/rmmsg/{{ i.id }}" class="mdui-btn mdui-ripple"><i class="mdui-icon material-icons">delete</i> 删除</a>
-                          </div>
-                    </div>
-                </div>
-                {% endfor %}
-
-
+                        {% else %}
+                    <li class="mdui-list-item mdui-ripple"> <i
+                            class="mdui-list-item-icon mdui-icon material-icons">chat</i>
+                        <div class="mdui-list-item-content"> <a href="/">所有讨论</a> </div>
+                        {% endif %}
+                    </li> {%if not userObj==''%} {% if options == 'my'%}<li
+                        class="mdui-list-item mdui-ripple mdui-text-color-theme-accent"> <i
+                            class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-theme-accent">my_location</i>
+                        <div class="mdui-list-item-content"> <a href="/my" class="mdui-text-color-theme-accent">我的帖子</a>
+                        </div>
+                    </li>{%else%}
+                    <li class="mdui-list-item mdui-ripple"> <i
+                            class="mdui-list-item-icon mdui-icon material-icons">my_location</i>
+                        <div class="mdui-list-item-content"> <a href="/my">我的帖子</a> </div>{%endif%}
+                    <li class="mdui-list-item mdui-ripple  mdui-text-color-theme-accent"> <i
+                            class="mdui-list-item-icon mdui-icon material-icons  mdui-text-color-theme-accent">notifications</i>
+                        <div class="mdui-list-item-content"> <a href="/notifications">通知</a> </div>
+                    </li> {%endif%} {%for sidebar in some_sidebar %}
+                    <li class="mdui-list-item mdui-ripple"> <i
+                            class="mdui-list-item-icon mdui-icon material-icons">{{ sidebar["icon"] }}</i>
+                        <div class="mdui-list-item-content"> <a href="{{ sidebar["url"] }}">{{ sidebar["name"] }}</a>
+                        </div>
+                    </li>
+                    {%endfor%}<li class="mdui-divider"></li> {%for i in tagslist%} <li
+                        class="mdui-list-item mdui-ripple"> <i
+                            class="mdui-list-item-icon mdui-icon material-icons">{{i.icon}}</i>
+                        <div class="mdui-list-item-content"> <a href="/t/{{ i.id }}">{{i.name}}</a> </div>
+                    </li> {%endfor%}
+                </ul>
             </div>
         </div>
-        
-        {%if postlist==[]or postlist==''%} <br /> <br /> <br /> <br />
-        <br /> <br /> <br />
-        <div class="mdui-typo" align="center">
-            <p> <strong>这里看起来什么都没有</strong> </p>
-        </div> {%endif%}
+        <div class="mdui-col-xs-9">
+
+            <div class="mdui-container">
+                <div class="mdui-typo-headline">通知</div><br>
+                <div class="mdui-divider"></div>
+                <br>
+                <div class="mdui-panel mdui-panel-gapless " mdui-panel>
+
+
+                    {% for i in msglist %}
+                    <div class="mdui-panel-item mdui-panel-gapless">
+                        <div class="mdui-panel-item-header">
+                            <div class="mdui-panel-item-title">{{ i.subject }}</div>
+                            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                        </div>
+                        <div class="mdui-panel-item-body ">
+                            <div class=mdui-typo">
+                                {{ i.body }}
+                            </div>
+                            <div class="mdui-panel-item-actions">
+                                <button class="mdui-btn mdui-ripple" mdui-panel-item-close><i
+                                        class="mdui-icon material-icons">cancel</i> 返回</button>
+                                <a href="/rmmsg/{{ i.id }}" class="mdui-btn mdui-ripple"><i
+                                        class="mdui-icon material-icons">delete</i> 删除</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+
+                </div>
+            </div>
+
+            {%if postlist==[]or postlist==''%} <br /> <br /> <br /> <br />
+            <br /> <br /> <br />
+            <div class="mdui-typo" align="center">
+                <p> <strong>这里看起来什么都没有</strong> </p>
+            </div> {%endif%}
+        </div>
     </div>
-</div>
 </div>
