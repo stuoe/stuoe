@@ -951,7 +951,7 @@ def adminSettings(pages):
                 encoding="utf-8").read()).render(
             adminList=adminlist,
             serverconf=serverconf,
-            tagslist=Tags.query.filter_by().all())
+            extensionlist=extensionlist)
         return Viewrender.getTemplates(
             title='管理界面', auth=True, base2=True, body=body, userObj=user)
 

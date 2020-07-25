@@ -1,7 +1,18 @@
 <div class="mdui-row mdui-row-gapless">
     <div class="mdui-col-xs-3">{{adminList}}</div>
     <div class="mdui-col-xs-1"></div>
-    <div class="mdui-col-xs-7">
+    <div class="mdui-col-xs-5">
         <div class="mdui-typo-headline">插件</div><br><br>
+        <ul class="mdui-list">
+            {% for extension in extensionlist %}
+            <li class="mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-avatar mdui-icon material-icons">{{ extension["icon"] }}</i>
+                <div class="mdui-list-item-content">
+                    <div class="mdui-list-item-title">{{ extension["name"] }}</div>
+                    <div class="mdui-list-item-text mdui-list-item-one-line">{{ extension["describe"] }}</div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
     </div>
 </div>

@@ -11,7 +11,7 @@ header = {
     "name": "example",
     "icon": "extension",
     "describe": "这个插件是为了方便介绍做如何制作插件的演示而制作的",
-    "use": "some text",
+    "use": "阅读官方文档",
     "author": "The Stuoe Project",
     "version": "0.0.1"
 }
