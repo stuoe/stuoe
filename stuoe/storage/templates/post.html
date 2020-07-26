@@ -111,8 +111,8 @@
 						<li class=" mdui-menu-item"><a class="mdui-ripple" href="/rmreply/{{ a.reply.id }}"><i
 									class="mdui-menu-item-icon mdui-icon material-icons ">delete</i>删除</a></li>
 						<li class=" mdui-menu-item"><a class="mdui-ripple"><i
-									class="mdui-menu-item-icon mdui-icon material-icons" href="#reply"
-									>forum</i>回复</a></li>
+									class="mdui-menu-item-icon mdui-icon material-icons" href="#reply">forum</i>回复</a>
+						</li>
 					</ul>
 					{%endif%}
 				</div>
@@ -127,9 +127,7 @@
 			<script type="text/javascript" src="/static/simditor-2.3.28/site/assets/scripts/simditor.js"></script>
 			<div id="reply" class="mdui-container">
 				<form method="POST" action="/postreply/{{ post.id }}" style="padding-bottom: 100px;">
-					<br /><br /><br /><textarea name="body" id="editor" placeholder="编辑回复(默认参与讨论组并订阅)"
-						autofocus=""></textarea>
-					<br /><br /><br />
+					<br /><textarea name="body" id="editor" placeholder="编辑回复(默认参与讨论组并订阅)" autofocus=""></textarea>
 					<script>var editor = new Simditor({ toolbar: ['title', 'bold', 'italic', 'underline', 'strikethrough', 'fontScale', 'color', 'ol', 'ul', 'blockquote', 'code', 'table', 'link', 'image', 'hr', 'alignment'], textarea: '#editor', placeholder: '编辑回复(默认参与讨论组并订阅)', imageButton: ['upload'], upload: { url: '', params: null, fileKey: 'upload_file', connectionCount: 3, leaveConfirm: 'Uploading is in progress, are you sure to leave this page?' } });</script>
 					<script>
 						function reply(body) {
@@ -137,10 +135,14 @@
 						}	
 					</script>
 					{% if auth and (not post.lock) %}
-					<button
-						class="mdui-btn mdui-color-theme-accent mdui-shadow-12">回复</button>{% elif not auth %}<button
-						class="mdui-btn mdui-color-theme-accent mdui-shadow-12" disabled>登入后回复</button>{% else %}<button
-						class="mdui-btn mdui-color-theme-accent mdui-shadow-12" disabled>讨论被锁定</button>{% endif %}
+					<button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent mdui-text-color-white"
+						style="text-decoration: none;font-weight: 300;color:#0c0d0e;margin-right: 45px;">回复</button>{% elif not auth %}<button
+						class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent mdui-text-color-white"
+						style="text-decoration: none;font-weight: 300;color:#0c0d0e;margin-right: 45px;"
+						disabled>登入后回复</button>{% else %}<button
+						class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent mdui-text-color-white"
+						style="text-decoration: none;font-weight: 300;color:#0c0d0e;margin-right: 45px;"
+						disabled>讨论被锁定</button>{% endif %}
 				</form>
 			</div>
 		</div>
@@ -196,15 +198,7 @@
 					</a>
 				</ul>
 				{% endfor %}
-				<h3><i class="mdui-icon material-icons">stars</i> 关注者</h3>
-				{% for i in post.star_user_list %}
-				<ul class="mdui-list mdui-list-dense">
-					<a href="/u/{{ i.id }}" class="mdui-list-item">
-						<div class="mdui-list-item-avatar"><img src="{{ i.avater }}" /></div>
-						<div class="mdui-list-item-content">{{ i.nickname }}</div>
-					</a>
-				</ul>
-				{% endfor %}
+
 
 			</div>
 		</div>

@@ -98,7 +98,23 @@ class User(db.Model):
 
     def __repr__(self):
         return {'id': self.id, 'email': self.email, 'user_des': self.user_des}
+    
+    def theUserTalkNumber(self):
+        return len(Post.query.filter_by(pusher=self.id).all())
+    
+    def theUserReplyNumber(self):
+        return len(Reply.query.filter_by(pusher=self.id).all())
+    
+    def getStarNumber(self):
+        num = 0
+        for i in Post.query.filter_by(pusher=self.id).all():
+            num = num + len(i.star_user_list)
+        return num
+    
+    def getActivity(self):
+        return Reply.query.filter_by(pusher=self.id).all()[:20] + Post.query.filter_by(pusher=self.id).all()[:20]
 
+    
 
 class Group(db.Model):
     # Waiting....
@@ -1460,7 +1476,7 @@ def error_500(e):
             auth=auth,
             userObj=get_session('obj'),
             title="500 服务器错误"),
-        "405")
+        "500")
 
 
 def send_mail(msg):

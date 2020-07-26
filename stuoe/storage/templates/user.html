@@ -1,4 +1,59 @@
-<br />
+<div class="mdui-container"><br>
+  <div class="mdui-row mdui-row-gapless">
+    <div class="mdui-col-xs-2" align="center"><img src="{{ userObj.avater }}" class="mdui-img-fluid mdui-img-rounded"
+        width="100" height="100" /></div>
+    <div class="mdui-col-xs-5">
+      <div class="mdui-typo-headline" style="font-weight: 400;">{{userObj.nickname}}</div><br>
+      <div class="mdui-row mdui-row-gapless">
+        <div class="mdui-col-xs-2" style="font-weight: 400;">{{userObj.user_group}}</div>
+        <div class="mdui-col-xs-4">
+          <div style="font-weight: 400;">加入于 {{getTimer(userObj.registertime,True)}}</div>
+        </div>
+      </div>
+      <div class="mdui-col-xs-2"></div>
+      <br>
+      <div class="mdui-typo">
+        {{userObj.user_des}}
+      </div>
+    </div>
+
+  </div>
+  <br><br>
+  <div class="mdui-divider"></div><br><br>
+  <div class="mdui-row mdui-row-gapless">
+    <div class="mdui-col-xs-2">
+      <a style="font-weight: 500;"><i class="mdui-icon material-icons mdui-color-text-white">chat_bubble_outline</i>
+        发布的讨论 {{ userObj.theUserTalkNumber() }}</a><br><br>
+      <a style="font-weight: 500;"><i class="mdui-icon material-icons mdui-color-text-white">chat</i> 讨论中回复
+        {{ userObj.theUserReplyNumber() }}</a><br><br>
+      <a style="font-weight: 500;"><i class="mdui-icon material-icons mdui-color-text-white">stars</i> 获得星标数
+        {{ userObj.getStarNumber() }}</a><br><br><br><br>
+
+    </div>
+    <div class="mdui-col-xs-10">
+      {% for post in userObj.getActivity() %}
+      <div class="mdui-row mdui-row-gapless">
+        <div class="mdui-col-xs-1">
+          <a href="/u/{{ userObj.id }}"><img width="60" height="60" class="mdui-img-circle"
+              mdui-tooltip="{content: '{{ userObj.nickname }}'}" src="{{ userObj.avater }}" /></a>
+        </div>
+        <div class="mdui-col-xs-9">
+          <a href="/u/{{ userObj.id }}" style="font-weight: 500;text-decoration: none;color:#0c0d0e;"
+            mdui-tooltip="{content: '{{ userObj.nickname }}'}">{{userObj.nickname}} </a>最后编辑于
+          {{getTimer(post.pushingtime)}}
+          <div class=" mdui-typo">
+            <br>
+            {{post.body}}
+          </div>
+        </div>
+      </div>
+      <div class="mdui-divider"></div><br><br>
+      {% endfor %}
+    </div>
+    <div class="mdui-col-xs-2"></div>
+  </div>
+</div>
+<!--<br />
   <div align="left">
    <img src="{{ userObj.avater }}" class="mdui-img-fluid mdui-img-circle" width="200" height="200" />
    <br />
@@ -7,7 +62,7 @@
     <div class="mdui-chip">
      <span class="mdui-chip-title">{{userObj.user_group}}</span>
     </div>
-    <kbd>加入于{{getTimer(userObj.registertime,True)}}</kbd>
+    <kbd></kbd>
    </div>
    <br />
    <div class="mdui-divider"></div>
@@ -39,3 +94,4 @@
     </div>
    </div>
   </div>
+-->
