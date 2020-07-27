@@ -3,7 +3,7 @@
 	<p style="font-weight:100;">
 		<i class="mdui-icon material-icons">{{tags.icon}}</i><a class="mdui-ripple" href="/t/{{ tags.id }}"
 			style="text-decoration: none;color:#0c0d0e;font-weight:100;">{{post.tags}}</a> > <a class="mdui-ripple"
-			href="/p/{{ post.id }}" style="text-decoration: none;color:#0c0d0e;font-weight:100;">{{post.title}}</a>
+			href="/p/{{ post.id }}" style="text-decoration: none;color:#0c0d0e;font-weight:100;">{{post.title}}</a> 
 		{%if post.lock%}<i class="mdui-icon material-icons" mdui-tooltip="{content: '讨论已被锁定'}"
 			style="color: #1C6BF5">lock</i>{%endif%}{%if post.top%}<i class="mdui-icon material-icons"
 			mdui-tooltip="{content: '讨论已被顶置'}"
@@ -11,7 +11,7 @@
 			class="mdui-icon material-icons" mdui-tooltip="{content: '由管理员发布'}"
 			style="color:#1CF53D">assignment_turned_in</i>{%endif%}{%if userObj in post.star_user_list and auth%}<i
 			class="mdui-icon material-icons" mdui-tooltip="{content: '星标讨论'}"
-			style="color:#FFC300;">stars</i>{% endif %}
+			style="color:#FFC300;">stars</i>{% endif %}<i class="mdui-icon material-icons">remove_red_eye</i> 浏览 {{ post.read()}}
 	</p>
 	<div class="mdui-divider">
 	</div>

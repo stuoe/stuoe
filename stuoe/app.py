@@ -28,6 +28,7 @@ import click
 import importlib
 
 
+
 import view
 
 
@@ -144,6 +145,7 @@ class Post(db.Model):
     pushingtime = db.Column(db.Integer)
     tags = db.Column(db.Integer, db.ForeignKey('Tags.id'))
     lock = db.Column(db.Boolean, default='False')
+    look = db.Column(db.Integer,default='0')
     top = db.Column(db.Boolean, default='False')
     reply = db.relationship("Reply", backref="Post")
     star_user_list = db.relationship(
@@ -166,7 +168,9 @@ class Post(db.Model):
             ).nickname + ' 发布于 ' + Viewrender.getTimer(timetime=self.pushingtime)
 
     def read(self):
-        self.look = look + 1
+        if self.look == None:
+            self.look = 0
+        self.look = int(self.look) + 1
         db.session.flush()
         db.session.commit()
         return self.look
@@ -183,6 +187,7 @@ class Post(db.Model):
                 Particpanter.append(db_getuserByid(i.pusher))
                 ParticpantIdList.append(i.pusher)
         return Particpanter
+
 
 
 class Messages(db.Model):
@@ -1350,6 +1355,7 @@ def pushing_post():
         pushingtime=time.time(),
         tags=request.form['tags'],
         lock=False,
+        look=0,
         top=False)
     db.session.add(newPost)
     db.session.flush()
