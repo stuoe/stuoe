@@ -371,6 +371,8 @@ class Forum():
         self.view = Viewrender
         self.get_session = get_session
         self.some_sidebar = list()
+        self.loginuser_menu = list()
+        self.post_menu = list()
         self.databaseTable = {
             "User": User,
             "Post": Post,
@@ -486,6 +488,36 @@ class Forum():
             "name": name,
             "icon": icon,
             "url": url
+        })
+    
+    # 增加登入用户右上角个人菜单选项，从“资料”和已添加控件后开始增加
+    def view_loginuser_menu_add_option(self,name,url,icon):
+        self.loginuser_menu.append({
+            "type":"options",
+            "name":name,
+            "icon":icon,
+            "url":url
+        })
+    
+    # 增加登入用户右上角个人菜单分割线，从“资料”和已添加控件后开始增加
+    def view_loginuser_menu_add_line(self):
+        self.post_menu.append({
+            "type":"line"
+        })
+    
+    # 增加登入用户查看帖子右下角菜单选项，从“设为星标”和已添加控件后开始增加
+    def view_post_menu_add_option(self,name,url,icon):
+        self.post_menu.append({
+            "type":"options",
+            "name":name,
+            "icon":icon,
+            "url":url
+        })
+    
+    # 增加登入用户查看帖子右下角菜单分割线，从“设为星标”和已添加控件后开始增加
+    def view_post_menu_add_line(self):
+        self.post_menu.append({
+            "type":"line"
         })
 
     # Amazing Fetch

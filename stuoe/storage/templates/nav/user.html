@@ -1,17 +1,34 @@
 <div class="mdui-toolbar mdui-appbar-scroll-hide mdui-container">
-   <span class="mdui-typo-title"><a href="/" style="text-decoration: none;font-weight: 300;color:#0c0d0e;">{{webtitle}}</a></span>
+   <span class="mdui-typo-title"><a href="/"
+         style="text-decoration: none;font-weight: 300;color:#0c0d0e;">{{webtitle}}</a></span>
    <div class="mdui-toolbar-spacer"></div>
-   <a href="/search" mdui-tooltip="{content: '搜索'}" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>
-   <a href="/notifications" mdui-tooltip="{content: '通知'}"><i class="mdui-icon material-icons" style="color: #FF0000;">notifications</i></a>
+   <a href="/search" mdui-tooltip="{content: '搜索'}" class="mdui-btn mdui-btn-icon"><i
+         class="mdui-icon material-icons">search</i></a>
+   <a href="/notifications" mdui-tooltip="{content: '通知'}"><i class="mdui-icon material-icons"
+         style="color: #FF0000;">notifications</i></a>
    <button mdui-tooltip="{content:'用户'}" class="mdui-btn" mdui-menu="{target:'#account-op'}">
-    <div class="mdui-chip mdui-ripple">
-     <img class="mdui-chip-icon" src="{{userObj.avater}}" />
-     <span class="mdui-chip-title">{{userObj.nickname}}</span>
-    </div> </button>
+      <div class="mdui-chip mdui-ripple">
+         <img class="mdui-chip-icon" src="{{userObj.avater}}" />
+         <span class="mdui-chip-title">{{userObj.nickname}}</span>
+      </div>
+   </button>
    <ul class="mdui-menu" id="account-op">
-    <li class="mdui-menu-item"><a href="/u/{{userObj.id}}" class="mdui-ripple"><i class="mdui-menu-item-icon mdui-icon material-icons">account_box</i>资料</a> </li>
-    <li class="mdui-menu-item"><a href="/settings" class="mdui-ripple"><i class="mdui-menu-item-icon mdui-icon material-icons">settings</i>设置</a></li>
-    <li class="mdui-divider"></li>
-    <li class="mdui-menu-item"><a href="/logout" class="mdui-ripple"><i class="mdui-menu-item-icon mdui-icon material-icons">directions_walk</i>登出</a></li>
+      <li class="mdui-menu-item"><a href="/u/{{userObj.id}}" class="mdui-ripple"><i
+               class="mdui-menu-item-icon mdui-icon material-icons">account_box</i>资料</a> </li>
+      {% for i in loginuser_menu %}
+      {% if i["type"] == "options" %}
+      <li class="mdui-menu-item"><a href="{{ i["url"] }}" class="mdui-ripple"><i
+               class="mdui-menu-item-icon mdui-icon material-icons">{{ i["icon"] }}</i>{{ i["name"] }}</a> </li>
+      {% else %}
+      <li class="mdui-divider"></li>
+      {% endif %}
+      {% endfor %}
+      <li class="mdui-menu-item"><a href="/settings" class="mdui-ripple"><i
+               class="mdui-menu-item-icon mdui-icon material-icons">settings</i>设置</a></li>
+      <li class="mdui-divider"></li>
+      <li class="mdui-menu-item"><a href="/logout" class="mdui-ripple"><i
+               class="mdui-menu-item-icon mdui-icon material-icons">directions_walk</i>登出</a></li>
+
+
    </ul>
-  </div> 
+</div>

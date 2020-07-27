@@ -49,7 +49,8 @@ def getTemplates(
             userObj=userObj,
             webtitle=serverconf['stuoe_name'],
             js=serverconf['js'],
-            auth=auth)
+            auth=auth,
+            loginuser_menu=forum.loginuser_menu)
     else:
         nav = jinja2.Template(
             open(
@@ -172,7 +173,8 @@ def getPost(
         len=len,
         auth=auth,
         userObj=userObj,
-        int=int)
+        int=int,
+        post_menu=forum.post_menu)
     return getTemplates(
         body=body,
         auth=auth,
