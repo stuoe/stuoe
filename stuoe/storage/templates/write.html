@@ -14,7 +14,7 @@
     <select class="mdui-select" mdui-select="{position: 'bottom'}" name="tags" maxlength="300000">{%for tags in Tags%}<option value="{{ tags.name }}">标签-{{tags.name}}</option>{%endfor%}</select>
     <br />
     <br />
-    <textarea name="body" id="editor" placeholder="友善交流，拒绝祖安...." autofocus="">&lt;div class=&quot;mdui-typo&quot;&gt;&lt;/div&lt;/div</textarea>
+    <textarea name="body" id="editor" placeholder="写些什么吧..." autofocus="">&lt;div class=&quot;mdui-typo&quot;&gt;&lt;/div&lt;/div</textarea>
     <br />
     <br />
     <br />
@@ -22,5 +22,5 @@
     <br />
    </form>
 
-   <script>var editor = new Simditor({ toolbar: ['title', 'bold', 'italic', 'underline', 'strikethrough', 'fontScale', 'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|', 'link', 'image', 'hr', '|', 'alignment'], textarea: '#editor', placeholder: '有什么补充的？尽情讨论吧!', imageButton: ['upload'], upload: { url: '', params: null, fileKey: 'upload_file', connectionCount: 3, leaveConfirm: 'Uploading is in progress, are you sure to leave this page?' } });</script>
+   <script>var editor = new Simditor({ toolbar: ['title', 'bold', 'italic', 'underline', 'strikethrough', 'fontScale', 'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|', 'link', 'image', 'hr', '|', 'alignment'], textarea: '#editor', placeholder: '写些什么吧...', imageButton: ['upload'], upload: { url: '', params: null, fileKey: 'upload_file', connectionCount: 3, leaveConfirm: 'Uploading is in progress, are you sure to leave this page?' } });</script>
   </div>
