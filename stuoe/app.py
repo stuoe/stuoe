@@ -28,7 +28,6 @@ import click
 import importlib
 
 
-
 import view
 
 
@@ -99,23 +98,22 @@ class User(db.Model):
 
     def __repr__(self):
         return {'id': self.id, 'email': self.email, 'user_des': self.user_des}
-    
+
     def theUserTalkNumber(self):
         return len(Post.query.filter_by(pusher=self.id).all())
-    
+
     def theUserReplyNumber(self):
         return len(Reply.query.filter_by(pusher=self.id).all())
-    
+
     def getStarNumber(self):
         num = 0
         for i in Post.query.filter_by(pusher=self.id).all():
             num = num + len(i.star_user_list)
         return num
-    
+
     def getActivity(self):
         return Reply.query.filter_by(pusher=self.id).all()[:20] + Post.query.filter_by(pusher=self.id).all()[:20]
 
-    
 
 class Group(db.Model):
     # Waiting....
@@ -145,7 +143,7 @@ class Post(db.Model):
     pushingtime = db.Column(db.Integer)
     tags = db.Column(db.Integer, db.ForeignKey('Tags.id'))
     lock = db.Column(db.Boolean, default='False')
-    look = db.Column(db.Integer,default='0')
+    look = db.Column(db.Integer, default='0')
     top = db.Column(db.Boolean, default='False')
     reply = db.relationship("Reply", backref="Post")
     star_user_list = db.relationship(
@@ -187,7 +185,6 @@ class Post(db.Model):
                 Particpanter.append(db_getuserByid(i.pusher))
                 ParticpantIdList.append(i.pusher)
         return Particpanter
-
 
 
 class Messages(db.Model):
@@ -472,31 +469,27 @@ class Forum():
     # 用修改的app替换掉app
     def app_replace_app(self, app):
         self.app = app
-    
+
     # view
 
     # 发送一个标准的界面
-    def view_templates(self,auth,userObj,body,title):
-        return self.view.getTemplates(auth=auth,userObj=userObj,title=title,body=body)
-    
+    def view_templates(self, auth, userObj, body, title):
+        return self.view.getTemplates(auth=auth, userObj=userObj, title=title, body=body)
+
     # 检查用户
-    def view_check_user(self,type):
+    def view_check_user(self, type):
         return self.get_session(type)
-    
+
     # 增加首页侧边栏(默认登入状态下显示)
-    def view_sidebar_add(self,name,url,icon):
+    def view_sidebar_add(self, name, url, icon):
         self.some_sidebar.append({
-            "name":name,
-            "icon":icon,
-            "url":url
+            "name": name,
+            "icon": icon,
+            "url": url
         })
 
-    
-
-
-    
-
     # Amazing Fetch
+
     def amazing_fetch(self):
         global app
         global serverconf
@@ -505,7 +498,7 @@ class Forum():
         serverconf = self.serverconf
         db = self.db
         Viewrender.forum = self
-    
+
     def amazing_fetch_to_serverconf(self):
         open('server.conf', 'w+', encoding="utf-8").write(str(self.serverconf))
         self.serverconf = dict(eval(open('server.conf', 'rb').read()))
@@ -731,7 +724,7 @@ def get_tags(tid):
         return Viewrender.gethome(
             auth=False,
             tagslist=Tags.query.filter_by().all(),
-            postlist=getPost_list(tagsname,40),
+            postlist=getPost_list(tagsname, 40),
             get_avater=get_avater,
             title=tagsname)
     else:
@@ -739,7 +732,7 @@ def get_tags(tid):
             auth=True,
             userObj=get_session('obj'),
             tagslist=Tags.query.filter_by().all(),
-            postlist=getPost_list(tagsname,40),
+            postlist=getPost_list(tagsname, 40),
             get_avater=get_avater,
             title=tagsname)
 
@@ -1190,6 +1183,8 @@ def rmmsg(mid):
     return redirect('/notifications')
 
 # 取消帖子星标
+
+
 @app.route("/unstar/<pid>")
 def unstar(pid):
     obj = db_getpostByid(pid)
@@ -1198,7 +1193,8 @@ def unstar(pid):
     user = get_session('obj')
     if not user:
         return abort(403)
-    star_for_table = star_for.query.filter_by(star_user=user.id,stared_post=obj.id).first()
+    star_for_table = star_for.query.filter_by(
+        star_user=user.id, stared_post=obj.id).first()
     if star_for_table == None:
         return abort(400)
     else:
@@ -1532,12 +1528,14 @@ def makeNotice(type, info):
     # 所有通知的人
     NoticGroupId = list()
     NoticGroup = list()
+    NoticGroupEmail = list()
     if type == 'newReply':
         thePost = Post.query.filter_by(id=info['postId']).first()
         # 通知所有的参与者
         for i in thePost.getParticipant():
             NoticGroup.append(i)
             NoticGroupId.append(i.id)
+            NoticGroupEmail.append(i.email)
         # 通知所有的关注者（排除参与者）
         for i in thePost.star_user_list:
             if i.id in NoticGroupId:
@@ -1545,6 +1543,7 @@ def makeNotice(type, info):
             else:
                 NoticGroup.append(i)
                 NoticGroupId.append(i.id)
+                NoticGroupEmail.append(i.email)
         # 生产消息
         NoticReplyUser = info['ReplyUserID']
         # 推送到所有参与者和关注者
@@ -1554,6 +1553,11 @@ def makeNotice(type, info):
                 title=thePost.title + '中的新回复',
                 body=Reply.query.filter_by(
                     id=info['newReplyId']).first().body)
+        # 发生邮件
+        msg = flask_mail.Message(recipients=NoticGroupEmail, html=Viewrender.m2(Reply.query.filter_by(
+            id=info['newReplyId']).first().body,),body=Viewrender.m2(Reply.query.filter_by(
+            id=info['newReplyId']).first().body,) ,subject='参与或星标的讨论有新回复',)
+        threading._start_new_thread(send_mail, (msg,))
 
 
 def renderNoticXML(msglist):

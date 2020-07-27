@@ -12,8 +12,13 @@ forum = None
 # And Base Templates
 
 m1 = jinja2.Template(
-    '<h1>账号邮箱变动</h1><br>原先的邮箱：{{ oldemail}} 将停用，改用 {{ newemail }} 作为新的邮箱<br><code>验证码:{{ code }}')
+    "<h1>账号邮箱变动</h1><br>原先的邮箱：{{ oldemail}} 将停用，改用 {{ newemail }} 作为新的邮箱<br><code>验证码:{{ code }}")
 
+
+def m2(body):
+    m2 = "<h2>你参与或星标的讨论有了新的回复</h2><a href='" + \
+        serverconf["url"] + "/notifications'>点击查看</a><p>" + body + "</p>"
+    return m2
 
 def c():
     # Get Configs File
