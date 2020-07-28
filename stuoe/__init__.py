@@ -20,7 +20,7 @@ startworkpath = os.getcwd() + '/'
 
 os.chdir(os.path.dirname(__file__))
 
-__version__ = '0.1.3.7'
+__version__ = '0.1.3.8'
 
 
 click.echo('Welcome to Stuoe ' + __version__)
@@ -73,7 +73,7 @@ def update(name):
         except:
             pass
     click.echo('Update Project: ' + name + '  ....')
-    copy_Templates_to_newproject(pastpath=startworkpath + name + '/')
+    copy_Templates_to_update(pastpath=startworkpath + name + '/')
     click.echo('项目已经成功更新 ')
     exit()
 
@@ -96,7 +96,7 @@ def runserver(host,port,debug):
 '''
 
 
-def copy_Templates_to_newproject(copypath=os.getcwd(), pastpath=os.getcwd() + '/paster/'):
+def copy_Templates_to_update(copypath=os.getcwd(), pastpath=os.getcwd() + '/paster/'):
     for i in os.listdir(copypath):
         if not (i == '__init__.py' or i == 'server.conf' or i == 'sqlite3.db'):
             if os.path.isdir(copypath + '/' + i):
@@ -113,27 +113,27 @@ def copy_Templates_to_newproject(copypath=os.getcwd(), pastpath=os.getcwd() + '/
                            i + ' -> ' + pastpath + '/' + i)
 
 
+
+def copy_Templates_to_newproject(copypath=os.getcwd(), pastpath=os.getcwd() + '/paster/'):
+    for i in os.listdir(copypath):
+        if not (i == '__init__.py' or i == '' or i == 'sqlite3.db'):
+            if os.path.isdir(copypath + '/' + i):
+                try:
+                    os.makedirs(pastpath + '/' + i)
+                except:
+                    pass
+                copy_Templates_to_newproject(
+                    copypath=copypath + '/'+i, pastpath=pastpath + '/' + i)
+            else:
+                copyfileData = open(copypath + '/' + i, 'rb').read()
+                open(pastpath + '/' + i, 'wb+').write(copyfileData)
+                click.echo('copying  ' + copypath + '/' +
+                           i + ' -> ' + pastpath + '/' + i)
+
+
+
 cli.add_command(run)
 cli.add_command(startproject)
 cli.add_command(update)
 
 
-# EXTENSIONS COMPENMENT
-class EXTENSIONS(object):
-    '''
-    父类EXTENSIONS覆盖了编写插件的大部分工作
-    '''
-
-    def __init__(self, NAME, URL, VERISON, DESCRIBE, AUTHOR,MAIN=''):
-        self.NAME = NAME
-        self.URL = URL
-        self.VERSION = VERISON
-        self.DESCRIBE = DESCRIBE
-        self.AUTHOR = AUTHOR
-
-
-    def register_for_app(self, APP):
-        self.app = app
-
-    def add_url_rule(self, URL, RULE):
-        self.APP.add_url_rule(URL, view_func=RULE)
