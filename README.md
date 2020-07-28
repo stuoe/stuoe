@@ -6,7 +6,11 @@
 
 ## Stuoe是轻量的论坛软件
 
+<<<<<<< HEAD
 <img src="https://cdn.jsdelivr.net/gh/stuoe/stuoe@master/stuoe-post.png">
+=======
+<img src="https://raw.githubusercontent.com/stuoe/stuoe/master/stuoe-post.png">
+>>>>>>> 4ec477de9a5f2ca2d0d046ab2e35765687ee591b
 
 ## 文档
 文档在 [https://docs.stuoe.cn](https://docs.stuoe.cn)
