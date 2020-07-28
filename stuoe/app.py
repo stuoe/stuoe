@@ -34,7 +34,7 @@ import view
 # Global Var
 verify_registered_email = list()
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
-Release = 'v0.1.3.9 Release'
+Release = 'v0.1.4 Release'
 
 
 # Get Configs File
