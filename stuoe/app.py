@@ -1220,20 +1220,17 @@ def rmmsg(mid):
 @app.route("/unstar/<pid>")
 def unstar(pid):
     obj = db_getpostByid(pid)
+    user = get_session("obj")
     if obj is None:
         return abort(404)
-    user = get_session('obj')
     if not user:
         return abort(403)
-    star_for_table = star_for.query.filter_by(
-        star_user=user.id, stared_post=obj.id).first()
-    if star_for_table == None:
-        return abort(400)
-    else:
-        db.session.delete(star_for_table)
-        db.session.flush()
-        db.session.commit()
-        return redirect("/p/" + str(obj.id))
+    obj.star_user_list.remove(user)
+    db.session.flush()
+    db.session.commit()
+    return redirect('/p/' + pid)
+
+    
 
 
 # 搜索列
