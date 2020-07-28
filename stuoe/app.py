@@ -371,6 +371,7 @@ class Forum():
         self.view = Viewrender
         self.get_session = get_session
         self.some_sidebar = list()
+        self.admin_sidebar = list()
         self.loginuser_menu = list()
         self.post_menu = list()
         self.databaseTable = {
