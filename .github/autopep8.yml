@@ -1,0 +1,2 @@
+- name: autopep8
+  uses: peter-evans/autopep8@v1.2.0
