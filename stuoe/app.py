@@ -112,7 +112,8 @@ class User(db.Model):
         return num
 
     def getActivity(self):
-        return Reply.query.filter_by(pusher=self.id).all()[:20] + Post.query.filter_by(pusher=self.id).all()[:20]
+        return Reply.query.filter_by(pusher=self.id).all(
+        )[:20] + Post.query.filter_by(pusher=self.id).all()[:20]
 
 
 class Group(db.Model):
@@ -166,7 +167,7 @@ class Post(db.Model):
             ).nickname + ' 发布于 ' + Viewrender.getTimer(timetime=self.pushingtime)
 
     def read(self):
-        if self.look == None:
+        if self.look is None:
             self.look = 0
         self.look = int(self.look) + 1
         db.session.flush()
@@ -477,7 +478,8 @@ class Forum():
 
     # 发送一个标准的界面
     def view_templates(self, auth, userObj, body, title):
-        return self.view.getTemplates(auth=auth, userObj=userObj, title=title, body=body)
+        return self.view.getTemplates(
+            auth=auth, userObj=userObj, title=title, body=body)
 
     # 检查用户
     def view_check_user(self, type):
@@ -490,35 +492,35 @@ class Forum():
             "icon": icon,
             "url": url
         })
-    
+
     # 增加登入用户右上角个人菜单选项，从“资料”和已添加控件后开始增加
-    def view_loginuser_menu_add_option(self,name,url,icon):
+    def view_loginuser_menu_add_option(self, name, url, icon):
         self.loginuser_menu.append({
-            "type":"options",
-            "name":name,
-            "icon":icon,
-            "url":url
+            "type": "options",
+            "name": name,
+            "icon": icon,
+            "url": url
         })
-    
+
     # 增加登入用户右上角个人菜单分割线，从“资料”和已添加控件后开始增加
     def view_loginuser_menu_add_line(self):
         self.post_menu.append({
-            "type":"line"
+            "type": "line"
         })
-    
+
     # 增加登入用户查看帖子右下角菜单选项，从“设为星标”和已添加控件后开始增加
-    def view_post_menu_add_option(self,name,url,icon):
+    def view_post_menu_add_option(self, name, url, icon):
         self.post_menu.append({
-            "type":"options",
-            "name":name,
-            "icon":icon,
-            "url":url
+            "type": "options",
+            "name": name,
+            "icon": icon,
+            "url": url
         })
-    
+
     # 增加登入用户查看帖子右下角菜单分割线，从“设为星标”和已添加控件后开始增加
     def view_post_menu_add_line(self):
         self.post_menu.append({
-            "type":"line"
+            "type": "line"
         })
 
     # Amazing Fetch
@@ -1231,8 +1233,6 @@ def unstar(pid):
     db.session.commit()
     return redirect('/p/' + pid)
 
-    
-
 
 # 搜索列
 class SearchObj():
@@ -1584,9 +1584,12 @@ def makeNotice(type, info):
                 body=Reply.query.filter_by(
                     id=info['newReplyId']).first().body)
         # 发生邮件
-        msg = flask_mail.Message(recipients=NoticGroupEmail, html=Viewrender.m2(Reply.query.filter_by(
-            id=info['newReplyId']).first().body,),body=Viewrender.m2(Reply.query.filter_by(
-            id=info['newReplyId']).first().body,) ,subject='参与或星标的讨论有新回复',)
+        msg = flask_mail.Message(
+            recipients=NoticGroupEmail, html=Viewrender.m2(
+                Reply.query.filter_by(
+                    id=info['newReplyId']).first().body,), body=Viewrender.m2(
+                Reply.query.filter_by(
+                    id=info['newReplyId']).first().body,), subject='参与或星标的讨论有新回复',)
         threading._start_new_thread(send_mail, (msg,))
 
 
