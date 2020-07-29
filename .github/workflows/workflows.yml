@@ -1,3 +1,4 @@
+  
 name: Format python code
 on: push
 jobs:
@@ -9,16 +10,15 @@ jobs:
         uses: peter-evans/autopep8@v1
         with:
           args: --recursive --in-place --aggressive --aggressive .
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@master
+      - name: Brotli compress the html, css and js files in repository
+        id: brotli
+        uses: charlesworth/compress-action@1.0
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
-          commit-message: compress Html and Format Python code
+          commit-message: autopep8 action fixes
           title: Fixes by autopep8 action
           body: This is an auto-generated PR with fixes by autopep8.
           labels: autopep8, automated pr
           reviewers: peter-evans
           branch: autopep8-patches
-          
