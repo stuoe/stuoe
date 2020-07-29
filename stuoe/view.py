@@ -20,6 +20,7 @@ def m2(body):
         serverconf["url"] + "/notifications'>点击查看</a><p>" + body + "</p>"
     return m2
 
+
 def c():
     # Get Configs File
     serverconf = dict(eval(open('server.conf', 'rb').read()))
@@ -30,7 +31,10 @@ def getTimer(timetime, simple=True):
     if simple:
         return time.strftime("%Y/%m/%d", time.localtime(int(timetime)))
     else:
-        return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(timetime)))
+        return time.strftime(
+            "%Y-%m-%d %H:%M:%S",
+            time.localtime(
+                int(timetime)))
 
 
 def getTemplates(
@@ -94,10 +98,34 @@ def getTemplates(
             auth=auth)
 
 
-def gethome(auth=True, userObj='', tagslist='', postlist='', get_avater='', title='', options=''):
-    body = jinja2.Template(open('storage/templates/index.html',
-                                'r', encoding="utf-8").read()).render(webtitle=serverconf['stuoe_name'], des=serverconf['stuoe_des'], userObj=userObj, tagslist=tagslist, postlist=postlist, get_avater=get_avater, auth=auth, options=options, some_sidebar=forum.some_sidebar)
-    return getTemplates(auth=auth, title=title, body=body, userObj=userObj, base2=True)
+def gethome(
+        auth=True,
+        userObj='',
+        tagslist='',
+        postlist='',
+        get_avater='',
+        title='',
+        options=''):
+    body = jinja2.Template(
+        open(
+            'storage/templates/index.html',
+            'r',
+            encoding="utf-8").read()).render(
+        webtitle=serverconf['stuoe_name'],
+        des=serverconf['stuoe_des'],
+        userObj=userObj,
+        tagslist=tagslist,
+        postlist=postlist,
+        get_avater=get_avater,
+        auth=auth,
+        options=options,
+        some_sidebar=forum.some_sidebar)
+    return getTemplates(
+        auth=auth,
+        title=title,
+        body=body,
+        userObj=userObj,
+        base2=True)
 
 
 def getMSG(msg, auth=False, userObj=''):
@@ -109,8 +137,14 @@ def getMSG(msg, auth=False, userObj=''):
 
 
 def getUserSpace(auth=False, lookuserObj='', userObj='', lastedPost=''):
-    body = jinja2.Template(open('storage/templates/user.html',
-                                'r', encoding="utf-8").read()).render(userObj=lookuserObj, getTimer=getTimer, lastedPost=lastedPost)
+    body = jinja2.Template(
+        open(
+            'storage/templates/user.html',
+            'r',
+            encoding="utf-8").read()).render(
+        userObj=lookuserObj,
+        getTimer=getTimer,
+        lastedPost=lastedPost)
     return getTemplates(
         body=body,
         auth=auth,

@@ -23,7 +23,7 @@ with io.open(os.path.join(BASE_DIR, 'requirements.txt'), encoding='utf-8') as fh
 try:
     print('Thank you for installing stuoe🎵🎵🎵')
     print('')
-except:
+except BaseException:
     # In Python 2.X
     pass
 

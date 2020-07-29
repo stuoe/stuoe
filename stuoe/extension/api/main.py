@@ -4,7 +4,6 @@ from flask import *
 import os
 
 
-
 header = {
     "name": "autoAPI",
     "icon": "web_asset",
@@ -14,9 +13,10 @@ header = {
     "version": "0.0.1"
 }
 
+
 class Main():
     def __init__(self, forum):
         self.forum = forum
 
-    def init(self,forum):
+    def init(self, forum):
         return self.forum

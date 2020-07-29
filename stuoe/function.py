@@ -2,6 +2,7 @@ from master import db
 from master import Viewrender
 from models import *
 
+
 def db_getuserByemail(email):
     return User.query.filter_by(email=email).first()
 
