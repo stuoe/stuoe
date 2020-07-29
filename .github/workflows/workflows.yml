@@ -10,10 +10,6 @@ jobs:
         with:
           args: --recursive --in-place --aggressive --aggressive .
     steps:
-      - name: Brotli compress the html, css and js files in repository
-        id: brotli
-        uses: charlesworth/compress-action@1.0
-    steps:
       - name: Checkout Repo
         uses: actions/checkout@master
       - name: Create Pull Request
