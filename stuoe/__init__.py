@@ -43,13 +43,17 @@ def run(port):
     click.echo('Worker in ' + os.getcwd())
     try:
         import app
-    except:
+    except BaseException:
         from stuoe import app
     app.app.run(host='0.0.0.0', port=port)
 
 
 @click.command()
-@click.option("--name", default='Dafault', help="Start A New Project", type=str)
+@click.option(
+    "--name",
+    default='Dafault',
+    help="Start A New Project",
+    type=str)
 def startproject(name):
     if not os.path.exists(startworkpath + name):
         os.makedirs(startworkpath + name)
@@ -70,7 +74,7 @@ def update(name):
         try:
             os.makedirs(startworkpath + name)
             click.echo('Create  ' + startworkpath + name)
-        except:
+        except BaseException:
             pass
     click.echo('Update Project: ' + name + '  ....')
     copy_Templates_to_update(pastpath=startworkpath + name + '/')
@@ -96,16 +100,19 @@ def runserver(host,port,debug):
 '''
 
 
-def copy_Templates_to_update(copypath=os.getcwd(), pastpath=os.getcwd() + '/paster/'):
+def copy_Templates_to_update(
+        copypath=os.getcwd(),
+        pastpath=os.getcwd() +
+        '/paster/'):
     for i in os.listdir(copypath):
         if not (i == '__init__.py' or i == 'server.conf' or i == 'sqlite3.db'):
             if os.path.isdir(copypath + '/' + i):
                 try:
                     os.makedirs(pastpath + '/' + i)
-                except:
+                except BaseException:
                     pass
                 copy_Templates_to_newproject(
-                    copypath=copypath + '/'+i, pastpath=pastpath + '/' + i)
+                    copypath=copypath + '/' + i, pastpath=pastpath + '/' + i)
             else:
                 copyfileData = open(copypath + '/' + i, 'rb').read()
                 open(pastpath + '/' + i, 'wb+').write(copyfileData)
@@ -113,17 +120,18 @@ def copy_Templates_to_update(copypath=os.getcwd(), pastpath=os.getcwd() + '/past
                            i + ' -> ' + pastpath + '/' + i)
 
 
-
-def copy_Templates_to_newproject(copypath=os.getcwd(), pastpath=os.getcwd() + '/paster/'):
+def copy_Templates_to_newproject(
+        copypath=os.getcwd(),
+        pastpath=os.getcwd() + '/paster/'):
     for i in os.listdir(copypath):
         if not (i == '__init__.py' or i == '' or i == 'sqlite3.db'):
             if os.path.isdir(copypath + '/' + i):
                 try:
                     os.makedirs(pastpath + '/' + i)
-                except:
+                except BaseException:
                     pass
                 copy_Templates_to_newproject(
-                    copypath=copypath + '/'+i, pastpath=pastpath + '/' + i)
+                    copypath=copypath + '/' + i, pastpath=pastpath + '/' + i)
             else:
                 copyfileData = open(copypath + '/' + i, 'rb').read()
                 open(pastpath + '/' + i, 'wb+').write(copyfileData)
@@ -131,9 +139,6 @@ def copy_Templates_to_newproject(copypath=os.getcwd(), pastpath=os.getcwd() + '/
                            i + ' -> ' + pastpath + '/' + i)
 
 
-
 cli.add_command(run)
 cli.add_command(startproject)
 cli.add_command(update)
-
-
