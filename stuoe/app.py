@@ -1290,7 +1290,9 @@ def send_dynamice(fid, obj):
     fileObj = File.query.filter_by(id=fid).first()
     if fileObj is None:
         return abort(404)
-    return fileObj.fileData
+    resp = make_response(fileObj.fileData)
+    resp.headers["Cache-Control"] = "max-age=31536000"
+    return resp
 
 # None  Other StaticFile
 
