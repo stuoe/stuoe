@@ -10,9 +10,6 @@ jobs:
         uses: peter-evans/autopep8@v1
         with:
           args: --recursive --in-place --aggressive --aggressive .
-      - name: Brotli compress the html, css and js files in repository
-        id: brotli
-        uses: charlesworth/compress-action@master
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
