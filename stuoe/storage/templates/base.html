@@ -4,13 +4,13 @@
 <head>
   <meta charset="utf-8" />
   <title>{{ title }} - {{ webtitle }}</title>
-  <link rel="stylesheet" href="/static/mdui/css/mdui.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@1.0.0/dist/css/mdui.min.css"
+    integrity="sha384-2PJ2u4NYg6jCNNpv3i1hK9AoAqODy6CdiC+gYiL2DVx+ku5wzJMFNdE3RoWfBIRP" crossorigin="anonymous" />
   <!-- Render for Jinja2 Building for https://github.com/stuoe/stuoe -->
 </head>
 <!-- Main content, definition style, occupancy percentage -->
 
-<body
-  class="mdui-color-theme-{{ colorPrimary }} mdui-theme-accent-{{ colorPrimary }} mdui-bottom-nav-fixed">
+<body class="mdui-color-theme-{{ colorPrimary }} mdui-theme-accent-{{ colorPrimary }} mdui-bottom-nav-fixed">
   <!-- Define color theme, set text style, body in body -->
   <div class="mdui-color-theme-theme">
     <!-- Define navigation bar -->
@@ -21,7 +21,9 @@
     <div class="mdui-container">
       {{ body }}
       <!-- Loading JavaScript -->
-      <script src="/static/mdui/js/mdui.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mdui@1.0.0/dist/js/mdui.min.js"
+        integrity="sha384-aB8rnkAu/GBsQ1q6dwTySnlrrbhqDwrDnpVHR2Wgm8pWLbwUnzDcIROX3VvCbaK+"
+        crossorigin="anonymous"></script>
       <script>
         {{ js }}
       </script>
