@@ -1,17 +1,13 @@
-<div align="center">
-<img src="https://raw.githubusercontent.com/snbck/stuoe.github.io/master/static/Stuoe.png" width="300" height="300">
+<div style="text-align: center;">![Stuoe](https://cdn.jsdelivr.net/gh/snbck/stuoe.github.io@master/static/Stuoe.png "Stuoe")</div>
 
-</div>
+# Stuoe是轻量的论坛软件
 
-
-## Stuoe是轻量的论坛软件
-
-<img src="https://raw.githubusercontent.com/stuoe/stuoe/master/stuoe-post.png">
+![鸡汤](https://cdn.jsdelivr.net/gh/stuoe/stuoe@master/stuoe-post.png "鸡汤")
 
 ## 文档
-文档在 [https://docs.stuoe.cn](https://docs.stuoe.cn)
+文档在 [https://docs.stuoe.cn/](https://docs.stuoe.cn/ "文档")
 
-github仓库 [https://github.com/snbck/stuoe-docs](https://github.com/snbck/stuoe-docs)
+GitHub 仓库 [https://github.com/snbck/stuoe-docs/](https://github.com/snbck/stuoe-docs/ "文档的 GitHub 仓库")
 
 
 ## 赞助
@@ -22,12 +18,10 @@ github仓库 [https://github.com/snbck/stuoe-docs](https://github.com/snbck/stuo
 
 ## 链接
 
-* 官网:  [https://stuoe.cn](https://stuoe.cn)
-* 版本 : [https://pypi.org/project/stuoe](https://pypi.org/project/stuoe)
-* 论坛 : [http://discuss.stuoe.cn/](http://discuss.stuoe.cn/)
-* 文档 : [https://docs.stuoe.cn/](https://docs.stuoe.cn/)
+* 官网: [https://stuoe.cn/](https://stuoe.cn/ "官网")
+* 版本：[https://pypi.org/project/stuoe/](https://pypi.org/project/stuoe/ "版本")
+* 论坛：[http://discuss.stuoe.cn/](http://discuss.stuoe.cn/ "论坛")
+* 文档：[https://docs.stuoe.cn/](https://docs.stuoe.cn/ "文档")
 
 ## 协议
-使用[Apache License](http://www.apache.org/licenses/)，请关注[License](https://github.com/stuoe/stuoe/blob/master/LICENSE)
-
-
+使用 [Apache License](http://www.apache.org/licenses/ "Apache License [官方网站]")，请关注 [License](https://github.com/stuoe/stuoe/blob/master/LICENSE "License [Stuoe]") 。
