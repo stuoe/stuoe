@@ -18,7 +18,7 @@ GitHub 仓库 [https://github.com/snbck/stuoe-docs/](https://github.com/snbck/st
 
 ## 链接
 
-* 官网: [https://stuoe.cn/](https://stuoe.cn/ "官网")
+* 官网：[https://stuoe.cn/](https://stuoe.cn/ "官网")
 * 版本：[https://pypi.org/project/stuoe/](https://pypi.org/project/stuoe/ "版本")
 * 论坛：[http://discuss.stuoe.cn/](http://discuss.stuoe.cn/ "论坛")
 * 文档：[https://docs.stuoe.cn/](https://docs.stuoe.cn/ "文档")
