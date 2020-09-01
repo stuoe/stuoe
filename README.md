@@ -1,4 +1,3 @@
-<div style="text-align: center;">![Stuoe](https://cdn.jsdelivr.net/gh/snbck/stuoe.github.io@master/static/Stuoe.png "Stuoe")</div>
 
 # Stuoe是轻量的论坛软件
 
